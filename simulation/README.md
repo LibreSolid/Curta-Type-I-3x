@@ -2,8 +2,9 @@
 
 The complete standard STEP assembly now builds in solid-node: 547 placed leaf
 occurrences, now organized into educational show/hide layers. The root has
-calculator controls, working input selectors and crank/drum motion. **Complete
-register motion, engagement verification and demonstrations are still being
+calculator controls, working input selectors, subtraction lift, keyed-shaft
+motion and prescribed sub-turn dial rotations. **Full transmission/carry
+engagement and demonstrations are still being
 implemented; this is not a delivered calculator simulation.** Follow the
 [implementation tasks](../openspec/changes/simulate-the-curta/tasks.md).
 
@@ -45,6 +46,26 @@ solid build
 The last command restores the complete model as the published viewer document.
 No floor or development server is launched by these commands.
 
+### Calculator page
+
+The project-owned page adds retained calculations and recursive layer controls
+over the public solid-node viewer. Export, then serve the project root locally:
+
+```sh
+solid export -o _build_export
+python -m http.server 8766 --bind 127.0.0.1
+```
+
+Open `http://127.0.0.1:8766/simulation/viewer/`. Set the eight input sliders or
+type an exact input, then turn the crank. Completed turns become the next starting
+registers; repeated turns and decimal shifting support multiplication. “See
+inside” hides the enclosure, frame and carriage covers/supports. The assembly
+tree independently hides, shows and focuses every subtree. Session values live
+in the page and reset on reload. A partial turn can be inspected but not committed.
+
+The readouts calculate with the verified arithmetic convention; they do not turn
+the currently incomplete mechanical motion into a validated whole machine.
+
 ## Source mapping
 
 - `curta.py`: the manifest's root, calculator controls and register-state relation.
@@ -52,6 +73,14 @@ No floor or development server is launched by these commands.
   carriage covers, input banks, drive and carry subassemblies.
 - `mechanism.py`, `drive.py`, `selectors.py`: named joints and drive relations.
 - `arithmetic.py`: reproducible arithmetic; six calibration/operation tests pass.
+- `registers.py`: seventeen radial dial joints and measured source clocking.
+- `transmission.py`: result/turns banks with sliding inputs and keyed rotation.
+- `cycle.py`: sub-turn input, decimal complement and candidate carry timing.
+- `input_mesh.py`, `bevel.py`: exact-verified single-interface engagement benches.
+- `engagement.py`: complete printed-drum contact checks (one result test still red).
+- `prints.py`, `standard/printed.py`: printed bodies from exact STEP ingredients.
+- `fit.py`: explicit, documented assembly and tooth-outline fit corrections.
+- `viewer/`: the educational calculator page and tested page-local accumulator.
 - `flexibles.py`: the documented five-turn, 1.1 mm wire replacement spring.
 - `standard/parts.py` and `standard/assembly.py`: compacted output of
   `solid import-step`, with source product names and all source placements.
@@ -65,6 +94,7 @@ No floor or development server is launched by these commands.
 - `tools/probe.py`: reproducible measurements and housing-interface diagnostics.
 - `tools/compact_import.py`: one-time mechanical cleanup of a fresh scaffold;
   do not rerun it over edited mechanism code.
+- `tools/check_calculator.py`: reproducible headless browser calculation and layer checks.
 
 The ignored import copy is prepared automatically when the parts module loads.
 If the upstream CAD file changes during a live session, explicitly run
@@ -94,8 +124,8 @@ claim of complete physical validation or fabrication readiness.
 The project-owned OpenSpec change is `simulate-the-curta`. Its planning commit is
 `05165d3`; it remains active and unarchived. Current controls describe an operation
 from explicit starting registers: changing crank progress is reproducible, rather
-than accumulating hidden Python state. A calculation-facing UI is planned to
-retain completed operations while the underlying model stays scrub-friendly.
+than accumulating hidden Python state. The calculation-facing page retains
+completed operations while the underlying model stays scrub-friendly.
 
 ## Attribution
 

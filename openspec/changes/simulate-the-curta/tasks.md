@@ -36,12 +36,27 @@ The source assembly builds and its complete 547-occurrence world placement check
 passes. A +1 mm main-crank placement mutation fails that check with measured
 1.00000000007 mm drift at occurrence 0:1:1:18:1; the mutation is reverted.
 
-Task 1.3 remains open. Root tests are honestly red: the zero-positioning spring
-is invalid, and the digits-cover/upper-housing boolean produces an invalid result.
+Task 1.3 remains open. The initial red root tests exposed the invalid spring
+and an invalid digits-cover/upper-housing boolean.
 The pilot explicitly authorized replacing the spring from the manual's winding
 dimensions and measured mounts, and delegated routine engineering decisions.
 The documented spring's validity, wire-size and mounting tests now pass, including
 the exact mount test. Crank/drum and selector-travel contracts passed after their
 red runs. The educational layer test accounts for all 547 source occurrences and
 preserves their placements. Six arithmetic tests pass, but do not yet prove
-register geometry or drive engagement. Remaining boxes stay open for that work.
+complete register geometry or drive engagement. The single-row input passage
+and first bevel pair now pass exact and faceted engagement contracts, after
+documented fitting corrections. Seventeen dial joints are connected to the
+settled register ports and sub-turn cycle relations. Three register geometry
+tests pass both kernels, including every result dial's independent radial axis
+and visible input preceding carry. The browser check passed the manual's full
+0, 1, 9, 90 sequence with retained registers, eight digit sliders and recursive
+layer visibility/focus. The drum/tens-bell printed groups are reconciled; their
+inventory, connectivity and native validity pass exact. The 9 mm subtraction
+lift passed after its red world-vertex test. Keyed input travel and 72° shaft
+rotation passed after red; all seventeen source-specific stacks are integrated.
+The full counter-drum sweep passes faceted in both modes after the documented
+4.5 mm normal-setting correction. The full result-drum sweep remains red at
+digit 0, addition, crank 18° (0.050564486 mm³), now being located by ingredient.
+Full transmission/carry contact, whole-machine inventory, moving flexibles,
+shift/clear geometry and demonstration sweeps still keep their tasks open.

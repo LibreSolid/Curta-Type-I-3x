@@ -181,7 +181,194 @@ The probe preserves signed nonpositive sums as diagnostics, rejects invalid
 kernel results, and is being repeated with native solids where available. The
 inventory is not yet accepted as a verified moving assembly contract.
 
-## Validation boundary
+## F3: Register-bank alignment and bevel seating
+
+`tools/dial_phase.py --fit` first measured the result-ones bevel pair. With the
+original shaft seating, no tested dial phase clears the pair. A 3° dial phase
+and 0.8 mm downward seating adjustment let the original, off-center pair clear
+one complete 72° pinion tooth period. `bevel.BevelPair` then passed the faceted
+and exact contracts: 6° samples through that period, ±0.1° free play and
+blocking at ±12° at five phases. The unchanged seating failed both contracts.
+
+Expanding that measurement exposed a common assembly-frame error, not seventeen
+independent dial defects. The carriage body, its seventeen dial axles, dials and
+detent balls share center (0.537721035, -0.038177283) mm and clocking
+0.549916905°. Re-centering and unclocking that assembly puts every dial on a
+71.474057463 mm radial datum with an inward radial axle at Z 33.9 mm. Result
+stations are 0°, -20°, …, -200°; turns stations are 130°, 110°, …, 30°.
+There are two 30° gaps, not eighteen uniform stations.
+
+Sixteen source transmission shafts are on the corresponding 40.5 mm radius.
+The result-tens shaft group `10236 <1>` alone has X 38.137315415 mm instead of
+38.057551142 mm; Y is correctly -13.851815805 mm. Its complete keyed stack
+requires a -0.079764273 mm X correction, not a separately displaced gear tip.
+`tools/bevel_bank.py` retains the native phase/seating experiment for every pair.
+With carriage alignment, sixteen pairs clear at 1.2 mm pinion seating drop; the
+uncorrected off-axis shaft still overlaps by 0.003003038 mm³ there. After its
+coaxial correction, all seventeen native pairs clear the sampled period at the
+same 1.2 mm seating. The source-reference assembly
+remains unchanged. The operating register banks and carrier now use the common
+carriage correction. The operating transmission now applies the shared tip
+seating and result-tens stack correction; full-bank contact regression remains
+in progress.
+
+The manual (p22) describes approximately 5 mm between the gear tips and shaft
+tops and explicitly calls for a trial tight fit before adhesive. The source tip
+top is 4.95 mm **above** the shaft top; a 1.2 mm seating drop would make that
+3.75 mm. This is a measured simulation fit adjustment, not the original
+dimension or a fabrication recommendation. Final keyed overlap and full-bank
+engagement contracts must accompany integration.
+
+## F4: Drum-to-input tooth fit
+
+The five-tooth transmission pinion has 72° tooth pitch. The stepped drum's
+32-station tooth pitch is 11.25°, so an engaged drum tooth advances the pinion
+72° and, through the five-to-ten bevel pair, the result dial 36°.
+`tools/input_contact.py` sweeps every 0.5° pinion phase during one tooth passage.
+At crank angles 117–122° the unmodified profiles have no clear sampled phase;
+the minimum faceted overlap reaches 0.328348412 mm³. A phase-only adjustment
+cannot fix this source-profile conflict.
+
+`fit.FittedInputPinion` explicitly offsets only the outer planar outline inward
+0.35 mm, then intersects its extrusion with the original source shape. The
+keyed bore and 1.5 mm thickness are preserved. This models the manual's trial
+fitting/sanding step; it does not predict print strength, wear or tolerances.
+No upstream geometry file is edited. The measured passage law starts at 113.5°,
+lasts 11.25° and uses 4° home clocking. The red source tests failed at
+0.003069493 mm³ overlap and at the ±0.1° perturbation (0.328663939 mm³).
+After the explicit relief, all 61 half-degree passage samples and the free-play
+/ ±12° blocking checks pass on both faceted and exact kernels. This proves the
+single-row bench, not yet every drum row or the complete transmission train.
+
+The complete printed input group exposed a second fit problem that the isolated
+pinion cannot see. At digit zero and crank 18°, the ten-tooth row intersects
+the 1.8 mm spacer: native overlap 0.060817327 mm³, radial interval
+36.53–36.60 mm. Digit one exposes the identical problem in the next spacer;
+digit two exposes the long ones sleeve. All seven source round input spacer /
+sleeve types share a 3.97 mm outside radius. `InputSleeveFit` retains their
+original bores and axial extents while fitting that outside radius to 3.85 mm:
+40.5 mm shaft radius minus 36.6 mm drum radius minus the named 0.05 mm seat gap.
+This is applied only to the input print groups, not unrelated carry spacers.
+The full-row regression is being repeated after this explicit fit correction.
+
+## Calculator controls and visible dials
+
+`registers.py` declares seventeen radial revolute joints. Changing the result
+from zero to one initially failed its independent world-vertex rotation test
+with 6.200526686 mm error. The corrected carriage frame and dial relation pass
+the same test, and both banks are now connected to the root's settled register
+ports. These are real dial mesh rotations. Sub-turn drive is now integrated;
+carry timing is still a prescribed candidate pending full contact verification.
+
+`viewer/` is a project-owned educational host of the public viewer API, not a
+second renderer. It exposes eight digit sliders, crank progress, addition /
+subtraction, decimal position, exact starting registers and recursive show/hide
+and focus controls. Its small session controller keeps completed operations
+by writing the next starting registers and returning crank progress to zero.
+It refuses to commit a partial turn. Three JavaScript tests first failed, then
+passed for the author's sequence, multiplication, shifting, subtraction,
+clearing, overflow and explicit commit behavior. The Python arithmetic tests
+remain the model's independent checks. Session state is page-local, not saved
+across reloads. Mechanical completion remains governed by the active tasks.
+
+## Printed-group reconciliation
+
+The standard print stages identify the top and bottom drum halves and the tens
+bell as three printed bodies. The STEP instead carries 59 ingredients plus the
+three separate joining pins. The first printed-group inventory contract failed
+62 != 6. `standard/printed.py` now declares exact fusions of the source
+ingredients, with their source placements, and `prints.PrintedDrive` retains
+the three separate pins. Both inventory and connectivity contracts pass on
+faceted and exact kernels. A third native-validity contract also passes exact.
+The operating root uses those fusions.
+Generated declarations also identify the individual transmission print groups;
+their full integration and connectivity regression remain in progress.
+
+Reusing a wrapped `AssemblyNode.render` method directly on a `FusionNode` failed
+with a missing `simulate` attribute. The generator instead emits an ordinary
+fusion render containing the source's placement data. No framework internals
+or framework edits are used. This is an adapter/phase-boundary finding.
+
+The browser's first full-size captures timed out under headless software WebGL.
+A 1200×850 Chromium run with `--disable-dev-shm-usage`, SwiftShader and two
+animation frames before capture succeeded. The inside screenshot was visually
+inspected: the whole mechanism is framed, case/frame layers are hidden, dials,
+input selectors and drive stack remain visible, and the eight sliders/readouts
+are legible. The original tiny model was a host sizing error: mounting sets the
+host's positioning inline; an explicit full-height positioned host corrects it.
+No claim about hardware-GPU performance is made from this headless check.
+
+## Sub-turn register progression
+
+`cycle.py` now describes unwrapped dial positions within the current turn. The
+single-row input timing is measured; initial carry timing comes from the native
+carry-ring tooth stations (result ring outer tooth vertices 55–56.18°, source
+clocking +77°; turns ring 57–58.18°, source clocking -103°). These carry timings
+remain prescribed candidates pending the carry-contact bench. The turns drum's
+one-tooth row spans approximately 297.5–300.5° locally, at source clocking
+2.604082802°, giving a 51.25° phase difference from result input at the first
+counter station. Positive crank travel is clockwise from above; the root's
+direction test failed with 128.625810814 mm vertex error before correcting its
+sign and then passed. Root faceted checks now pass 6/7; the remaining failure is
+the recorded nominal cover overlap, not a hidden exception.
+
+Four pure cycle tests first failed and then passed for carry order, both complete
+register wraps, all six decimal positions and complement subtraction. The latter
+advances digits positively through the complement rather than simply reversing
+all gears. An independent mesh test first failed with 5.840373659 mm missing
+rotation, then verified that 9 + 1 advances the ones dial before the tens dial.
+A further world-vertex test covers the radial axle of every result dial,
+including the ungrouped highest dial. All three register geometry tests pass on
+both faceted and exact kernels.
+
+The reproducible browser check `python -m simulation.tools.check_calculator`
+passed the manual's 0, 1, 9, 90 sequence, page-local commits, eight input sliders,
+and layer hide/show controls with no page errors. Its captured inside view was
+inspected. This was the settled-register export; the subsequent sub-turn model
+must be re-exported and checked before final delivery.
+
+## Subtraction lift and keyed transmission
+
+The source result input detents have 6 mm axial pitch. At the first detent,
+the regular zero gear is Z -64.925 mm, the nine-tooth row is Z -73.8 mm, and
+the ones channel's extra upper gear is Z -58.925 mm opposite the ten-tooth row
+at Z -67.8 mm. Raising the drum 9 mm selects the complementary rows in both
+cases. This is one and a half selector pitches, not a 3 mm lift. The root's
+world-vertex test failed with 9 mm missing movement before the two prismatic
+joints were wired; it now passes for the crank and complete printed drum.
+The frame remains stationary. This run passes 7/8 root contracts, with only
+the known source cover overlap still red before later transmission integration.
+
+`standard/channels.py` preserves each source shaft and its associated printed
+input and carry groups, with explicit joints. `transmission.py` groups these
+as result and turns banks with named decimal places. The selector gear slides
+54 mm for digit nine; one digit turns the keyed stack 72°. Both independent
+world-vertex tests failed before the relations and passed afterward.
+All seventeen operating stacks now have input and carry travel and shaft
+rotation wired through the public motion API. Carry engagement/reset timing
+is still a candidate; wiring alone does not certify contact.
+
+The source counter input groups are centered 4.5 mm below their normal working
+position. At the source pose, higher counter pinions meet the one-tooth row
+and would falsely advance every place. Lifting all six input groups 4.5 mm
+puts the first channel's lowest pinion at -44.85 mm against the one-tooth row,
+while higher channels sit at -40.35 mm above the addition rows. With the drum
+raised 9 mm, those higher pinions meet the nine-tooth row at -40.7 mm. This
+is a measured normal-counter assembly assumption, not an independent reversing
+lever control. The full printed upper drum and complete first-counter input
+group pass a 3° faceted sweep in both modes. The complete result-drum sweep
+still exposes a positive overlap; that contract remains red while investigated.
+
+The original manufacturer's [1967 Model I service manual](https://www.mycurta.com/Documents/Curta_1_Servivce_Manual_engl.pdf)
+was consulted as a primary cross-check, without importing its geometry. PDF
+page 26 (Folio F-1) identifies freely sliding transmission gears, the first
+counter's middle gear in the reversing yoke, and the first result's lower
+gear in the setting knob. Page 27 (F-2) specifies depressed carry levers,
+upward cam reset, and clearance so the lever does not force a shaft sideways.
+The printed 3× model's measured dimensions govern this simulation; original
+metal-machine tolerances are not silently scaled into print tolerances.
+
+## Historical initial validation boundary
 
 - Initial frame-only root: faceted inventory contract failed `1 != 547`.
 - Complete static root: `solid build` succeeds; every published STL exists.

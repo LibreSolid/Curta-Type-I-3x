@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="en">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Inside the Curta · mechanical calculator</title>
+<link rel="stylesheet" href="style.css">
+<body>
+<header><div><small>MECHANICAL CALCULATION / TYPE I · 3×</small><h1>Inside the Curta</h1></div>
+  <p>Set a number. Turn the crank. Follow the mechanism.</p></header>
+<main>
+  <section class="machine" aria-label="Interactive calculator model">
+    <div class="view-actions"><button id="inside">See inside</button><button id="outside">Assembled</button>
+      <button id="whole">Frame whole machine</button></div>
+    <div id="model"></div>
+    <p class="fidelity">Prescribed kinematics · source fit corrections documented · not a force or fabrication model.</p>
+  </section>
+  <aside>
+    <section class="registers" aria-label="Calculator registers">
+      <label>RESULT <output id="result" aria-live="polite">00000000000</output></label>
+      <label>REVOLUTIONS <output id="turns">000000</output></label>
+      <small>Readouts show completed crank turns. The model can be scrubbed between them.</small>
+    </section>
+    <fieldset id="controls" disabled>
+      <legend>Operate</legend>
+      <label class="line">Input number <input id="operand" type="number" min="0" max="99999999" value="0"></label>
+      <div id="digits" aria-label="Eight input selectors"></div>
+      <div class="line"><label><input id="subtract" type="checkbox"> Subtract (lift crank)</label>
+        <label>Carriage <output id="shift-value">1 · ×1</output></label></div>
+      <input id="shift" type="range" min="0" max="5" step="1" value="0" aria-label="Carriage position">
+      <label class="line">Crank progress <output id="crank-value">0.000 turns</output></label>
+      <input id="crank" type="range" min="0" max="1" step="0.001" value="0" aria-label="Crank progress">
+      <div class="line"><label>Turns <input id="repeat" type="number" min="1" max="12" value="1"></label>
+        <label>Seconds / turn <select id="duration"><option>2</option><option selected>6</option><option>12</option></select></label></div>
+      <div class="actions"><button id="turn" class="primary">Turn crank</button>
+        <button id="commit">Keep completed turns</button><button id="clear">Clear both registers</button></div>
+      <details><summary>Starting registers / reproducible pose</summary>
+        <label class="line">Result <input id="initial-result" type="number" min="0" max="99999999999" value="0"></label>
+        <label class="line">Revolutions <input id="initial-turns" type="number" min="0" max="999999" value="0"></label>
+        <p>The crank is a preview from these starting values. “Keep” stores the completed operation in this page;
+          moving a slider back never secretly adds another turn.</p>
+      </details>
+    </fieldset>
+    <button id="pause" hidden>Pause and inspect</button>
+    <p id="status" role="status">Loading the mechanical assembly…</p>
+    <details open><summary>Mechanical layers</summary><p class="hint">Uncheck to hide; select a name to focus. Expand for individual parts.</p><div id="layers"></div></details>
+  </aside>
+</main>
+<footer>Marcus Wu’s Curta Type I 3× · original design CC BY-NC-SA 4.0 · <a href="../README.md">Simulation notes and limitations</a></footer>
+<script src="../../_build_export/solid-widget.js"></script>
+<script type="module" src="page.mjs"></script>
+</body>
+</html>

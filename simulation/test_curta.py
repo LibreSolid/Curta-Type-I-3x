@@ -16,6 +16,25 @@ def leaves(node):
 class CurtaTest(TestCase):
     node = Curta
 
+    def test_subtraction_lifts_crank_and_drum_nine_millimeters(self):
+        import numpy as np
+        self.node.set_state(subtract=0, crank_turns=0)
+        crank = self.node.main_drive.crank.crank_handle_1.main_crank
+        drum = self.node.main_drive.stepped_drum.main_axle_step_drum_1.main_axle_step_drum_top_1
+        before = [part.mesh.vertices.copy() for part in (crank, drum)]
+        self.node.set_state(subtract=1)
+        for part, vertices in zip((crank, drum), before):
+            self.assertLess(np.max(np.abs(part.mesh.vertices - vertices - [0, 0, 9])), .00001)
+
+    def test_positive_crank_turn_is_clockwise_from_above(self):
+        import numpy as np
+        self.node.set_state(crank_turns=0)
+        crank = self.node.main_drive.crank.crank_handle_1.main_crank
+        before = crank.mesh.vertices.copy()
+        self.node.set_state(crank_turns=.25)
+        rotation = np.array([[0, 1, 0], [-1, 0, 0], [0, 0, 1]])
+        self.assertLess(np.max(np.abs(crank.mesh.vertices - before @ rotation.T)), .00001)
+
     def test_calculator_register_state(self):
         self.node.set_state(initial_result=492, initial_turns=4, operand=123,
                             crank_turns=2, carriage_position=1, subtract=0, clear=0)
