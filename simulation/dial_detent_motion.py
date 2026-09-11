@@ -3,7 +3,7 @@
 Both source dial types; see tools/dial_detent.py and compile_dial_detent.py.
 """
 
-from solid_node.math import piecewise
+from simulation.dial_cam import rise
 
 
 BALL_RISE = (
@@ -71,5 +71,5 @@ BALL_RISE = (
 
 def following(zero_angle):
     def law(source, target):
-        return lambda turn: piecewise((zero_angle - turn) % 36, BALL_RISE)
+        return lambda turn: rise(zero_angle - turn)
     return law

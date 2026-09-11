@@ -90,12 +90,20 @@ class CarryMechanism(SourceCarry):
 
 
 class CarriageCovers(layers.CarriageCovers):
+    """Match the covers' source datum to the operating dial bank, then seat up.
+
+    The covers use a different source center from the carrier. Correcting both
+    that center and its .549916905-degree clocking removes window encroachment;
+    a .05 mm upper seating gap clears the remaining dial lip. Prints unchanged.
+    """
     digits_cover = DigitsCover()
     upper_housing = UpperHousing()
 
     def render(self):
         super().render()
         self.clearing_cover.omit()
+        self.translate((-.386511579, .028412332, .05))
+        self.rotate(-CARRIAGE_CLOCKING, (0, 0, 1))
 
 
 class ClearingAssembly(layers.ClearingAssembly):

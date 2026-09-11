@@ -1,3 +1,12 @@
+## Pause checkpoint — 2026-09-11
+
+Paused by the pilot for the solid-node construction-time expression-sharing
+follow-up. See `simulation/docs/pause-report-2026-09-11.md` for the initial
+10h Astra/xhigh sprint, memory evidence, cycle handoff and ordered restart.
+No formal framework memory-fix change exists yet; this project change stays
+active and unarchived. Checked tasks below record scoped incremental evidence,
+not a final full-machine regression. No outstanding task is waived by the pause.
+
 ## 1. Source assembly and frame
 
 - [x] 1.1 Add the manifest, an initial renderable root and build exclusions; write and run source and integrity contracts red. Frame build passed; inventory failed with 1 != 547 (faceted, 2026-09-11).

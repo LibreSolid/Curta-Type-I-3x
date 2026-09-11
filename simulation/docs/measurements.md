@@ -1200,6 +1200,100 @@ explicitly; passing calculations against that old document are not current
 validation. Investigation of repeated motion-expression expansion is ongoing;
 the colors are verified in snapshots but the exported browser update is open.
 
+## Symbolic expression growth — current export blocker
+
+The pilot reported a separate host crash during a parallel build, then clarified
+that this VM may use 8 GB. Subsequent heavyweight jobs run sequentially with
+`ulimit -v 8388608`, `OPENBLAS_NUM_THREADS=1`, `OMP_NUM_THREADS=1`, and
+`set -o pipefail` so a logging pipeline cannot hide the failing process status.
+No host settings or shared library implementation were changed.
+
+Native circular edges provide an algebraic register-ball cam: R7.2 lands,
+R4.5 scallops centered at R6, and a 3 mm ball. The circle intersection fixes
+the half-dwell at 2.529120217 degrees. `dial_cam.py` preserves the .05 mm
+seat gap and adds only the original probe's upper-bracket resolution,
+5 / 2^17 mm. It agrees with every recorded envelope knot within .00004 mm.
+The sampled table remains an independent reference. A source-circle probe
+is retained in `tools/dial_cam.py`; no curve was guessed from appearance.
+The law's symbolic size decreases from 4570 to 235 characters for a short
+input token. Five native first-station contact/seating tests pass in 11.43 s.
+
+Two exact algebraic simplifications also reduce repeated text: decimal shifting
+uses the same linear interpolation between adjacent powers of ten instead of
+six copied branches; nonnegative tooth counts use `max(1, count)` for their
+safe denominator. Carry engagement uses the math API's direct `max` rather
+than expanding it into repeated sums and absolute values. Decimal-shift text
+falls from 316 to 49 characters, and the isolated carry expression from 17082
+to 5135. The expression-size failures were recorded before these changes;
+19 arithmetic/cycle/profile/size tests and five carry-timing tests pass.
+Interpolation between lifted carriage detents is preserved, not silently
+replaced by rounding.
+
+These improvements do not solve the whole export. Bounded fresh exports fail
+with `MemoryError` during symbolic relation evaluation, before a new manifest
+is written. The 4 GB run peaks at 3526084 KiB RSS; later 8 GB runs reach
+7823896 and 7857084 KiB. The stacks name expansion of `detents.spreading`
+and the following six `carry_spring.coordinates` outputs. They are not CAD
+Boolean failures, and the old 10:13 export must not count as current evidence.
+
+`tools/expression_size.py` reproduces the growth without building CAD or
+allocating the final expanded wires. Even using short symbolic tokens, one
+result-channel carry expression is about 7.72 million characters; the measured
+35-interval hook profile expands that to about 270.3 million. That result is
+then copied into six wire coordinates across ten result stations (plus five
+counter stations). The diagnostic completes in 3.59 s with 664636 KiB peak
+RSS. This is a lower bound because real driver identifiers are longer.
+The source import alone exceeds a 1 GB address-space ceiling; the diagnostic
+succeeds under 4 GB.
+
+The public framework documentation describes post-construction sharing in
+schema 4, but the failing expressions exhaust resources while being constructed,
+before that sharing runs. Preserving shared expressions through evaluation is
+an upstream requirement, not a new calculator control or permission to remove
+working springs. A separate framework cycle needs pilot authority; no framework
+source had been inspected at the time of those project probes. In the later
+pilot-requested diagnosis, read-only inspection of solid-node main
+`2bdc50b37be920e79202d1c9e9c5700e43f525e0` confirmed that `symbolic_document`
+runs before `bind_document`, as documented in ADR-080. No framework code was
+changed. The pilot then paused project implementation for that framework work;
+see [the checkpoint and cycle handoff](pause-report-2026-09-11.md). The existing
+model and color snapshots remain available, but fresh interactive export and
+complete delivery are blocked here.
+
+## Cover-datum trial — dial clearance proved, neighbors unresolved
+
+The covers' source center is (.386511579, -.028412332), distinct from the
+carrier's (.537721035, -.038177283). Re-centering on that cover datum, rotating
+by -.549916905 degrees and seating upward .05 mm removes the dial-window
+encroachment while preserving both of the author's print meshes. The source
+comparison is reproducible with `tools/cover_fit.py`, which reconstructs the
+untouched STL placements independently of the currently installed trial.
+
+The initial two faceted tests fail at 18.310925201 and 18.325069902 mm³
+dial/cover intersection. Three fitted tests pass faceted (35.86 s) and on the
+exact runner (35.92 s), including every integer digit, sampled carry/clearing
+motion and source print-vertex preservation. This is a local clearance result,
+not acceptance of the cover's other interfaces or exact recovery of STL surfaces.
+
+The adjacent-pair diagnostic still finds a 91.212554578 mm³ intersection with
+the clearing cover. Each fixed digit axle intersects the digits cover by
+approximately .2315 mm³ and the upper housing by 2.61817 mm³. These contacts
+remain findings, not approved source seats. The trial and its honest contracts
+are committed for continuation; whole-carriage validation remains open.
+
+## Pause-checkpoint verification
+
+The compact native-circle cam's complete-bank faceted run finished with four
+passing tests in 73.67 s after the last project edits. Its complete-bank exact
+run remains pending; the earlier exact result used the sampled law.
+
+Housekeeping re-ran 26 arithmetic/cycle/cam/size/carry-timing/source unit tests:
+all pass, with 5.08 s process wall time and 640760 KiB peak RSS. The current
+cover trial also passes all three faceted contracts again, with 36.35 s process
+wall time, 18.02 s test time and 615952 KiB peak RSS. Both runs use the same
+workspace environment and the 8 GiB address-space guard. No full export, final
+all-node regression or new snapshot was attempted during this pause checkpoint.
+
 ## Historical initial validation boundary
 
 - Initial frame-only root: faceted inventory contract failed `1 != 547`.

@@ -13,6 +13,11 @@ authorized modeling the documented spring and delegated routine engineering
 decisions: make evidence-backed choices and record them without repeated approval
 requests. Manufacturing certification remains out of scope.
 
+The pilot subsequently paused implementation for a framework memory fix.
+The project checkpoint and proposed framework-cycle handoff are recorded in
+`simulation/docs/pause-report-2026-09-11.md`. This change remains active;
+neither the original scope nor its delivery requirements are reduced.
+
 ## Coordinates
 
 Preserve the STEP's millimetres, vertical Z axis and common main-shaft axis.
@@ -115,9 +120,10 @@ trim keeps that axial fit above the frame bearing plane.
 Fifteen carry sliders, the tens bell, carriage and clearing plate now move.
 The first carry channels pass full-bell sweeps and bidirectional engagement in
 both kernels after tooth-profile fitting and measured phase corrections, without
-relaxed assertions. Remaining carry-lever contacts and flexible parts, clearing-tooth contact,
-complete source overlap inventory and full demonstration interference remain
-open. Checkpoints and detailed measurements are in simulation/docs/measurements.md.
+relaxed assertions. Later checkpoints below extend that proof to all carries
+and clearing teeth. Complete source overlap inventory, adjacent moving
+interfaces and full demonstration interference remain open. Checkpoints and
+detailed measurements are in simulation/docs/measurements.md.
 
 The zero-positioning cam now rotates at its retained height while its transverse
 pin slides through the axial slots for subtraction. A measured cam profile drives
@@ -177,6 +183,11 @@ bank now also passes both kernels through all digit/shift combinations,
 carry and subtraction cascades, and progressive clearing; every ball is
 independently checked as captured by its own dial and spring tip.
 
+That complete-bank exact result used the sampled profile. The later compact
+native-circle law preserves the measured envelope and passes first-station
+native and complete-bank faceted checks; its complete-bank exact regression
+remains pending at pause.
+
 The clearing stop is now a source pin driven vertically by the cover's measured
 cam. Its documented eight-turn .6 mm wire spring compresses between the native
 sleeve seat and pin shoulder, with .05 mm seating gaps. Native distance
@@ -184,6 +195,11 @@ measurement replaces an invalid near-contact Boolean measurement; independent
 full-sweep contact and spring tests pass both kernels. No pin or sleeve geometry
 is changed. The whole-machine audit still needs cover/window and frame-guide
 interfaces resolved before the source overlap inventory can be accepted.
+
+The cover-datum trial now clears the operating dials without changing the
+author's print meshes, but neighboring cover/axle contacts remain unresolved.
+It is preserved as a tested local trial, not an accepted whole-carriage fit;
+see the pause report and measurements for its positive overlap volumes.
 
 ## Findings for the framework
 
@@ -209,6 +225,20 @@ interfaces resolved before the source overlap inventory can be accepted.
   meshes existed. Moving inspection classes from `simulation/tools/views.py`
   to `simulation/views.py` restored both arms in the snapshot. This is an
   artifact-path finding, not permission to treat an incomplete image as proof.
+- Nested measured profiles exceed an 8 GB export ceiling before schema-4
+  expression sharing can run. After algebraic simplification, a result carry
+  expression still expands to approximately 270 MB when fed through its hook
+  profile, then repeats in six wire coordinates across ten stations. The
+  reproducible `simulation/tools/expression_size.py` measures this without
+  allocating the complete expanded model. Fresh export is blocked; stale
+  manifests are rejected by browser preflight. A separate authorized framework
+  cycle is required to address construction-time sharing, not just final JSON
+  size. See the measured resource limits and traceback evidence in the project
+  measurements. Subsequent read-only framework inspection during the pilot's
+  diagnosis confirmed ADR-080 and the late binding pass. No framework
+  implementation was changed. The proposed follow-up is
+  `construction-time-expression-sharing`; formal proposal and ratification
+  remain pending, as distinguished in the pause report.
 
 These are evidence for an upstream finding record, not framework changes or
 claims that a new API has been accepted. No framework implementation was edited.

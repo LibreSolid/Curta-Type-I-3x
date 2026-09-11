@@ -1,6 +1,6 @@
-# Curta simulation — implementation in progress
+# Curta simulation — paused for framework work
 
-The complete standard STEP assembly now builds in solid-node: all 547 leaf
+The simulation imports the complete standard STEP assembly: all 547 leaf
 occurrences, plus the manual's three clearing-strip prints omitted from the STEP,
 organized into educational show/hide layers. The root has
 calculator controls, working input selectors, subtraction lift, keyed-shaft
@@ -13,6 +13,15 @@ open; this is not a
 delivered calculator simulation.** Follow the
 [implementation tasks](../openspec/changes/simulate-the-curta/tasks.md).
 
+Current export blocker: the complete flexible mechanism exceeds an 8 GB memory
+ceiling while the framework expands nested motion expressions. Colors and
+geometry render in snapshots, but the existing browser export is older and
+must not be mistaken for the current machine. See the expression-growth
+reproduction and resource measurements before attempting another full export.
+The [pause report and framework-cycle handoff](docs/pause-report-2026-09-11.md)
+record the initial 10h Astra/xhigh sprint, committed work, verification limits
+and the restart sequence. No formal memory-fix cycle has been opened yet.
+
 Work starts from the previous [assessment](assessment.md). The new
 [measurements and validation findings](docs/measurements.md) identify the invalid
 spring, distinguish the hardware products sharing names, and document why the
@@ -22,6 +31,11 @@ explicitly authorized, documented replacement; upstream geometry is untouched.
 ## Run
 
 From this project's root, with the workspace venv active:
+
+The full-root build/export examples below are restart instructions after the
+framework memory fix, not commands to retry during this pause. Numeric unit
+tests and scoped subassembly checks remain usable; run heavyweight jobs
+sequentially under the resource bounds in the pause report.
 
 ```sh
 solid build
@@ -48,13 +62,15 @@ solid build simulation/standard/assembly.py:Carriage1
 solid build
 ```
 
-The last command restores the complete model as the published viewer document.
+Once the export blocker is resolved, the last command restores the complete
+model as the published viewer document; it cannot do so at this checkpoint.
 No floor or development server is launched by these commands.
 
 ### Calculator page
 
 The project-owned page adds retained calculations and recursive layer controls
-over the public solid-node viewer. Export, then serve the project root locally:
+over the public solid-node viewer. After a verified fresh export becomes
+possible again, export and serve the project root locally:
 
 ```sh
 solid export -o _build_export
@@ -110,7 +126,13 @@ reproducible pose, not a claim that a physical crank can run backward.
 - `views.py`: explicit inspection poses for snapshots at driver defaults.
 - `spider.py`, `register_detents.py`, `dial_detent_motion.py`: the source ring
   and tips with seventeen tapered flexible fingers, driven by the actual dial
-  joints and measured ball-rise profile. Both complete-bank kernels pass.
+  joints and measured ball-rise profile. The earlier sampled law passed both
+  complete-bank kernels; the compact `dial_cam.py` law has first-station native
+  and complete-bank faceted proof, with its complete-bank exact run pending.
+- `covers.py`, `test_covers.py`, `tools/cover_fit.py`: the preserved cover-datum
+  trial. Dial clearance passes, but adjacent cover/axle interfaces remain open.
+- `tools/expression_size.py`: bounded reproduction of the symbolic export
+  blocker, without allocating the estimated expanded wire expressions.
 - `clearing_stop_spring.py`, `clearing_stop_motion.py`: the source stop pin
   follows the clearing-cover cam and compresses its eight-turn spring between
   measured seats. Seven contracts pass both kernels.

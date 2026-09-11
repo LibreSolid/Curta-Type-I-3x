@@ -16,11 +16,11 @@ def emit(path):
     points = compact(sorted(envelope.items()))
     lines = ['"""Native dial-detent envelope, with .05 mm vertical seating allowance.',
              '', 'Both source dial types; see tools/dial_detent.py and compile_dial_detent.py.',
-             '"""', '', 'from solid_node.math import piecewise', '', '', 'BALL_RISE = (']
+             '"""', '', 'from simulation.dial_cam import rise', '', '', 'BALL_RISE = (']
     lines.extend(f'    ({x:g}, {y:.6f}),' for x, y in points)
     lines.extend([')', '', '', 'def following(zero_angle):',
                   '    def law(source, target):',
-                  '        return lambda turn: piecewise((zero_angle - turn) % 36, BALL_RISE)',
+                  '        return lambda turn: rise(zero_angle - turn)',
                   '    return law'])
     target = Path(__file__).resolve().parents[1] / 'dial_detent_motion.py'
     print('*** Begin Patch')

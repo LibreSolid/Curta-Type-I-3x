@@ -1,7 +1,7 @@
 """Prescribed decimal-wheel motion within one clockwise crank revolution."""
 
 from math import degrees
-from solid_node.math import abs, clamp01, floor
+from solid_node.math import abs, clamp01, floor, max
 from simulation.arithmetic import digit, decimal_shift, modulo
 
 TOOTH_PITCH = 11.25
@@ -30,14 +30,14 @@ def cleared_position(position, clear, place, counter=False):
     start = (9.75 if outer else 10.5) + (datum - station) % 360
     pitch = degrees(3.75 / (52 if outer else 49.55))
     remaining = modulo(-position, 10)
-    denominator = remaining + 1 - clamp01(remaining)
+    denominator = max(1, remaining)
     angle = 360 * clamp01((clear - .1) / .8)
     return position + remaining * clamp01((angle - start) / (pitch * denominator))
 
 
 def tooth_passage(angle, count, end):
     """A tooth train advances at 72 / 11.25; a zero row remains stationary."""
-    denominator = count + 1 - clamp01(count)
+    denominator = max(1, count)
     return count * clamp01((angle - end + TOOTH_PITCH * count) /
                            (TOOTH_PITCH * denominator))
 

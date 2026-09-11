@@ -1,6 +1,6 @@
 """Reproducible decimal register state for a prescribed crank operation."""
 
-from solid_node.math import abs, clamp01, floor
+from solid_node.math import floor
 
 
 def modulo(value, modulus):
@@ -12,9 +12,10 @@ def digit(value, place):
 
 
 def decimal_shift(position):
-    # One of the six detents; this also serializes as a viewer expression.
-    return sum(10 ** place * (1 - clamp01(abs(position - place)))
-               for place in range(6))
+    # Same linear interpolation between the six detents, without six copied
+    # branches in every downstream digit expression. Working detents are exact.
+    lower = floor(position)
+    return 10 ** lower * (1 + 9 * (position - lower))
 
 
 def calculate(initial_result, initial_turns, operand, turns, subtract=0, shift=0, clear=0):
