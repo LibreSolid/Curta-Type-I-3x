@@ -6,9 +6,10 @@ organized into educational show/hide layers. The root has
 calculator controls, working input selectors, subtraction lift, keyed-shaft
 motion, lifting/shifting carriage, clearing plate and prescribed sub-turn dial
 rotations. Input, bevel, carry and clearing-tooth contact contracts now pass,
-as do the bell spring's full subtraction sweep and all seventeen register
-detents. **The clearing stop, whole-machine seat inventory and final
-demonstration verification remain open; this is not a
+as do the bell spring's full subtraction sweep, all seventeen register
+detents and the spring-loaded clearing stop. **Whole-machine cover/frame
+interfaces, the seat inventory and final demonstration verification remain
+open; this is not a
 delivered calculator simulation.** Follow the
 [implementation tasks](../openspec/changes/simulate-the-curta/tasks.md).
 
@@ -110,6 +111,9 @@ reproducible pose, not a claim that a physical crank can run backward.
 - `spider.py`, `register_detents.py`, `dial_detent_motion.py`: the source ring
   and tips with seventeen tapered flexible fingers, driven by the actual dial
   joints and measured ball-rise profile. Both complete-bank kernels pass.
+- `clearing_stop_spring.py`, `clearing_stop_motion.py`: the source stop pin
+  follows the clearing-cover cam and compresses its eight-turn spring between
+  measured seats. Seven contracts pass both kernels.
 - `positioning.py`: moving spring seat and port-driven carriage spring compression.
 - `zero.py`: retained zero cam, sliding drive pin, grouped roller/lever and moving
   spring terminal, with six passing contact/mount contracts on both kernels.

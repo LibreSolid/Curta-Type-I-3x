@@ -1112,6 +1112,71 @@ retained source ring/collar overlap, after the named carrier seating gap,
 is 504.871504376 mm³. This inventory is diagnostic until its remaining moving
 interfaces and source provenance are closed.
 
+## Clearing stop pin and compression spring
+
+Manual page 40 specifies a .6 × 5 × 20 mm spring under the clearing stop pin.
+The source pin is valid, one solid, volume 433.642112895 mm³, with local Z
+0–34.2 and a 6 mm diameter rounded head. Its placement puts the shoulder at
+world Z 44.4 and the top at 55.8. The sleeve's inner seat is world Z 27.0.
+The native spring has .6 mm wire, 2.55 mm centerline radius, eight turns and
+21 mm centerline height (21.6 mm outside height), volume 36.399728308 mm³.
+An X/Z section gives alternate ±2.55 mm crossings every 1.3125 mm vertically,
+proving the eight turns; the measured free height differs from the manual's
+nominal 20 mm and is recorded, not silently reconciled.
+
+The static source pin overlaps the operating cover by 47.909403919 mm³
+natively (45.859461118 mm³ faceted). Its spring overlaps the pin by
+6.359523492 mm³ and the sleeve by .111595849 mm³. All four initial motion,
+clearance and seating contracts fail; the static pin does not move relative
+to its sleeve during clearing. The manual page was rendered and inspected.
+
+`clearing_stop_spring.py` leaves the pin and sleeve geometry unchanged. Two
+vertical prismatic joints move the pin and the spring's upper mounting frame;
+one height relation shortens the spring while its lower endpoint stays fixed.
+The measured wire/radius/turn count are a Molejo helix. Named .05 mm seating
+gaps put the wire between Z 27.05 and `44.35 − press`, giving centerline
+height `16.7 − press`. Wire diameter, validity, endpoint tracking and seating
+have independent contracts. No force, stress or inextensibility is claimed.
+
+`tools/clearing_stop.py` first measured the cover every degree on faceted
+geometry. This gives 2.782208–7.900006 mm depression, with two short cam
+passages and long flat sections. The corresponding seven faceted contracts
+pass in 41.98 s, including a half-degree full sweep, one-sided drive, spring
+seats, both endpoint trajectories and native wire validity/diameter. The
+first native run passes spring seating but finds .000375132542 mm³ pin/cover
+overlap at one sampled angle; that faceted profile is not accepted as final.
+
+A native Boolean measurement then refuses an invalid near-contact sliver at
+14 degrees and trial depression 7.828125 mm. The probe now measures native
+shape distance to a real .05 mm minimum surface separation, without a volume
+epsilon or skipped intersection. The expensive full-distance run was stopped
+deliberately after 84 completed readings; those are reused while refining the
+remaining turning points selected from the earlier profile. The independent
+half-degree native collision sweep still covers the full rotation. The native
+profile is now compiled: zero depression 3.089172 mm, sampled minimum
+2.861206 mm and maximum 7.900085 mm. The installed centerline height therefore
+ranges approximately 8.800–13.839 mm. All seven contracts pass on the final
+profile: faceted 42.11 s, native 184.56 s. The original pin and sleeve remain
+unchanged; no contact was waived. See `clearing-stop-native-fit-*.log` in the
+ignored evidence directory and the reproducible probe/compiler.
+
+The compressed-pin OpenSCAD cutaway was inspected: it retains the native head
+and shaft and shows all eight windings. The sleeve is hidden only in this
+inspection view; the spring's clearance and capture against it are tested.
+
+## Whole-machine moving-seat triage — open
+
+`tools/moving_seats.py` separates fixed imported overlaps from interfaces whose
+relative placement changes across input settings, two crank turns, subtraction,
+lift/shift and clearing. It composes public node placements into world matrices;
+the .00001 placement-precision threshold classifies motion, never overlap volume.
+The intermediate post-stop rest inventory produced 67 moving pairs, including
+the now-resolved tiny pin/cover overlap. Most belong to repeated interface
+families: lower housing around input controls, frame around carry guides and
+the carriage, selector balls, dial covers, and a few retained ring/shaft seats.
+They are not accepted as static inventory merely because they already overlap
+at rest. Cover datum and guide checks are the next open contracts.
+
 ## Historical initial validation boundary
 
 - Initial frame-only root: faceted inventory contract failed `1 != 547`.

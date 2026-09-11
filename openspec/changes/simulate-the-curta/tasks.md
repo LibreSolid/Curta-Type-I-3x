@@ -106,8 +106,12 @@ hooks while measured ribbed arms bend through the subtraction stroke. Its
 source-fidelity, one-body, mounting and full-travel contracts pass; the whole
 bell and its two spring screws share one revolute joint. The restoring screw
 also clears the three formed clearing strips after a strictly bounded back
-relief that leaves every tooth face unchanged. Register balls and spider-spring
-deflection are the next moving interface exposed by the complete inventory.
-Full transmission/carry contact, whole-machine overlap inventory, remaining
-moving flexibles and demonstration sweeps still keep
+relief that leaves every tooth face unchanged. All seventeen register balls and
+tapered spider fingers now pass native source-fidelity, continuity, seating,
+carry/subtraction and progressive-clearing checks. The spring-loaded clearing
+stop also passes seven contracts in both kernels, including native cam contact
+through a half-degree sweep and both spring endpoints. A whole-machine relative-
+placement audit identifies the remaining cover/window, frame-guide and retained-
+seat interfaces; these are not silently treated as fixed source overlaps.
+Inter-system contact, the whole-machine overlap inventory and demonstration sweeps keep
 their tasks open. These results are checkpoints, not final delivery evidence.

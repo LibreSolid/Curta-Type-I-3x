@@ -5,9 +5,11 @@ rebase flexible snapshot STL paths. See the project's framework findings.
 """
 
 from solid_node.simulation import Driver
+from solid_node.node import AssemblyNode
 from simulation.carry_contact import CarryContactBench
 from simulation.bell_spring import BellLeafContactBench
 from simulation.mechanism import RegisterCarriage
+from simulation.clearing_stop_spring import ClearingPinCarrier
 
 
 class CarryPinDriving(CarryContactBench):
@@ -49,7 +51,8 @@ class RegisterDetentView(RegisterCarriage):
                        RegisterCarriage.turns_register.value,
                        RegisterCarriage.turns_register.subtract,
                        RegisterCarriage.turns_register.carriage_position,
-                       RegisterCarriage.turns_register.clear), law=stationary)
+                       RegisterCarriage.turns_register.clear,
+                       RegisterCarriage.clearing_ring.turn), law=stationary)
 
     def render(self):
         super().render()
@@ -60,3 +63,25 @@ class RegisterDetentView(RegisterCarriage):
 
 class RegisterDetentMoving(RegisterDetentView):
     crank_turns = Driver(default=(113.5 + 11.25/2)/360, range=(0, 1), unit='rev')
+
+
+class StopPinCutaway(ClearingPinCarrier):
+    def render(self):
+        super().render()
+        self.counter_body.omit()
+        self.clearing_stop_pin_sleeve.omit()
+        self.counter_body_pin_1.omit()
+        self.counter_body_pin_2.omit()
+        self.counter_body_stop_pin.omit()
+        for index in range(1, 18):
+            getattr(self, f'digits_axle_{index}').omit()
+
+
+class ClearingStopSeated(AssemblyNode):
+    press = Driver(default=3.089172, range=(0, 8), unit='mm')
+    carrier = StopPinCutaway()
+    press.drives(carrier.press)
+
+
+class ClearingStopDepressed(ClearingStopSeated):
+    press = Driver(default=7.900085, range=(0, 8), unit='mm')

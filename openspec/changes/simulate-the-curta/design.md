@@ -169,6 +169,14 @@ bank now also passes both kernels through all digit/shift combinations,
 carry and subtraction cascades, and progressive clearing; every ball is
 independently checked as captured by its own dial and spring tip.
 
+The clearing stop is now a source pin driven vertically by the cover's measured
+cam. Its documented eight-turn .6 mm wire spring compresses between the native
+sleeve seat and pin shoulder, with .05 mm seating gaps. Native distance
+measurement replaces an invalid near-contact Boolean measurement; independent
+full-sweep contact and spring tests pass both kernels. No pin or sleeve geometry
+is changed. The whole-machine audit still needs cover/window and frame-guide
+interfaces resolved before the source overlap inventory can be accepted.
+
 ## Findings for the framework
 
 - Exact printed groups can contain enclosed voids represented by disconnected

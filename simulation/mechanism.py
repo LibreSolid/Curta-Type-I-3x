@@ -22,6 +22,8 @@ from simulation.retaining_spring import RetainingSpring, SEAT_GAP as SPRING_SEAT
 from simulation.bell_spring_motion import positioning as spring_positioning
 from simulation.register_detents import RegisterDetents
 from simulation.dial_detent_motion import following
+from simulation.clearing_stop_spring import ClearingPinCarrier
+from simulation.clearing_stop_motion import following as clearing_stop_following
 import simulation.standard.layers as layers
 
 
@@ -112,6 +114,7 @@ class ClearingAssembly(layers.ClearingAssembly):
 
 class CarriageStructure(layers.CarriageStructure):
     crank_collar = CrankCollar()
+    upper_carriage_body_1 = ClearingPinCarrier()
 
     def render(self):
         super().render()
@@ -126,6 +129,7 @@ class RegisterCarriage(SourceRegisters):
     turns_register = TurnsRegister()
     dial_detents = RegisterDetents()
     clearing_ring = ClearingAssembly(turn=Revolute(axis=(0, 0, 1)))
+    clearing_ring.turn.drives(carrier.upper_carriage_body_1.press, law=clearing_stop_following)
 
     # Origins are the source-specific dial joints at their calibrated zero.
     result_register.p_10203_1.turn.drives(dial_detents.p_6mm_ball_419241_12.lift, law=following(-146))
