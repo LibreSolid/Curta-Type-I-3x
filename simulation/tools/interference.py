@@ -24,13 +24,13 @@ def rigid_leaves(node, path='Curta'):
             yield from rigid_leaves(child, path + '.' + child.name)
 
 
-def world_solids(root):
+def world_solids(root, include_flexible=False):
     """Apply the public rotation/translation operations in their actual order."""
     found = {}
 
     def visit(node, path, ancestors):
         operations = [*node.operations, *ancestors]
-        if node.rigid and node.exact:
+        if node.exact and (node.rigid or include_flexible and not node.children):
             shape = node.shape()
             for operation in operations:
                 if hasattr(operation, 'angle'):

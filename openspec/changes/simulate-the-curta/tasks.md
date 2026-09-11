@@ -79,7 +79,11 @@ drive pin's axial travel, seated roller contact and moving spring mounts. The
 anti-reversal pawl follows the measured ratchet, including its shorter closing
 interval; forward contact, reverse blocking, release clearance and moving spring
 mounts pass exact. Its collar/plate and spring-anchor fits are recorded explicitly.
-The integrated root keeps 547 leaves and twelve passing checks; the source housing
+The fifteen carry U-wires now follow the measured detents with fixed closed folds;
+twelve wire/travel/contact contracts pass both kernels. The manual's two clearing
+tooth strips and spacer were missing from the STEP but present as flat STLs. Their
+formed groove fit passes faceted. The integrated root now keeps all 547 original
+leaves plus these three prints, with twelve passing checks; the source housing
 overlap remains the one failing ordinary interference assertion.
 Full transmission/carry contact, whole-machine overlap inventory, remaining
 moving flexibles, clearing tooth engagement and demonstration sweeps still keep

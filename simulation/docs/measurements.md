@@ -599,6 +599,84 @@ its fixed tail, collar clearance and the pawl nose above the ratchet teeth.
 The restored root build publishes schema 4 with eight drivers, seven instructions
 and 370 motion bindings; all 126 referenced rigid model artifacts exist.
 
+## Carry springs and their detent seats
+
+Manual page 30 and the inspected first-lever close-up locate the closed U on
+the bearing's lower support. Its open legs straddle the slider's notched side
+edges. Their elastic movement is transverse spreading while the slider moves
+4.2 mm vertically, not translation of the spring with the slider. The original
+source wire is .6 mm diameter and approximately 55.09 mm long, consistent with
+trimming the manual's approximately 57 mm forming blank.
+
+The first source spring is not a clearance-verified installed shape. New exact
+contracts fail against its bearing (.205872 mm³ in the test) and against the
+slider at the upper pose (.833851 mm³). `tools/carry_spring.py` sweeps 21 positions
+and locates the native contact regions. Slider contact is in the two free hooks;
+bearing contact is mostly on one long leg, with smaller closed-end contacts.
+The probe selects the actual occurrence by its assembly translation, not merely
+the first repeated product name. All ten result stations share one relative
+spring/bearing frame; the five counter stations share a second, tilted .5° less.
+The source bend has a 10° closed-fold plane. A 3.4 mm half-span clears the bearing's
+6 mm waist. The free-hook center is moved .119583 mm relative to the closed fold
+to follow the slider's measured .075 mm bearing-frame offset.
+
+`tools/carry_profile.py` measures the two detent outlines at 101 stroke positions
+using .35 mm radius hook gauges for .30 mm radius wire. `detents.py` retains those
+piecewise spreading laws, with knot compression bounded to .0005 mm in the
+measured coordinate, not a collision-volume tolerance. The free hooks spread;
+the closed U remains seated. Its remaining .006304 mm³ native contact is removed
+by a .70 mm groove swept only around that fixed fold. The guide, slider outline
+and spring wire size are unchanged. `carry_seat.py` records the two source-frame
+placements, reproducible with `tools/carry_frames.py`.
+
+Twelve tests pass faceted (217.60 s) and exact (193.96 s): 41 slider positions in
+each bank, five spring/bearing poses, .01 mm free and .20 mm blocked hook checks,
+one valid .60 mm wire, <20,000 triangles per spring, and a stationary closed-fold
+centerline. The latter measures mesh-ring centers: individual circular-profile
+vertices rotate slightly as the transported frame follows the bending legs,
+which does not move the circular wire's centerline. The original point-identity
+test exposed this distinction; the positional bound remains .00001 mm.
+The formed wire is approximately 54.6–54.7 mm long. Its prescribed shape does not
+solve spring forces, strain or material-length conservation. All fifteen levers
+now use these fitted spring seats and motion relations. The whole-lever snapshot
+was inspected, including the fixed U, both free hooks and the guide.
+
+## Clearing strips omitted from the STEP
+
+Manual page 38 requires two tooth plates and a spacer. They are absent from the
+547-leaf STEP but supplied as three standard print occurrences in
+`STLs/37 - Clearing Cover/`: two copies of `clearing cap teeth x2.stl`
+(505.383213 mm³ each) and `clearing cap tooth segment spacer.stl` (729.675010 mm³).
+All are watertight single bodies. The plate is a flat 72 mm strip with nine teeth
+on one half, spaced 3.75 mm; the .9 mm thick plates face opposite ways in the
+manual's curved stack. The spacer is 70.5 × 6.9 × 1.5 mm. `tools/clearing_probe.py`
+retains the readings and flat-profile plot used to identify this assembly step.
+
+The cover's groove runs from radius 49.05 to 52.5 mm, with its floor at local
+Z 9 mm. `clearing.py` bends each source print about its own mid-thickness radius,
+preserving its neutral-axis length, and registers its midpoint to the cover's
+-Y screw/rivet pair. The radial layers are 49.10–50.00, 50.025–51.525 and
+51.55–52.45 mm: .05 mm wall allowance and .025 mm between layers. Their backs
+stand .05 mm above the floor. The two tooth rows face opposite halves; the
+source dial types have correspondingly offset reset features.
+
+Planar Manifold refinement to 1 mm precedes the bend, without smoothing or mesh
+repair. Each tooth strip has 40,522 triangles; the spacer has 3,176. The three
+formed/source volume ratios are .999955, .999936 and .999936, consistent with
+the refined cylindrical approximation. The cover's .5 rad source tessellation
+falsely encroached 99.421788 mm³ into the outer row; .01 mm / .1 rad tessellation
+clears the fitted strips without any change to the exact cover or test bound.
+The three groove/integrity tests pass faceted and with the exact runner (128.18 s;
+the STL interfaces deliberately remain faceted). The underside stack snapshot was
+inspected against the manual. The operating model now represents the original
+547 leaves plus these three upstream prints; the raw STEP placement contract
+still covers exactly 547. Clearing-to-dial contact and progressive timing remain
+open, not certified by the successful groove fit.
+The new contact bench fails all three initial checks: dials move by .295547 mm
+during lifting before the clearing cover rotates, the parked outer strip has a
+.005794 mm³ dial contact, and the full sweep also collides. These remain honest
+red contracts while the installed phases and clearing law are calibrated.
+
 ## Historical initial validation boundary
 
 - Initial frame-only root: faceted inventory contract failed `1 != 547`.

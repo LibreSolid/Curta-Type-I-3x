@@ -121,6 +121,16 @@ spring-anchor bore are explicit builder-style fits confined to simulation. The
 pawl's reverse-blocking contract recognizes tooth-pitch backlash and separately
 checks that release clears the tooth; it does not claim an ideal one-way clutch.
 
+The carry U-wires now spread against measured slider detents while their closed
+folds stay on their supports. The fixed bearing grooves gain .05 mm radial wire
+allowance without modifying the guide or slider. Twelve motion, seating and wire
+contracts pass both kernels. The missing clearing components are the manual's
+two tooth strips and spacer, supplied as flat standard STLs. They are formed
+into the measured cover groove and retained as three separately selectable
+leaves. The operating inventory is consequently 550, including every original
+STEP occurrence; the immutable source-placement inventory remains 547. Their
+groove fit is verified, while clearing-to-dial contact and timing remain open.
+
 ## Findings for the framework
 
 - Exact printed groups can contain enclosed voids represented by disconnected

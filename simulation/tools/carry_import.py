@@ -5,10 +5,13 @@ from simulation.tools.transmission_import import translation
 
 
 def emit():
-    lines = ['"""Carry sliders at their source bearing stations; the spring fit is separate."""', '',
+    lines = ['"""Carry sliders, with fitted U-wire seats at the source bearing stations."""', '',
              'from solid_node.motion.joints import Prismatic',
              'from solid_node.motion.ports import Port',
              'from simulation.standard.parts import TensSliderForResults, TensSliderForTurnsCounter',
+             'from simulation.carry_spring import MountedCarrySpring',
+             'from simulation.carry_seat import ResultsSpringSeat, TurnsSpringSeat',
+             'from simulation.detents import spreading',
              'import simulation.standard.assembly as source',
              'import simulation.standard.layers as layers', '', '']
     for bank, count, slider, cls, upper in [
@@ -20,8 +23,11 @@ def emit():
             z = translation(name, slider)[2]
             lines.extend([f'class {bank}Lever{index}(source.{name}):',
                           '    engage = Port()',
+                          '    carry_lever_spring = MountedCarrySpring()',
+                          f'    tens_slide_bearing = {bank}SpringSeat()',
                           f'    {slider} = {cls}(travel=Prismatic(axis=(0, 0, -1)))',
                           f'    engage.drives({slider}.travel, ratio=4.2, offset={round(z-upper, 9)})',
+                          f'    engage.drives(carry_lever_spring.spread, law=spreading(counter={bank == "Turns"}))',
                           '', ''])
         lines.append(f'class {bank}Carry(layers.{"ResultCarry" if bank == "Results" else "TurnsCarry"}):')
         for index in range(1, count+1):

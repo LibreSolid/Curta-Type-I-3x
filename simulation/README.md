@@ -1,7 +1,8 @@
 # Curta simulation — implementation in progress
 
-The complete standard STEP assembly now builds in solid-node: 547 placed leaf
-occurrences, now organized into educational show/hide layers. The root has
+The complete standard STEP assembly now builds in solid-node: all 547 leaf
+occurrences, plus the manual's three clearing-strip prints omitted from the STEP,
+organized into educational show/hide layers. The root has
 calculator controls, working input selectors, subtraction lift, keyed-shaft
 motion, lifting/shifting carriage, clearing plate and prescribed sub-turn dial rotations. **Full transmission/carry
 engagement and demonstrations are still being
@@ -94,6 +95,10 @@ reproducible pose, not a claim that a physical crank can run backward.
 - `demo.py`: stepped demonstrations and replay checks shared with the page examples.
 - `engagement.py`: complete printed-drum contact sweeps, passing both kernels.
 - `carry.py`, `standard/carry.py`: fifteen sliding carry levers and stationary bearings.
+- `carry_spring.py`, `detents.py`, `carry_seat.py`: spreading U-wires, measured
+  detent profiles and explicit mounting-groove fits; twelve tests pass both kernels.
+- `clearing.py`: the manual's two opposed tooth strips and spacer, formed from
+  the author's flat STLs into the measured cover groove; dial contact remains open.
 - `positioning.py`: moving spring seat and port-driven carriage spring compression.
 - `zero.py`: retained zero cam, sliding drive pin, grouped roller/lever and moving
   spring terminal, with six passing contact/mount contracts on both kernels.

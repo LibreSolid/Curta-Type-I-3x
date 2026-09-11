@@ -105,7 +105,11 @@ class CurtaTest(TestCase):
         self.node.set_state(operand=0, crank_turns=0)
 
     def test_source_inventory(self):
-        self.assertEqual(len(list(leaves(self.node))), 547)
+        from simulation.clearing import ClearingTeeth, ClearingSpacer
+        parts = list(leaves(self.node))
+        supplement = [part for part in parts if isinstance(part, (ClearingTeeth, ClearingSpacer))]
+        self.assertEqual(len(supplement), 3)  # Manual page 38: absent from STEP, present as STLs.
+        self.assertEqual(len(parts) - len(supplement), 547)
 
     def test_solid_integrity(self):
         def check(node):

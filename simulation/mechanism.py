@@ -13,7 +13,7 @@ from simulation.registers import ResultRegister, TurnsRegister
 from simulation.fit import CARRIAGE_CENTER, CARRIAGE_CLOCKING
 from simulation.prints import PrintedDrum
 from simulation.standard.printed import TensBell1
-from simulation.standard.parts import ClearingCover
+from simulation.clearing import ClearingGrooveCover, ClearingTeethStack
 from simulation.standard.carry import ResultsCarry, TurnsCarry
 from simulation.positioning import CarriagePositioning
 from simulation.pawl import AntiReversal, PawlBearingPlate
@@ -75,13 +75,16 @@ class CarriageCovers(layers.CarriageCovers):
 
 class ClearingAssembly(layers.ClearingAssembly):
     """The toothed clearing plate and its handle turn together, not the housing."""
-    clearing_cover = ClearingCover()
+    clearing_cover = ClearingGrooveCover()
+    tooth_stack = ClearingTeethStack()
     decimal_markers = layers.UpperDecimalMarkers()
 
     def render(self):
         super().render()
         self.clearing_cover.rotate(180, (0.797150916, -0.603780106, 0))
         self.clearing_cover.translate((0, 0, 57.1))
+        self.tooth_stack.rotate(180, (0.797150916, -0.603780106, 0))
+        self.tooth_stack.translate((0, 0, 57.1))
 
 
 class CarriageStructure(layers.CarriageStructure):
