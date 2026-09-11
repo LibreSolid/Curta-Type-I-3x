@@ -95,6 +95,10 @@ reproducible pose, not a claim that a physical crank can run backward.
 - `engagement.py`: complete printed-drum contact sweeps, passing both kernels.
 - `carry.py`, `standard/carry.py`: fifteen sliding carry levers and stationary bearings.
 - `positioning.py`: moving spring seat and port-driven carriage spring compression.
+- `zero.py`: retained zero cam, sliding drive pin, grouped roller/lever and moving
+  spring terminal, with six passing contact/mount contracts on both kernels.
+- `pawl.py`, `pawl_spring.py`: measured anti-reversal ratchet following, reverse
+  blocking and a seven-turn spring fitted between the plate and moving pawl.
 - `bearing.py`: bevel-tip/frame bearing clearance after the axial fit.
 - `prints.py`, `standard/printed.py`: printed bodies from exact STEP ingredients.
 - `fit.py`: explicit, documented assembly and tooth-outline fit corrections.

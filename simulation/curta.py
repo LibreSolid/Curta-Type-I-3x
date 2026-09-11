@@ -4,7 +4,7 @@ from solid_node.simulation import Driver, Instruction
 from solid_node.motion.ports import Port
 from simulation.arithmetic import calculate
 from simulation.assemblies import LayeredSource
-from simulation.mechanism import Inputs, MainDrive, Carriage, CarryMechanism
+from simulation.mechanism import Inputs, MainDrive, Carriage, CarryMechanism, Frame
 from simulation.transmission import Transmission
 
 
@@ -17,7 +17,7 @@ def operation(sources, targets):
 
 
 class Curta(LayeredSource):
-    """Source geometry, one documented spring correction, and prescribed motion."""
+    """Source geometry, documented assembly fits, and prescribed calculator motion."""
 
     operand = Driver(default=0, range=(0, 99999999), dtype=int)
     crank_turns = Driver(default=0, range=(0, 12), unit='rev')
@@ -43,6 +43,7 @@ class Curta(LayeredSource):
     }
 
     input_selectors = Inputs()
+    frame = Frame()
     main_drive = MainDrive()
     carriage = Carriage()
     carry_mechanism = CarryMechanism()

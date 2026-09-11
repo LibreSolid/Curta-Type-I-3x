@@ -517,8 +517,87 @@ The source was project-owned tessellation, not a library change: Molejo's
 before changing it. Four samples per span produce 128 rings per coil and
 31,920 triangles, with the same exact centerline and 1.1 mm wire. Native validity,
 cap area and the mesh-volume ratio (>98% of native, consistent with the
-24-sided profile) pass on both kernels. The lighter export and complete browser regression are
-being repeated. This does not claim a measured hardware-GPU frame rate.
+24-sided profile) pass on both kernels. The lighter export's complete browser
+regression now passes: all six examples, retained calculations, lifted/between-
+detent guards and recursive layer controls. The resulting calculator screenshot
+was inspected. This does not claim a measured hardware-GPU frame rate.
+
+## Zero cam, roller and moving spring
+
+`zero.py` groups the lever, roller and their fastening hardware into one follower.
+The disc's retaining clip keeps its axial position fixed; the crank drives its
+rotation. The transverse drive pin rotates with it and slides 9 mm in its two
+axial slots when the crank is raised for subtraction. Manual pages 15–17 and the
+source slots establish this distinction; raising the entire disc would be wrong.
+
+The original static assembly failed the crank/roller tests: 48.778205 mm disc
+vertex drift and no follower displacement. `tools/zero_profile.py` measures the
+native cam against a 10.4 mm radius cylindrical gauge: the source roller's
+10.35 mm radius plus .05 mm seating clearance. The 33.6 mm arm swings about
+(40.5, 33.6), reaching 7.523028° on the circular 34.5 mm cam flank. Two short
+measured profiles describe departure from and return to the detent, with a flat
+dwell between them. The public `piecewise` law drives the follower's revolute
+joint; no assumed sinusoidal cam or collision solver runs in the viewer.
+
+The replacement spring's coil and fixed terminal stay in place. Four shape ports
+move the lower terminal and shoulder with the lever, keeping the tip in the
+original 2.7 mm bore. Its five turns, installed diameter and 1.1 mm wire are
+unchanged. This is prescribed deformation, not elastic-force or strain analysis.
+
+Six contracts pass faceted (54.26 s) and exact (99.90 s): disc rotation without
+axial lift; complete pin travel through its slots; follower departure/return;
+full cam clearance including quarter-degree interpolation samples near both
+edges; seated contact; and valid connected spring deformation with both terminal
+centers within .001 mm and no lever/sleeve/bearing-plate overlap. Native closest
+points measure .0499993–.0500199 mm clearance at six flank positions. The .01 mm
+free / .20 mm blocked perturbations use that contact normal in the roller frame,
+not an arbitrary radial direction at the steep detent flank.
+
+The initial .5 rad mesh angular deflection obscured this small curved contact,
+even though the exact seating was correct. Only the cam and roller now use .01 mm
+linear / .1 rad angular deflection; native shapes and all contact bounds remain
+unchanged. The below-plate snapshot was inspected: roller in the detent, drive
+pin in the retained slotted hub, and spring around the lever pivot.
+
+## Anti-reversal pawl and its spring mounts
+
+The source's stationary pawl intersects the ratchet by .243318 mm³. Its ratchet
+roots use 116 intervals of 357/116 degrees and one 3° closing interval, not a
+perfectly uniform 117-tooth circle. `tools/pawl_profile.py` measures the constant-
+section interface at world Z -145.8 mm with a .05 mm inflated pawl gauge.
+The resulting repeating ramp and the shorter closing interval drive a single
+pawl joint. Both the full-turn sweep and ramp-motion tests pass faceted; exact
+sweeps also pass, including fine samples around selected release phases.
+
+The mounting test failed at the source collar: it extends .15 mm into the
+bearing plate, sharing 11.558238 mm³. Trimming .20 mm from its local Z -5.4 mm
+face leaves .05 mm axial play without changing its working tooth or bore.
+The source spring also enters the plate without an anchor hole (1.637549 mm³
+overlap). The explicit simulation fit drills a .70 mm bore at the source tail's
+world axis (-54.476590334, 16.420391800), retaining the manual's .60 mm wire and
+.05 mm radial clearance. The other tail is fitted to the actual pawl bore at
+(-44.100577738, 13.347627455), rather than the offset source wire endpoint.
+Manual pages 17–18 specify seven CCW turns on an approximately 9.5 mm winding
+mandrel. Its installed bore must clear the 12.5 mm collar; the analytic
+spring therefore uses 12.6 mm installed bore and a separately routed upper leg.
+The coil is held between world Z -138.8 and -143.35 mm: .65 mm pitch leaves
+.05 mm between .60 mm wires, and the envelope clears both the bearing plate and
+pawl body. Its moving tail follows the measured pawl bore while the anchor and
+coil stay fixed. This prescribes elastic shape, not preload, impact or force.
+
+All six tests, including wire size and the <50,000-triangle budget, pass exact
+(140.85 s) and faceted (54.08 s). Reverse blocking is
+checked with the pawl engaged, acknowledging tooth-pitch backlash rather than
+claiming an ideal zero-play clutch. The release check sweeps the raised pawl
+clear of the tooth instead of assuming a discontinuous pose is sufficient.
+The main crank drives both cam mechanisms; the root still represents 547 leaves
+and passes all twelve other integrity/operation tests. Its one open ordinary
+interference assertion still reports the documented 224.327505 mm³ housing
+overlap. No upstream part, thread specification or source file has been changed.
+Rest and close side snapshots were inspected; the side view exposes the spring,
+its fixed tail, collar clearance and the pawl nose above the ratchet teeth.
+The restored root build publishes schema 4 with eight drivers, seven instructions
+and 370 motion bindings; all 126 referenced rigid model artifacts exist.
 
 ## Historical initial validation boundary
 

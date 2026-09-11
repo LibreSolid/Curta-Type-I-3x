@@ -5,6 +5,7 @@ from math import atan2, cos, sin, tau
 from molejo import Circle, Shape, Spline, Helix, P
 from solid_node.node import MolejoNode, AssemblyNode
 from solid_node.motion.ports import Port
+from solid_node.math import turn
 
 ZERO_PIVOT = (40.5, 33.6)
 FIXED_PIN = (33.552746609, 28.154097304, -133.45)
@@ -18,7 +19,7 @@ COIL_HEIGHT = 6.0
 TURNS = 5
 
 
-def zero_spring_path():
+def zero_spring_path(tail=None):
     """Five CCW windings, fitted terminal bends, coordinates from the fixed pin.
 
     The winding mandrel is not the installed bore: the latter clears the source
@@ -47,8 +48,8 @@ def zero_spring_path():
                          (*FIXED_PIN[:2], -140.5), coil[0]]),
                start_tangent=(0, 0, -1), end_tangent=tangent),
         Spline(relative(coil[1:]), start_tangent=tangent, end_tangent=tangent),
-        Spline(relative([(cx - 3, cy - 8.7, -151.5),
-                         (*LEVER_PIN[:2], -153.0), LEVER_PIN]),
+        Spline(tail if tail is not None else relative([
+                   (cx - 3, cy - 8.7, -151.5), (*LEVER_PIN[:2], -153.0), LEVER_PIN]),
                start_tangent=tangent, end_tangent=(0, 0, -1)),
     ]
 
@@ -64,6 +65,37 @@ class ZeroSpring(MolejoNode):
                      # Sampling is per spline span, not per complete spring:
                      # 32 control points/turn × 4 samples = 128 rings/turn.
                      path_samples=4, profile_samples=24)
+
+
+class MovingZeroSpring(MolejoNode):
+    """The coil stays on its collar while its terminal follows the lever hole."""
+    shoulder_x = Port(unit='mm')
+    shoulder_y = Port(unit='mm')
+    terminal_x = Port(unit='mm')
+    terminal_y = Port(unit='mm')
+    color = '#aeb7c2'
+
+    def render(self):
+        tail = [(P.shoulder_x, P.shoulder_y, -151.5 - FIXED_PIN[2]),
+                (P.terminal_x, P.terminal_y, -153 - FIXED_PIN[2]),
+                (P.terminal_x, P.terminal_y, LEVER_PIN[2] - FIXED_PIN[2])]
+        return Shape(profile=Circle(WIRE / 2), path=zero_spring_path(tail),
+                     path_samples=4, profile_samples=24)
+
+
+def lever_coordinate(point, coordinate):
+    def law(source, target):
+        return lambda angle: turn(point, angle, about=ZERO_PIVOT)[coordinate] - FIXED_PIN[coordinate]
+    return law
+
+
+class MountedZeroSpring(AssemblyNode):
+    deflection = Port(unit='deg')
+    wire = MovingZeroSpring()
+    deflection.drives(wire.shoulder_x, law=lever_coordinate((37.5, 24.9), 0))
+    deflection.drives(wire.shoulder_y, law=lever_coordinate((37.5, 24.9), 1))
+    deflection.drives(wire.terminal_x, law=lever_coordinate(LEVER_PIN[:2], 0))
+    deflection.drives(wire.terminal_y, law=lever_coordinate(LEVER_PIN[:2], 1))
 
 
 class CarriageSpring(MolejoNode):

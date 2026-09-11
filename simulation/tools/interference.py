@@ -101,8 +101,7 @@ if __name__ == '__main__':
     parser.add_argument('--exact', action='store_true')
     args = parser.parse_args()
     root = Curta()
-    root.set_state(time=0, operand=0, crank_turns=0, initial_result=0,
-                   initial_turns=0, subtract=0, carriage_position=0, clear=0)
+    root.set_state(time=0, **root.instructions['Rest'].targets)
     root.assemble()
     root.build_stls()
     print(json.dumps(inventory(root, exact=args.exact), indent=2))

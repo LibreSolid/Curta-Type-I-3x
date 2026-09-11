@@ -72,7 +72,15 @@ pass. The first carry pairs pass complete bell contact sweeps and both ±12°
 locking / active-tooth engagement limits in both kernels after centered profiles
 and measured passage timing. A spring tessellation-budget
 test exposed 7,968,048 triangles; four samples per spline span preserve geometry
-while making the viewer mesh manageable. The updated browser run is pending.
+while making the viewer mesh manageable. The updated browser run passed every
+example, retained-operation checks, lift/shift guards and layer controls.
+The zero-cam/follower has six passing contracts in both kernels, including the
+drive pin's axial travel, seated roller contact and moving spring mounts. The
+anti-reversal pawl follows the measured ratchet, including its shorter closing
+interval; forward contact, reverse blocking, release clearance and moving spring
+mounts pass exact. Its collar/plate and spring-anchor fits are recorded explicitly.
+The integrated root keeps 547 leaves and twelve passing checks; the source housing
+overlap remains the one failing ordinary interference assertion.
 Full transmission/carry contact, whole-machine overlap inventory, remaining
 moving flexibles, clearing tooth engagement and demonstration sweeps still keep
 their tasks open. These results are checkpoints, not final delivery evidence.

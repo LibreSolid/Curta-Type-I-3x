@@ -3,10 +3,10 @@
 from solid_node.motion.joints import Revolute, Prismatic
 from solid_node.motion.ports import Port
 from solid_node.math import clamp01, abs
-from simulation.assemblies import Inputs as SourceInputs, MainDrive as SourceDrive
+from simulation.assemblies import Inputs as SourceInputs, MainDrive as SourceDrive, Frame as SourceFrame
 from simulation.assemblies import RegisterCarriage as SourceRegisters, Carriage as SourceCarriage
 from simulation.assemblies import CarryMechanism as SourceCarry
-from simulation.flexibles import FIXED_PIN, ZeroSpring
+from simulation.zero import ZeroPositioning
 from simulation.selectors import Selectors
 from simulation.print_parts import DigitsCover, UpperHousing, CrankCollar
 from simulation.registers import ResultRegister, TurnsRegister
@@ -16,6 +16,7 @@ from simulation.standard.printed import TensBell1
 from simulation.standard.parts import ClearingCover
 from simulation.standard.carry import ResultsCarry, TurnsCarry
 from simulation.positioning import CarriagePositioning
+from simulation.pawl import AntiReversal, PawlBearingPlate
 import simulation.standard.layers as layers
 
 
@@ -23,15 +24,8 @@ class Inputs(SourceInputs):
     selectors = Selectors()
 
 
-class ZeroPositioning(layers.ZeroPositioning):
-    """The documented fitted spring replaces source product #419219 only."""
-
-    documented_spring = ZeroSpring()
-
-    def render(self):
-        super().render()
-        self.zero_positioning_spring.omit()
-        self.documented_spring.translate(FIXED_PIN)
+class Frame(SourceFrame):
+    lower_bearing_plate = PawlBearingPlate()
 
 
 class SteppedDrum(layers.DrumAssembly):
@@ -46,12 +40,16 @@ class MainDrive(SourceDrive):
     stepped_drum = SteppedDrum(turn=Revolute(axis=(0, 0, 1)),
                                lift=Prismatic(axis=(0, 0, 1)))
     zero_positioning = ZeroPositioning()
+    anti_reversal = AntiReversal()
 
     turn.drives(crank.turn)
     crank.turn.drives(stepped_drum.turn)
     # One and a half 6 mm selector pitches puts the complementary rows in mesh.
     subtract.drives(crank.lift, ratio=9)
     crank.lift.drives(stepped_drum.lift)
+    turn.drives(zero_positioning.turn)
+    subtract.drives(zero_positioning.subtract)
+    turn.drives(anti_reversal.turn)
 
 
 class TensBellAssembly(layers.TensBellAssembly):

@@ -4,7 +4,8 @@ import cadquery as cq
 from solid_node.parameters import Length
 from simulation.standard.parts import (TransmissionGear0_5, TransmissionGear0_6, TransmissionGearTip,
     Part1_8mmSpacer, Part1_5mmSpacer, Part1_6mmSpacer, Part1mmSpacer,
-    Part4_7mmOnesSleeve, Part2_5mmLockoutSleeve, Part5_8Sleeve, PentagonalLockout)
+    Part4_7mmOnesSleeve, Part2_5mmLockoutSleeve, Part5_8Sleeve, PentagonalLockout,
+    BearingPlate, ReverseRotationPreventionPawl)
 
 CARRIAGE_CENTER = (0.537721035, -0.038177283, 0)
 CARRIAGE_CLOCKING = 0.549916905
@@ -12,6 +13,32 @@ PINION_SEATING_DROP = 1.2
 TENS_SHAFT_X_CORRECTION = -0.079764273
 INPUT_CLOCKING = 4
 BEVEL_DIAL_CLOCKING = -3
+PAWL_PIVOT = (-51.702407033, 9.116529328, 0)
+PAWL_SPRING_ANCHOR = (-54.476590334, 16.420391800, -132.6)
+PAWL_SPRING_HOLE = (-44.100577738, 13.347627455, -145.2)
+
+
+class FittedBearingPlate(BearingPlate):
+    """Drill the missing .70 mm bore where the source spring tail enters.
+
+    The .60 mm wire then has the named .05 mm radial seat allowance. The
+    source tail penetrates 1.637549 mm³ of unbored plate. No other bore moves.
+    """
+
+    def adjust(self, shape):
+        x, y, _ = PAWL_SPRING_ANCHOR
+        bore = cq.Solid.makeCylinder(.35, 6.1, cq.Vector(x, -y, 14.05))
+        return shape.cut(bore)
+
+
+class FittedPawl(ReverseRotationPreventionPawl):
+    """Trim .20 mm off the collar's top face, leaving .05 mm below the plate."""
+
+    def adjust(self, shape):
+        box = shape.BoundingBox()
+        retained = cq.Solid.makeBox(box.xlen + 2, box.ylen + 2, box.zlen,
+                                   cq.Vector(box.xmin - 1, box.ymin - 1, -5.2))
+        return shape.intersect(retained)
 
 
 class FittedBevelTip(TransmissionGearTip):

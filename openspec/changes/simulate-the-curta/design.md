@@ -107,9 +107,19 @@ trim keeps that axial fit above the frame bearing plane.
 Fifteen carry sliders, the tens bell, carriage and clearing plate now move.
 The first carry channels pass full-bell sweeps and bidirectional engagement in
 both kernels after tooth-profile fitting and measured phase corrections, without
-relaxed assertions. Remaining flexible parts, cam/pawl details, clearing-tooth contact,
+relaxed assertions. Remaining carry-lever contacts and flexible parts, clearing-tooth contact,
 complete source overlap inventory and full demonstration interference remain
 open. Checkpoints and detailed measurements are in simulation/docs/measurements.md.
+
+The zero-positioning cam now rotates at its retained height while its transverse
+pin slides through the axial slots for subtraction. A measured cam profile drives
+the grouped roller/lever and the documented spring's moving terminal. Six contact,
+travel and spring contracts pass both kernels. The pawl's repeating ratchet ramp
+includes the source's shorter closing tooth interval; its contact sweep passes,
+and its spring and mounting fits now pass exact. The collar trim and missing
+spring-anchor bore are explicit builder-style fits confined to simulation. The
+pawl's reverse-blocking contract recognizes tooth-pitch backlash and separately
+checks that release clears the tooth; it does not claim an ideal one-way clutch.
 
 ## Findings for the framework
 
