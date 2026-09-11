@@ -1,5 +1,6 @@
 """Prescribed decimal-wheel motion within one clockwise crank revolution."""
 
+from math import degrees
 from solid_node.math import abs, clamp01, floor
 from simulation.arithmetic import digit, decimal_shift, modulo
 
@@ -10,6 +11,28 @@ TURNS_INPUT_END = 176.0
 # Channel one is 20° after the bank datum; half a tooth passage follows center.
 RESULT_CARRY_END = 137.625
 TURNS_CARRY_END = 189.625
+
+
+def cleared_position(position, clear, place, counter=False):
+    """The two nine-tooth racks reset each dial only when they reach it.
+
+    Pitch is the source strip's 3.75 mm spacing at its neutral radius. The
+    measured first engagement fixes the phase; lifting and lowering do not
+    turn the rack. The missing-tooth gap leaves a zero dial undisturbed.
+    """
+    # Shaft banks call this with a literal zero: clearing lifts the dials off
+    # their bevel tips, so the shafts have no clearing expression to publish.
+    if isinstance(clear, (int, float)) and clear == 0:
+        return position
+    outer = place < 2
+    station = (130 if counter else 0) - 20 * place
+    datum = 0 if outer else -40
+    start = (9.75 if outer else 10.5) + (datum - station) % 360
+    pitch = degrees(3.75 / (52 if outer else 49.55))
+    remaining = modulo(-position, 10)
+    denominator = remaining + 1 - clamp01(remaining)
+    angle = 360 * clamp01((clear - .1) / .8)
+    return position + remaining * clamp01((angle - start) / (pitch * denominator))
 
 
 def tooth_passage(angle, count, end):
@@ -55,5 +78,5 @@ def dial_positions(value, operand, crank_turns, subtract, shift, clear, places, 
         direct = tooth_passage(angle, increments[place], input_end + 20 * channel)
         carry = tooth_passage(angle, transfer[place], carry_end + 20 * channel)
         position = digit(value, place) + direct + carry
-        result.append(position + modulo(-position, 10) * clear)
+        result.append(cleared_position(position, clear, place, counter))
     return tuple(result)

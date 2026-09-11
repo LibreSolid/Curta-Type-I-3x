@@ -2,7 +2,7 @@
 
 import numpy as np
 from solid_node.test import TestCase
-from simulation.clearing import ClearingBench
+from simulation.clearing import ClearingBench, GROOVE_FLOOR, SEAT_GAP
 from simulation.contracts import assert_connected_material
 
 
@@ -19,7 +19,8 @@ class ClearingBenchTest(TestCase):
             radius = np.linalg.norm(part.mesh.vertices[:, :2], axis=1)
             self.assertGreater(radius.min(), 49.05)
             self.assertLess(radius.max(), 52.5)
-            self.assertGreater(part.mesh.bounds[0, 2], 9)
+            self.assertGreater(part.mesh.bounds[0, 2], GROOVE_FLOOR)
+            self.assertAlmostEqual(part.mesh.bounds[0, 2], GROOVE_FLOOR + SEAT_GAP, places=5)
             self.assertNotIntersecting(part, self.node.cover)
 
     def test_layers_do_not_interpenetrate(self):

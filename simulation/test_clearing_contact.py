@@ -1,6 +1,7 @@
 """Clearing must follow the two physical tooth rows, not a global zeroing tween."""
 
 import numpy as np
+from math import degrees
 from solid_node.test import TestCase
 from simulation.clearing_contact import ClearingContactBench
 from simulation.standard.parts import ResultsDialType1, ResultsDialType2
@@ -36,3 +37,28 @@ class ClearingContactTest(TestCase):
                 for dial in self.dials():
                     for strip in self.node.clearing.tooth_stack.children:
                         self.assertNotIntersecting(strip, dial)
+
+    def row_interfaces(self):
+        return (
+            (self.node.clearing.tooth_stack.outer_teeth,
+             self.node.results.p_10203_1.results_dial_type_1, 9.75, degrees(3.75/52)),
+            (self.node.clearing.tooth_stack.inner_teeth,
+             self.node.results.p_10205_1.results_dial_type_2, 10.5, degrees(3.75/49.55)),
+        )
+
+    def test_each_row_clears_at_eighth_tooth_intervals(self):
+        for _, dial, start, pitch in self.row_interfaces():
+            for digit in range(1, 10):
+                # Include one tooth before and after the entire active passage.
+                for eighth in range(-8, (11 - digit)*8 + 1):
+                    angle = start + pitch * eighth/8
+                    self.node.set_state(digit=digit, clear=.1 + .8*angle/360)
+                    for strip in self.node.clearing.tooth_stack.children:
+                        self.assertNotIntersecting(strip, dial)
+
+    def test_both_rows_transmit_motion_with_bounded_backlash(self):
+        for row, dial, start, pitch in self.row_interfaces():
+            angle = start + 4.5*pitch
+            self.node.set_state(digit=1, clear=.1 + .8*angle/360)
+            self.assertFreeWithin(dial, .1, against=row)
+            self.assertBlockedBeyond(dial, 12, against=row)

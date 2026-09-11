@@ -33,3 +33,20 @@ class DecimalCycleTest(unittest.TestCase):
     def test_cycle_starts_at_the_current_settled_register(self):
         for turns in (0, 1, 2):
             self.assertEqual(dial_positions(123, 9, turns, 0, 0, 0, 11)[:3], (3, 2, 1))
+
+    def test_clearing_reaches_each_dial_in_station_order(self):
+        # At 15° the opposed rows have reached result ones and hundreds,
+        # but neither next station nor the counter bank. Lifting comes first.
+        clear = .1 + .8 * 15 / 360
+        result = dial_positions(99999999999, 0, 0, 0, 0, clear, 11)
+        turns = dial_positions(999999, 0, 0, 0, 0, clear, 6, True)
+        self.assertEqual(result, (10, 9, 10) + (9,) * 8)
+        self.assertEqual(turns, (9,) * 6)
+
+    def test_clearing_finishes_before_lowering_and_leaves_zero_alone(self):
+        for places, counter in ((11, False), (6, True)):
+            for digit_value in range(10):
+                value = digit_value * ((10 ** places - 1) // 9)
+                for clear in (.9, .95, 1):
+                    wheels = dial_positions(value, 0, 0, 0, 0, clear, places, counter)
+                    self.assertEqual(wheels, ((10 if digit_value else 0),) * places)

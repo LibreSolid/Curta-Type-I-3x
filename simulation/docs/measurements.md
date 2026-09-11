@@ -677,6 +677,106 @@ during lifting before the clearing cover rotates, the parked outer strip has a
 .005794 mm³ dial contact, and the full sweep also collides. These remain honest
 red contracts while the installed phases and clearing law are calibrated.
 
+### Absolute zero and clearing engagement — calibration in progress
+
+The bevel tests establish phase only modulo 36°, not the absolute digit index.
+The clearing gear supplies that missing datum: its eight remaining tooth tips
+are centered at local -72, -36, 0, 36, 72, 108, 144 and 180 degrees; the two
+missing positions leave a gap centered at -126°. `tools/dial_zero.py` measures
+that direction in the operating assembly. All seventeen gaps were 142° from
+up at the previous logical zero. Adding four whole dial pitches puts the gap
+2° from up, preserving the already-fitted bevel phase modulo one tooth.
+`registers.CLEARING_ZERO_INDEX` records this correction. The installed bevel-bank
+tests still pass faceted (82.51 s), as do the three register-motion tests
+(60.78 s). This closes an absolute-index blind spot in the earlier evidence;
+those tests alone never proved mechanical zero.
+
+At the initial strip height, the parked rack also fouled a dial. Its 3 mm tooth
+depth places the nominal rack pitch line only 5.45 mm above the dial axis,
+against the dial gear's 6 mm pitch radius (7.2 mm tips, ten 36° positions).
+The current trial deepens only the cover's annular groove floor .6 mm, from
+local Z 9 to 8.4 mm; each strip back retains its .05 mm seat gap. This raises
+the installed rack pitch line to 6.05 mm above the dial axis without moving
+the cover, its fasteners or radial groove walls. The three groove/integrity
+checks pass again with the exact runner (114.22 s; STL interfaces stay faceted).
+
+An independent forward-contact probe still found double-flank jamming: a
+one-to-zero trace had to jump five digits to find another clear pose. A .1 mm
+outside-profile relief of the clearing gear removes that jump in the diagnostic
+trace. `dial_fits.py` applies it only in the source clearing-gear bands:
+local Z 18.45–20.40 for type 1 and 21.00–23.70 for type 2. The axle bore, dial
+body and bevel gear remain untouched. This is a measured working fit, not a
+manufacturing recommendation or a completed contact proof.
+
+The initial fitted contact bench passed the lift-hold and every-digit parked
+clearance checks. Its full sweep remains red (one reported inner-row contact
+is .000828 mm³). `tools/clearing_fit.py` is testing constant-pitch laws from the
+3.75 mm source rack pitch and each installed strip's neutral radius; the
+forward-contact tool is diagnostic evidence, not a license to animate jumps.
+The contact-following trace is not used as an animation law.
+
+The remaining zero-position contacts lay between world Z 38.450000 and
+38.472954 mm: the rack tip clipped the shoulder beside the missing-tooth gap.
+Deepening the groove a further .075 mm (total .675, local floor 8.325) places
+that tip at Z 38.525, leaving .052046 mm above the measured shoulder. No tooth
+is shortened and the source strip profiles remain unchanged. Both complete
+rows now pass a zero dial without any positive overlap through 0–80° at .25°
+intervals (`clearing-zero-identified-seat.jsonl`). Four native checks pass
+(271.39 s): both dial types remain one valid solid, material is only removed,
+and all removal stays in the named clearing-gear band outside the axle bore.
+
+A build-artifact discrepancy was caught during this calibration: direct
+`ClearingTeeth.adjust()` gave minimum local Z 8.375, while the built STL still
+gave 8.450 despite carrying the changed module timestamp. The cause is not
+established; other project watchers were active. The groove floor is now a
+public `Length` parameter on the cover and all three strips, so geometry
+variants have distinct artifact identities. The groove contract also checks
+the actual back height, not merely that it lies above the floor. The earlier
+`clearing-zero-seated.jsonl` and `clearing-linear-fit-seated.jsonl` readings
+describe stale 8.4-floor geometry and are not evidence for the final seat.
+
+The constant-pitch survey finds a clear outer-row start at 9.75° for every
+nonzero digit, and a clear inner-row start at 10.5° for the longest (one-to-zero)
+passage. Their pitches are 4.131907° and 4.336209°, from 3.75 mm at neutral
+radii 52 and 49.55 mm. `cycle.cleared_position()` uses those two measured
+phases plus each dial's station offset. It holds the dials during lifting,
+advances them sequentially as the appropriate row arrives, and stops at the
+missing-tooth gap before lowering. The new station-order unit contract first
+failed the global tween. Full installed sweep validation passes: five tests
+faceted (132.79 s) and with the exact runner (119.08 s; STL contacts remain
+faceted). Coverage includes all ten digits on all seventeen dials over 121
+clearing positions, finer eighth-tooth sampling on both row types, and .1° free /
+12° blocked perturbations in both directions at engagement. The exact bevel-bank
+regression also passes (82.47 s). The fitted stack snapshot was inspected.
+Reversing the clearing angle in node code fails three geometry tests; one
+full-sweep contact is .821898 mm³. The correct law is restored, with its
+post-mutation regression passing all five checks (103.41 s, faceted).
+
+Verification now uses the same workspace venv with `SOLID_BUILD_DIR=_build_checks`.
+This isolates ignored artifacts and the build lock from the live preview watcher;
+the published preview continues to use `_build`. The earlier queued carry and
+fine-clearing runs were interrupted deliberately, not counted as test evidence.
+
+## Carry trigger, fork and reset shoe — open contact checks
+
+`carry_contact.py` combines the first source lever in each bank with the actual
+keyed shaft, dial/pin and printed bell, driven by the same operation law as the
+root. The initial dial-pin and bell contracts fail: 3.966415 mm³ at the result
+half-pin with digit nine, and 8.123323 mm³ at the reset shoe. The first fork test
+also exposed a test-authoring error: an assembly has no rigid STL; it now checks
+each printed solid in the shaft stack. That error is not mechanical red evidence.
+
+`tools/carry_contact.py` preserves a complete 1° survey, with contacts also present
+when no carry occurs. `tools/carry_sections.py` independently confirms at rest
+9.693762 mm³ native fork/shaft contact and 8.696464 mm³ native shoe/bell contact.
+The former occupies the fork's axial band; the latter has an 8.277196 mm³ region
+near world (31.060370, -8.875742, -25.05), plus a .419269 mm³ edge region near
+(34.668711, -6.786791, -23.775). Native side sections were inspected. These fixed
+contacts need fitting separately from the late trip timing: the current law
+keeps the lever up while a dial pin is already contacting it. Manual page 37's
+half-pin orientation and protrusion guidance was re-read and visually inspected.
+No carry-trigger or reset-contact proof is claimed yet.
+
 ## Historical initial validation boundary
 
 - Initial frame-only root: faceted inventory contract failed `1 != 547`.

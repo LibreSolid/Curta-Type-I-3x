@@ -85,6 +85,16 @@ tooth strips and spacer were missing from the STEP but present as flat STLs. The
 formed groove fit passes faceted. The integrated root now keeps all 547 original
 leaves plus these three prints, with twelve passing checks; the source housing
 overlap remains the one failing ordinary interference assertion.
+The clearing gear's missing-tooth gap fixes the absolute zero, previously
+undetermined by bevel phase alone. Four whole dial pitches correct all seventeen
+dials without changing bevel engagement; that bank's exact regression passes.
+After the documented groove-depth and clearing-flank fits, both racks reset the
+dials sequentially. Five clearing contracts pass both runners, including every
+digit/station, eighth-tooth passages and paired free/blocked engagement checks.
+Reversing the clearing law fails three geometry contracts; it is restored.
+The new first-carry contact bench exposes dial-pin and reset-bell collisions;
+native probes confirm fixed fork/sleeve and reset-shoe contacts. Their fit and
+timing remain open, not certified by the earlier pinion/bell tests.
 Full transmission/carry contact, whole-machine overlap inventory, remaining
-moving flexibles, clearing tooth engagement and demonstration sweeps still keep
+moving flexibles and demonstration sweeps still keep
 their tasks open. These results are checkpoints, not final delivery evidence.
