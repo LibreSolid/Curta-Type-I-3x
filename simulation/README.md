@@ -150,6 +150,12 @@ generated source mapping, not just refreshing that copy.
 
 ## Current findings
 
+The educational palette recalls a metal Curta: aluminum-silver structure and
+drum, bronze gearing, brass guides and clearing teeth, steel springs/hardware,
+black housing and controls, and ivory number rolls. `colors.py` is the single
+palette; colors stay with parts when layers are hidden or isolated. This is a
+display convention, not a material specification for the printable design.
+
 The lighter spring tessellation retains the same spline and wire dimensions:
 Molejo samples per spline span, so four samples per span provide 128 rings per
 coil. The previous 1,000-per-span setting created almost eight million triangles

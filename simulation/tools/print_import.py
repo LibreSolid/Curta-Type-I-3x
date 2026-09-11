@@ -14,6 +14,7 @@ def emit():
              '', 'Placements are transcribed from the untouched source map. Gear fitting is',
              'explicit in fit.py; nothing is copied from the problematic grouped print STLs.',
              '"""', '', 'from solid_node.node import FusionNode',
+             'from simulation.colors import ALUMINUM, BRONZE',
              'from simulation.standard.parts import *',
              'from simulation.fit import (FittedInputPinion, FittedCounterPinion, FittedInputSpacer, FittedOnesSpacer,',
              '    FittedSlidingSpacer, FittedCounterSpacer, FittedOnesSleeve,',
@@ -21,7 +22,8 @@ def emit():
     for name in CLASSES:
         if name not in fixed and not name.startswith(prefixes):
             continue
-        lines.extend([f'class {name}(FusionNode):', "    color = '#d3d5cb'",
+        color = 'ALUMINUM' if name.startswith('MainAxleStepDrum') else 'BRONZE'
+        lines.extend([f'class {name}(FusionNode):', f'    color = {color}',
                       '    angular_deflection = 0.5'])
         for child, declaration in members(name).items():
             cls = declaration.value.func.id

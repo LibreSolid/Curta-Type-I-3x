@@ -1177,6 +1177,29 @@ the carriage, selector balls, dial covers, and a few retained ring/shaft seats.
 They are not accepted as static inventory merely because they already overlap
 at rest. Cover datum and guide checks are the next open contracts.
 
+## Material-inspired display palette — geometry unchanged
+
+The pilot requested aluminum, bronze and black contrast. `colors.py` supplies
+six display colors: aluminum structure/drum, bronze transmission/carry gearing,
+brass guides/clearing teeth, steel springs/shafts/hardware, black housing/grips,
+and ivory number rolls. These are illustrative, not fabrication materials.
+STEP subclasses, physical fused prints, source-STL replacements and flexible
+leaves all declare colors; no solid, placement or motion law changes for color.
+
+The two palette contracts fail on the previous colors (19.42 s), then pass
+faceted (43.02 s) and on the exact runner (6.51 s). Both the assembled and
+uncovered OpenSCAD snapshots were inspected at 1400 × 1100. The uncovered
+view hides the same enclosure, frame, covers and carrier layers as the page's
+See inside control; nothing is removed from the operating machine.
+
+The fresh interactive export is not yet validated. Two exports were killed by
+the OS for memory exhaustion: PIDs 2754982 and 2760833, resident anonymous
+memory approximately 10.3 and 9.4 GB respectively (kernel journal). The older
+manifest remained in place. A new browser preflight rejects that stale palette
+explicitly; passing calculations against that old document are not current
+validation. Investigation of repeated motion-expression expansion is ongoing;
+the colors are verified in snapshots but the exported browser update is open.
+
 ## Historical initial validation boundary
 
 - Initial frame-only root: faceted inventory contract failed `1 != 547`.
@@ -1190,6 +1213,7 @@ at rest. Cover datum and guide checks are the next open contracts.
   validity). This does not certify the assembly.
 - Complete assembly and standalone spring snapshots were visually inspected.
 
-The model keeps the source's neutral gray colors. Motion, material presentation,
-rigid printed-group reconciliation, overlap inventory and arithmetic remain open
-in `openspec/changes/simulate-the-curta/tasks.md`. The simulation is not delivered.
+At that historical checkpoint the model kept the source's neutral gray colors;
+motion, material presentation, printed groups, overlap inventory and arithmetic
+were open. Later evidence above supersedes those initial results. The complete
+simulation remains active in `openspec/changes/simulate-the-curta/tasks.md`.

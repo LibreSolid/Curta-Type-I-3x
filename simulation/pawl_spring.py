@@ -1,5 +1,6 @@
 """Seven documented CCW windings, fitted between the plate and moving pawl."""
 
+from simulation.colors import STEEL
 from math import atan2, cos, sin, hypot, tau
 from molejo import Circle, Shape, Spline, P
 from solid_node.node import AssemblyNode, MolejoNode
@@ -56,7 +57,7 @@ class PawlSpring(MolejoNode):
     shoulder_y = Port(unit='mm')
     terminal_x = Port(unit='mm')
     terminal_y = Port(unit='mm')
-    color = '#aeb7c2'
+    color = STEEL
 
     def render(self):
         return Shape(profile=Circle(.3), path=path(), path_samples=4, profile_samples=24)

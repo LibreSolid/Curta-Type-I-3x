@@ -1,5 +1,6 @@
 """Flexible parts fitted from the build manual and source mounting geometry."""
 
+from simulation.colors import STEEL
 from math import atan2, cos, sin, tau
 
 from molejo import Circle, Shape, Spline, Helix, P
@@ -57,7 +58,7 @@ def zero_spring_path(tail=None):
 class ZeroSpring(MolejoNode):
     """Authorized replacement for invalid STEP PRODUCT #419219; 1.1 mm wire."""
 
-    color = '#aeb7c2'
+    color = STEEL
 
     def render(self):
         return Shape(profile=Circle(WIRE / 2),
@@ -73,7 +74,7 @@ class MovingZeroSpring(MolejoNode):
     shoulder_y = Port(unit='mm')
     terminal_x = Port(unit='mm')
     terminal_y = Port(unit='mm')
-    color = '#aeb7c2'
+    color = STEEL
 
     def render(self):
         tail = [(P.shoulder_x, P.shoulder_y, -151.5 - FIXED_PIN[2]),
@@ -106,7 +107,7 @@ class CarriageSpring(MolejoNode):
     or wire strain. The upper wire endpoint stays fixed throughout the lift.
     """
     height = Port(unit='mm')
-    color = '#aeb7c2'
+    color = STEEL
 
     def render(self):
         return Shape(profile=Circle(.9),

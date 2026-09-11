@@ -6,10 +6,33 @@ rebase flexible snapshot STL paths. See the project's framework findings.
 
 from solid_node.simulation import Driver
 from solid_node.node import AssemblyNode
+from solid_node.motion.joints import Revolute, Prismatic
 from simulation.carry_contact import CarryContactBench
 from simulation.bell_spring import BellLeafContactBench
-from simulation.mechanism import RegisterCarriage
+from simulation.mechanism import RegisterCarriage, Carriage
 from simulation.clearing_stop_spring import ClearingPinCarrier
+from simulation.curta import Curta
+
+
+class UncoveredRegisters(RegisterCarriage):
+    def render(self):
+        super().render()
+        self.covers.omit()
+        self.carrier.omit()
+
+
+class UncoveredCarriage(Carriage):
+    registers = UncoveredRegisters(turn=Revolute(axis=(0, 0, 1)),
+                                   lift=Prismatic(axis=(0, 0, 1)))
+
+
+class InsideCurta(Curta):
+    """The running mechanism with the same layers hidden as 'See inside'."""
+    carriage = UncoveredCarriage()
+
+    def render(self):
+        self.enclosure.omit()
+        self.frame.omit()
 
 
 class CarryPinDriving(CarryContactBench):

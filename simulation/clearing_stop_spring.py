@@ -5,6 +5,7 @@ turns at R 2.55, with 21 mm free centerline height. The sleeve and pin shoulder
 set the installed length; this is a contact-driven shape, not a force model.
 """
 
+from simulation.colors import STEEL
 from molejo import Circle, Shape, Helix, P
 from solid_node.node import AssemblyNode, MolejoNode
 from solid_node.motion.ports import Port
@@ -21,7 +22,7 @@ HEIGHT = 44.4 - 27 - 2*(WIRE_RADIUS + SEAT_GAP)
 
 class ClearingSpringWire(MolejoNode):
     height = Port(unit='mm')
-    color = '#aeb7c2'
+    color = STEEL
 
     def render(self):
         return Shape(profile=Circle(WIRE_RADIUS),

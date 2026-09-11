@@ -5,6 +5,7 @@ arm's changing thickness; its upper cone is bounded by a thin inner polygonal
 approximation. Bending is prescribed, not a force or strain solution.
 """
 
+from simulation.colors import STEEL
 from math import hypot
 import cadquery as cq
 from molejo import Shape, Polygon, Line, P
@@ -38,7 +39,7 @@ def beyond(x, phase=0):
 
 
 class OneFingerMount(SpiderSpring):
-    color = '#d3d5cb'
+    color = STEEL
 
     def adjust(self, shape):
         return shape.cut(beyond(ROOT))
@@ -46,7 +47,7 @@ class OneFingerMount(SpiderSpring):
 
 class SpiderMount(SpiderSpring):
     """Unchanged source ring; its nominal collar overlap is inventoried."""
-    color = '#d3d5cb'
+    color = STEEL
 
     def adjust(self, shape):
         return shape.cut(*(beyond(ROOT, phase) for phase in PHASES))
@@ -54,7 +55,7 @@ class SpiderMount(SpiderSpring):
 
 class FingerTip(SpiderSpring):
     phase = Angle(0)
-    color = '#d3d5cb'
+    color = STEEL
 
     def adjust(self, shape):
         return shape.intersect(beyond(TIP, self.phase))
@@ -73,7 +74,7 @@ class TaperedArm(MolejoNode):
     top_4 = Port(unit='mm')
     top_5 = Port(unit='mm')
     top_6 = Port(unit='mm')
-    color = '#d3d5cb'
+    color = STEEL
 
     def render(self):
         bottom = (BOTTOM, BOTTOM, P.bottom_1, P.bottom_2, P.bottom_3,

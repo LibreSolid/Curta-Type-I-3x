@@ -5,6 +5,7 @@ keeps the holes, rounded roots and tapered hooks. Arm bending is prescribed;
 this is not a stress, spring-force or inextensibility calculation.
 """
 
+from simulation.colors import STEEL
 from math import radians, sin, cos, pi
 import cadquery as cq
 from molejo import Shape, Polygon, Line, Spline, P
@@ -67,7 +68,7 @@ class SpringArm(MolejoNode):
     x4 = Port(unit='mm')
     z4 = Port(unit='mm')
     end_z = Port(unit='mm')
-    color = '#d3d5cb'
+    color = STEEL
 
     def render(self):
         points = [(P.x1, 0, P.z1), (P.x2, 0, P.z2),

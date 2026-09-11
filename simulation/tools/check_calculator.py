@@ -10,11 +10,23 @@ from pathlib import Path
 from threading import Thread
 import json
 from playwright.sync_api import sync_playwright
+from simulation.colors import ALUMINUM, BRONZE, BRASS, BLACK, STEEL, IVORY
+
+
+def exported_colors(node):
+    if node.get('color'):
+        yield node['color']
+    for child in node.get('children', []):
+        yield from exported_colors(child)
 
 
 def check():
     root = Path(__file__).resolve().parents[2]
     assert (root / '_build_export/manifest.json').is_file(), 'Export the model first.'
+    manifest = json.loads((root / '_build_export/manifest.json').read_text())
+    assert set(exported_colors(manifest['root'])) == {
+        ALUMINUM, BRONZE, BRASS, BLACK, STEEL, IVORY
+    }, 'Export does not contain the current material-inspired palette; rebuild it.'
     handler = partial(SimpleHTTPRequestHandler, directory=str(root))
     server = ThreadingHTTPServer(('127.0.0.1', 0), handler)
     thread = Thread(target=server.serve_forever, daemon=True)

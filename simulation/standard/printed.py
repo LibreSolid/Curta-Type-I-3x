@@ -5,6 +5,7 @@ explicit in fit.py; nothing is copied from the problematic grouped print STLs.
 """
 
 from solid_node.node import FusionNode
+from simulation.colors import ALUMINUM, BRONZE
 from simulation.standard.parts import *
 from simulation.fit import (FittedInputPinion, FittedCounterPinion, FittedInputSpacer, FittedOnesSpacer,
     FittedSlidingSpacer, FittedCounterSpacer, FittedOnesSleeve,
@@ -12,7 +13,7 @@ from simulation.fit import (FittedInputPinion, FittedCounterPinion, FittedInputS
 
 
 class Part10230_410008_1_419032(FusionNode):
-    color = '#d3d5cb'
+    color = BRONZE
     angular_deflection = 0.5
     transmission_gear_0_5 = FittedInputPinion()
     p_1_6mm_spacer = FittedSlidingSpacer()
@@ -25,7 +26,7 @@ class Part10230_410008_1_419032(FusionNode):
 
 
 class Part10220_410003_1_419039(FusionNode):
-    color = '#d3d5cb'
+    color = BRONZE
     angular_deflection = 0.5
     pentagonal_lockout = FittedCarryLockout()
     transmission_gear_0_6 = FittedCarryPinion()
@@ -42,7 +43,7 @@ class Part10220_410003_1_419039(FusionNode):
 
 
 class Part10220_410003_1_419064(FusionNode):
-    color = '#d3d5cb'
+    color = BRONZE
     angular_deflection = 0.5
     pentagonal_lockout = FittedCarryLockout()
     p_1_3mm_spacer = Part1_3mmSpacer()
@@ -59,7 +60,7 @@ class Part10220_410003_1_419064(FusionNode):
 
 
 class Part10230_410008_1_419066(FusionNode):
-    color = '#d3d5cb'
+    color = BRONZE
     angular_deflection = 0.5
     p_1_6mm_spacer = FittedSlidingSpacer()
     transmission_gear_0_5 = FittedInputPinion()
@@ -72,7 +73,7 @@ class Part10230_410008_1_419066(FusionNode):
 
 
 class Part10230_410008_1_419068(FusionNode):
-    color = '#d3d5cb'
+    color = BRONZE
     angular_deflection = 0.5
     transmission_gear_0_5 = FittedCounterPinion()
     p_1_6mm_spacer = FittedSlidingSpacer()
@@ -85,7 +86,7 @@ class Part10230_410008_1_419068(FusionNode):
 
 
 class Part10220_410003_1_419070(FusionNode):
-    color = '#d3d5cb'
+    color = BRONZE
     angular_deflection = 0.5
     p_1_3mm_spacer = Part1_3mmSpacer()
     pentagonal_lockout = FittedCarryLockout()
@@ -102,7 +103,7 @@ class Part10220_410003_1_419070(FusionNode):
 
 
 class Part10220_410003_1_419074(FusionNode):
-    color = '#d3d5cb'
+    color = BRONZE
     angular_deflection = 0.5
     p_1_9mm_spacer = Part1_9mmSpacer()
     p_4_8mm_tens_ratchet_sleeve = Part4_8mmTensRatchetSleeve()
@@ -119,7 +120,7 @@ class Part10220_410003_1_419074(FusionNode):
 
 
 class Part10230_410008_1_419075(FusionNode):
-    color = '#d3d5cb'
+    color = BRONZE
     angular_deflection = 0.5
     p_2_5mm_lockout_sleeve = FittedInputSleeve()
     transmission_gear_0_5 = FittedInputPinion()
@@ -132,7 +133,7 @@ class Part10230_410008_1_419075(FusionNode):
 
 
 class Part10230_410008_1_419080(FusionNode):
-    color = '#d3d5cb'
+    color = BRONZE
     angular_deflection = 0.5
     p_2_5mm_lockout_sleeve = FittedInputSleeve()
     transmission_gear_0_5 = FittedCounterPinion()
@@ -145,7 +146,7 @@ class Part10230_410008_1_419080(FusionNode):
 
 
 class Part10220_410003_1_419081(FusionNode):
-    color = '#d3d5cb'
+    color = BRONZE
     angular_deflection = 0.5
     p_4_8mm_tens_ratchet_sleeve = Part4_8mmTensRatchetSleeve()
     p_1_9mm_spacer = Part1_9mmSpacer()
@@ -162,7 +163,7 @@ class Part10220_410003_1_419081(FusionNode):
 
 
 class Part10220_410003_1_419086(FusionNode):
-    color = '#d3d5cb'
+    color = BRONZE
     angular_deflection = 0.5
     p_1_9mm_spacer = Part1_9mmSpacer()
     p_4_8mm_tens_ratchet_sleeve = Part4_8mmTensRatchetSleeve()
@@ -179,7 +180,7 @@ class Part10220_410003_1_419086(FusionNode):
 
 
 class Part10230_410008_1_419088(FusionNode):
-    color = '#d3d5cb'
+    color = BRONZE
     angular_deflection = 0.5
     p_2_5mm_lockout_sleeve = FittedInputSleeve()
     p_1_6mm_spacer = FittedSlidingSpacer()
@@ -192,7 +193,7 @@ class Part10230_410008_1_419088(FusionNode):
 
 
 class Part10230_410008_1_419092(FusionNode):
-    color = '#d3d5cb'
+    color = BRONZE
     angular_deflection = 0.5
     transmission_gear_0_5 = FittedInputPinion()
     p_2_5mm_lockout_sleeve = FittedInputSleeve()
@@ -205,7 +206,7 @@ class Part10230_410008_1_419092(FusionNode):
 
 
 class Part10220_410003_1_419093(FusionNode):
-    color = '#d3d5cb'
+    color = BRONZE
     angular_deflection = 0.5
     p_1_9mm_spacer = Part1_9mmSpacer()
     p_1_3mm_spacer = Part1_3mmSpacer()
@@ -222,7 +223,7 @@ class Part10220_410003_1_419093(FusionNode):
 
 
 class Part10230_410008_1_419105(FusionNode):
-    color = '#d3d5cb'
+    color = BRONZE
     angular_deflection = 0.5
     transmission_gear_0_5 = FittedCounterPinion()
     p_1_6mm_spacer = FittedSlidingSpacer()
@@ -235,7 +236,7 @@ class Part10230_410008_1_419105(FusionNode):
 
 
 class Part10220_410003_1_419107(FusionNode):
-    color = '#d3d5cb'
+    color = BRONZE
     angular_deflection = 0.5
     transmission_gear_0_6 = FittedCarryPinion()
     p_1_3mm_spacer = Part1_3mmSpacer()
@@ -252,7 +253,7 @@ class Part10220_410003_1_419107(FusionNode):
 
 
 class Part10230_410008_1_419111(FusionNode):
-    color = '#d3d5cb'
+    color = BRONZE
     angular_deflection = 0.5
     transmission_gear_0_5 = FittedInputPinion()
     p_1_6mm_spacer = FittedSlidingSpacer()
@@ -265,7 +266,7 @@ class Part10230_410008_1_419111(FusionNode):
 
 
 class Part10220_410003_1_419114(FusionNode):
-    color = '#d3d5cb'
+    color = BRONZE
     angular_deflection = 0.5
     p_4_8mm_tens_ratchet_sleeve = Part4_8mmTensRatchetSleeve()
     p_1_9mm_spacer = Part1_9mmSpacer()
@@ -282,7 +283,7 @@ class Part10220_410003_1_419114(FusionNode):
 
 
 class Part10220_410003_1_419117(FusionNode):
-    color = '#d3d5cb'
+    color = BRONZE
     angular_deflection = 0.5
     p_4_8mm_tens_ratchet_sleeve = Part4_8mmTensRatchetSleeve()
     p_1_9mm_spacer = Part1_9mmSpacer()
@@ -299,7 +300,7 @@ class Part10220_410003_1_419117(FusionNode):
 
 
 class Part10230_410008_1_419118(FusionNode):
-    color = '#d3d5cb'
+    color = BRONZE
     angular_deflection = 0.5
     transmission_gear_0_5 = FittedInputPinion()
     p_2_5mm_lockout_sleeve = FittedInputSleeve()
@@ -312,7 +313,7 @@ class Part10230_410008_1_419118(FusionNode):
 
 
 class Part10222_1(FusionNode):
-    color = '#d3d5cb'
+    color = BRONZE
     angular_deflection = 0.5
     p_2_5mm_sleeve = Part2_5mmSleeve()
     pentagonal_lockout = FittedCarryLockout()
@@ -325,7 +326,7 @@ class Part10222_1(FusionNode):
 
 
 class Part10218_1(FusionNode):
-    color = '#d3d5cb'
+    color = BRONZE
     angular_deflection = 0.5
     p_5_8_sleeve = FittedCounterSleeve()
     transmission_gear_0_5_1 = FittedCounterPinion()
@@ -346,7 +347,7 @@ class Part10218_1(FusionNode):
 
 
 class Part10219_410002_1(FusionNode):
-    color = '#d3d5cb'
+    color = BRONZE
     angular_deflection = 0.5
     p_1_8mm_spacer = FittedInputSpacer()
     p_4_7mm_ones_sleeve = FittedOnesSleeve()
@@ -363,7 +364,7 @@ class Part10219_410002_1(FusionNode):
 
 
 class Part10221_1(FusionNode):
-    color = '#d3d5cb'
+    color = BRONZE
     angular_deflection = 0.5
     p_2_5mm_lockout_sleeve = Part2_5mmLockoutSleeve()
     pentagonal_lockout = FittedCarryLockout()
@@ -376,7 +377,7 @@ class Part10221_1(FusionNode):
 
 
 class Part10230_410008_1_419137(FusionNode):
-    color = '#d3d5cb'
+    color = BRONZE
     angular_deflection = 0.5
     transmission_gear_0_5 = FittedInputPinion()
     p_1_6mm_spacer = FittedSlidingSpacer()
@@ -389,7 +390,7 @@ class Part10230_410008_1_419137(FusionNode):
 
 
 class Part10220_410003_1_419139(FusionNode):
-    color = '#d3d5cb'
+    color = BRONZE
     angular_deflection = 0.5
     p_4_8mm_tens_ratchet_sleeve = Part4_8mmTensRatchetSleeve()
     p_1_9mm_spacer = Part1_9mmSpacer()
@@ -406,7 +407,7 @@ class Part10220_410003_1_419139(FusionNode):
 
 
 class TensBell1(FusionNode):
-    color = '#d3d5cb'
+    color = BRONZE
     angular_deflection = 0.5
     results_locking_disc = ResultsLockingDisc()
     tens_turns_counter_locking_disc = TensTurnsCounterLockingDisc()
@@ -440,7 +441,7 @@ class TensBell1(FusionNode):
 
 
 class Part10220_410003_1_419181(FusionNode):
-    color = '#d3d5cb'
+    color = BRONZE
     angular_deflection = 0.5
     transmission_gear_0_6 = FittedCarryPinion()
     p_1_3mm_spacer = Part1_3mmSpacer()
@@ -457,7 +458,7 @@ class Part10220_410003_1_419181(FusionNode):
 
 
 class Part10230_410008_1_419182(FusionNode):
-    color = '#d3d5cb'
+    color = BRONZE
     angular_deflection = 0.5
     p_2_5mm_lockout_sleeve = FittedInputSleeve()
     transmission_gear_0_5 = FittedCounterPinion()
@@ -470,7 +471,7 @@ class Part10230_410008_1_419182(FusionNode):
 
 
 class MainAxleStepDrumTop1(FusionNode):
-    color = '#d3d5cb'
+    color = ALUMINUM
     angular_deflection = 0.5
     one_tooth_turns_step_drum_segment_1 = OneToothTurnsStepDrumSegment()
     one_tooth_turns_step_drum_segment_2 = OneToothTurnsStepDrumSegment()
@@ -501,7 +502,7 @@ class MainAxleStepDrumTop1(FusionNode):
 
 
 class MainAxleStepDrumBottom1(FusionNode):
-    color = '#d3d5cb'
+    color = ALUMINUM
     angular_deflection = 0.5
     eight_tooth_step_drum_segment_1 = EightToothStepDrumSegment()
     two_tooth_step_drum_segment_1 = TwoToothStepDrumSegment()
@@ -628,7 +629,7 @@ class MainAxleStepDrumBottom1(FusionNode):
 
 
 class Part10220_410003_1_419227(FusionNode):
-    color = '#d3d5cb'
+    color = BRONZE
     angular_deflection = 0.5
     transmission_gear_0_6 = FittedCarryPinion()
     pentagonal_lockout = FittedCarryLockout()
@@ -645,7 +646,7 @@ class Part10220_410003_1_419227(FusionNode):
 
 
 class Part10230_410008_1_419229(FusionNode):
-    color = '#d3d5cb'
+    color = BRONZE
     angular_deflection = 0.5
     p_1_6mm_spacer = FittedSlidingSpacer()
     transmission_gear_0_5 = FittedInputPinion()
@@ -658,7 +659,7 @@ class Part10230_410008_1_419229(FusionNode):
 
 
 class Part10230_410008_1_419232(FusionNode):
-    color = '#d3d5cb'
+    color = BRONZE
     angular_deflection = 0.5
     p_2_5mm_lockout_sleeve = FittedInputSleeve()
     transmission_gear_0_5 = FittedInputPinion()
@@ -671,7 +672,7 @@ class Part10230_410008_1_419232(FusionNode):
 
 
 class Part10220_410003_1_419234(FusionNode):
-    color = '#d3d5cb'
+    color = BRONZE
     angular_deflection = 0.5
     p_4_8mm_tens_ratchet_sleeve = Part4_8mmTensRatchetSleeve()
     transmission_gear_0_6 = FittedCarryPinion()
@@ -688,7 +689,7 @@ class Part10220_410003_1_419234(FusionNode):
 
 
 class Part10230_410008_1_419237(FusionNode):
-    color = '#d3d5cb'
+    color = BRONZE
     angular_deflection = 0.5
     p_1_6mm_spacer = FittedSlidingSpacer()
     transmission_gear_0_5 = FittedCounterPinion()
@@ -701,7 +702,7 @@ class Part10230_410008_1_419237(FusionNode):
 
 
 class Part10220_410003_1_419238(FusionNode):
-    color = '#d3d5cb'
+    color = BRONZE
     angular_deflection = 0.5
     p_1_9mm_spacer = Part1_9mmSpacer()
     pentagonal_lockout = FittedCarryLockout()

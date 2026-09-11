@@ -1,5 +1,6 @@
 """A U-wire held at its closed end, with the two free hooks spreading apart."""
 
+from simulation.colors import STEEL
 from math import pi, sin, cos, radians
 from molejo import Shape, Circle, Line, Arc, Spline, P
 from solid_node.node import AssemblyNode, MolejoNode
@@ -26,7 +27,7 @@ class CarrySpring(MolejoNode):
     right_bridge = Port(unit='mm')
     right_mid = Port(unit='mm')
     right_tip = Port(unit='mm')
-    color = '#aeb7c2'
+    color = STEEL
 
     def render(self):
         return Shape(profile=Circle(.3), path=[

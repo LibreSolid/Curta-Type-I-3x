@@ -78,6 +78,14 @@ friction, spring-force prediction, or fabrication certification.
     replace the page-local starting registers, then run named mechanical moves.
     The ordinary controls retain completed calculations. Seven small instructions
     expose rest, setting one, one crank turn, lift, shift, reseat and clearing.
+11. **Material-inspired colors teach the layers.** The pilot requested aluminum,
+    bronze and black contrast while physical verification continues. The display
+    palette uses silver structure/drum, bronze transmission/carry gearing, brass
+    guides/clearing teeth, steel shafts/springs/hardware, black housing/controls
+    and ivory number rolls. These are illustrative display choices, not a claim
+    about the printed project's construction materials or a metal Curta's bill
+    of materials. Colors are declared on material leaves and fused prints, so
+    recursive navigation and exports retain them without altering geometry.
 
 ## Findings
 

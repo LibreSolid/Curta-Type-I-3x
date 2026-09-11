@@ -1,5 +1,6 @@
 """The manual's two clearing-tooth strips and spacer, absent from the STEP."""
 
+from simulation.colors import BRASS, STEEL
 import numpy as np
 import trimesh
 import manifold3d as manifold
@@ -79,7 +80,7 @@ class RetainingScrewFit:
 
 class ClearingTeeth(RetainingScrewFit, StlNode):
     stl_source = str(PRINTS / '37 - Clearing Cover/clearing cap teeth x2.stl')
-    color = '#cad1d8'
+    color = BRASS
     groove_floor = Length(GROOVE_FLOOR)
 
     def form(self, mesh):
@@ -93,7 +94,7 @@ class OuterClearingTeeth(ClearingTeeth):
 
 class ClearingSpacer(RetainingScrewFit, StlNode):
     stl_source = str(PRINTS / '37 - Clearing Cover/clearing cap tooth segment spacer.stl')
-    color = '#8996a4'
+    color = STEEL
     groove_floor = Length(GROOVE_FLOOR)
 
     def form(self, mesh):
