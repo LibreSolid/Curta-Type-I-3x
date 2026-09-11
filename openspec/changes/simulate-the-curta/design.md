@@ -131,6 +131,8 @@ leaves. The operating inventory is consequently 550 physical occurrences,
 including every original STEP occurrence; the immutable source-placement
 inventory remains 547. Reconstructing the bell spring with five proven-connected
 patches gives 554 material leaves without changing that occurrence count.
+The later seventeen-finger spider reconstruction brings this to 588 material
+leaves, still representing the same 550 physical occurrences.
 The groove, retaining-screw relief and progressive clearing-to-dial contact
 and timing are now verified.
 
@@ -144,6 +146,28 @@ faceted carry/parked-pin checks at all six carriage positions. The measured cam
 resets some levers in the next crank revolution, so carry motion retains the
 previous cycle's latch until that station's cam arrives. See the reproducible
 profiles and validation in `simulation/docs/measurements.md`.
+
+### Register detents
+
+The source spider is unloaded: each of its seventeen fingers intersects its
+6 mm ball by about 11.937 mm³, and each ball intersects its dial by about
+.001647 mm³ natively. The operating layer now drives the balls from the actual
+dial joints through one measured periodic rise profile, then drives each
+finger from its ball. The source ring and rounded tips are retained; a
+variable side-profile sweep preserves each arm's tapered thickness. Native
+contracts prove the full reconstruction remains one connected spring, adds no
+source material when unloaded and removes only a bounded upper-cone skin.
+
+The ring retains its source collar interference, to be named in the fixed-seat
+inventory rather than advertised as clearance. A ±4 mm height survey rejects
+moving the whole source spring as a cure: lowering enters the carrier and
+raising increases collar/cover overlap. A named .05 mm carrier seating gap is
+separate from each finger's .05 mm ball gap. Bending is prescribed, not a
+spring-force or strain calculation. The first station passes native and
+faceted full-pitch clearance and free/blocked seating checks. The complete
+bank now also passes both kernels through all digit/shift combinations,
+carry and subtraction cascades, and progressive clearing; every ball is
+independently checked as captured by its own dial and spring tip.
 
 ## Findings for the framework
 

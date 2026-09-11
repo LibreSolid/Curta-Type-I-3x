@@ -1025,6 +1025,93 @@ about 11.936925 mm³ each, and their nominal zero seats touch the dials by about
 accepted into a static seat list by default. The root's current faceted run is
 12 passes and one expected source-housing inventory failure (73.79 s).
 
+## Register balls and the tapered spider spring
+
+The original valid spider has volume 4732.786576872 mm³. Its bottom is local
+Z −.2; the upper cone starts at Z 2.22 at radius 24 and falls with slope
+1.22/21. Each radial finger is 4.5 mm wide and ends in an R 2.25 rounded tip
+at radius 45. Result fingers occupy 0, −20, …, −200 degrees; the counter
+fingers occupy 130, 110, 90, 70, 50 and 30 degrees. The installed source frame
+is recentered with the other carriage parts, leaving mounting Z 45.2.
+
+At zero, each source R 3 ball is centered at Z 43.35. Native tests find
+.001646968832 mm³ ball/dial overlap and 11.936924875 mm³ ball/spider overlap.
+The first faceted run missed the tiny dial overlap but caught the unloaded
+spring and absent ball motion: one pass, two failures. The native run failed
+all three checks. These are moving contacts, not permitted static overlaps.
+
+`tools/dial_detent.py` measures both native dial types every half degree over
+one 36-degree pitch. Its original Boolean binary search refused an invalid
+intersection at type 1, 13.5 degrees, trial rise .68359375 mm. It was replaced
+by the exact distance from the sphere's center to the dial solid: distance
+below the 3 mm sphere radius means obstruction. This avoids manufacturing a
+near-tangent Boolean sliver; it does not ignore an invalid result or change
+the collision tolerance. Seventeen bisections bound vertical measurement
+resolution by 5/2¹⁷ mm. An additional named .05 mm vertical gap gives rises
+.05–.800008 mm. The two-type envelope is compiled into `dial_detent_motion.py`
+with at most .0005 mm profile-compression error, independently checked against
+the native parts. At the calibrated zero the rise is .089253 mm.
+
+The whole spider cannot simply be lifted above its balls. The source ring
+already overlaps the collar by 467.192338397 mm³. Surveying −4 to +4 mm in
+.25 mm increments shows lowering enters the carrier (517.220246807 mm³ at
+−.25), while raising increases collar interference and enters the cover
+starting at +.75. `tools/spider_mount.py` and `tools/spider_section.py` retain
+this diagnostic. The ring remains source geometry, with a named .05 mm gap
+above the carrier; its fixed collar overlap is an inventory finding, not a
+clearance claim.
+
+`spider.py` retains the native ring through radius 25 and the native rounded
+tips beyond radius 42. A sixteen-vertex parametric side profile is swept
+through the constant 4.5 mm width. Unlike a constant-thickness beam, this
+preserves the measured taper. The sampled upper curve uses the width edge of
+the cone and lies inside the source; missing material is bounded by a .007 mm
+upper-cone skin. Internal .05 mm patch overlaps and source-straight end cuffs
+keep the reconstruction one physical body. Twelve coordinate ports are driven
+by one smoothstep bend relation; each tip has a vertical prismatic joint.
+Each ball drives its own finger with 1.35 mm preload, leaving another .05 mm
+between ball top and finger bottom. No force, strain or inextensibility result
+is claimed.
+
+Native source-fidelity/continuity checks pass for the first finger (2 tests,
+35.31 s) and complete seventeen-finger spring (2 tests, 25.18 s). The full
+unloaded reconstruction adds zero native material and all removal lies in the
+named cone skin. Every material patch is valid; their native union remains
+one solid at unloaded, installed and crest bends through the 3 mm bench limit.
+The first finger's 73-position pitch sweep, ball motion and free/blocked
+seating pass both kernels: 5 faceted tests in 22.31 s and 5 native tests in
+28.51 s. Perturbation directions use the sphere's source frame, whose +Z
+points down after its source rotation.
+
+The first whole-bank cascade failed at crank 242 degrees: two counter
+occurrences had been mapped in the wrong order in the new detent layer.
+The source stations are counter digit 4 = `p_10205_4`, ball 10, 70 degrees;
+digit 5 = `p_10204_7`, ball 6, 50 degrees. The mapping was corrected and a
+free/blocked capture contract added for all seventeen balls. This is a
+prototype wiring correction, not an upstream source or framework defect.
+Whole-bank reruns pass: 4 faceted tests in 109.82 s and 4 native tests in
+546.44 s. These cover all digits at all six carriage positions, addition and
+subtraction carry cascades sampled every two crank degrees, every ball's
+free/blocked seating and 101 positions through progressive clearing.
+Re-running the independent native measurement after integration reproduced
+all 146 ball-profile readings exactly.
+
+The root count test caught `581 != 547` when analytic patches were counted as
+source occurrences. It now collapses only the proven-connected bell and
+spider springs, explicitly requiring five and thirty-five patches respectively.
+There are 588 material leaves representing 547 STEP occurrences plus the
+three missing clearing-print occurrences. The source-placement map is unchanged.
+`RegisterDetentMoving` is a standalone inspection view with its own complete
+motion bindings; the OpenSCAD image was inspected and shows the full ring,
+seventeen tapered fingers, balls and both dial banks. It is not a whole-machine
+clearance certificate. The updated root faceted run is 12 passes and one
+known whole-machine inventory failure in 82.29 s. Its exact rest inventory
+finds 254 positive overlaps among 391 rigid patches, with zero refusals;
+the seventeen ball/dial and seventeen ball/spider overlaps are gone. The
+retained source ring/collar overlap, after the named carrier seating gap,
+is 504.871504376 mm³. This inventory is diagnostic until its remaining moving
+interfaces and source provenance are closed.
+
 ## Historical initial validation boundary
 
 - Initial frame-only root: faceted inventory contract failed `1 != 547`.

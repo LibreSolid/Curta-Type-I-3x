@@ -107,12 +107,16 @@ class CurtaTest(TestCase):
     def test_source_inventory(self):
         from simulation.clearing import ClearingTeeth, ClearingSpacer
         from simulation.retaining_spring import RetainingSpring
+        from simulation.spider import FlexibleSpider
 
         def occurrences(node):
             if isinstance(node, RetainingSpring):
                 # The native union contract proves these five material patches
                 # are one original printed part, not five source occurrences.
                 self.assertEqual(len(list(leaves(node))), 5)
+                yield node
+            elif isinstance(node, FlexibleSpider):
+                self.assertEqual(len(list(leaves(node))), 35)
                 yield node
             elif not node.children:
                 yield node
@@ -122,6 +126,7 @@ class CurtaTest(TestCase):
 
         parts = list(occurrences(self.node))
         self.assertEqual(sum(isinstance(part, RetainingSpring) for part in parts), 1)
+        self.assertEqual(sum(isinstance(part, FlexibleSpider) for part in parts), 1)
         supplement = [part for part in parts if isinstance(part, (ClearingTeeth, ClearingSpacer))]
         self.assertEqual(len(supplement), 3)  # Manual page 38: absent from STEP, present as STLs.
         self.assertEqual(len(parts) - len(supplement), 547)

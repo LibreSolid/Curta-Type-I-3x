@@ -20,6 +20,8 @@ from simulation.pawl import AntiReversal, PawlBearingPlate
 from simulation.standard.parts import M4x10_419159
 from simulation.retaining_spring import RetainingSpring, SEAT_GAP as SPRING_SEAT_GAP
 from simulation.bell_spring_motion import positioning as spring_positioning
+from simulation.register_detents import RegisterDetents
+from simulation.dial_detent_motion import following
 import simulation.standard.layers as layers
 
 
@@ -122,7 +124,27 @@ class RegisterCarriage(SourceRegisters):
     carrier = CarriageStructure()
     result_register = ResultRegister()
     turns_register = TurnsRegister()
+    dial_detents = RegisterDetents()
     clearing_ring = ClearingAssembly(turn=Revolute(axis=(0, 0, 1)))
+
+    # Origins are the source-specific dial joints at their calibrated zero.
+    result_register.p_10203_1.turn.drives(dial_detents.p_6mm_ball_419241_12.lift, law=following(-146))
+    result_register.p_10203_2.turn.drives(dial_detents.p_6mm_ball_419241_1.lift, law=following(-235.99999999))
+    result_register.p_10205_1.turn.drives(dial_detents.p_6mm_ball_419241_13.lift, law=following(-275.4500831))
+    result_register.p_10205_2.turn.drives(dial_detents.p_6mm_ball_419241_16.lift, law=following(-295.45008308))
+    result_register.p_10204_1.turn.drives(dial_detents.p_6mm_ball_419241_11.lift, law=following(-315.45008308))
+    result_register.p_10204_2.turn.drives(dial_detents.p_6mm_ball_419241_3.lift, law=following(-335.45008307))
+    result_register.p_10204_3.turn.drives(dial_detents.p_6mm_ball_419241_7.lift, law=following(-355.45008308))
+    result_register.p_10204_4.turn.drives(dial_detents.p_6mm_ball_419241_4.lift, law=following(-375.45008311))
+    result_register.p_10204_5.turn.drives(dial_detents.p_6mm_ball_419241_17.lift, law=following(-395.45008311))
+    result_register.p_10204_6.turn.drives(dial_detents.p_6mm_ball_419241_8.lift, law=following(-415.4500831))
+    result_register.results_dial_type_2_1.turn.drives(dial_detents.p_6mm_ball_419241_5.lift, law=following(-145.99999998))
+    turns_register.p_10203_3.turn.drives(dial_detents.p_6mm_ball_419241_2.lift, law=following(-145.99999998))
+    turns_register.p_10203_4.turn.drives(dial_detents.p_6mm_ball_419241_14.lift, law=following(-145.99999999))
+    turns_register.p_10205_3.turn.drives(dial_detents.p_6mm_ball_419241_9.lift, law=following(-145.4500831))
+    turns_register.p_10205_4.turn.drives(dial_detents.p_6mm_ball_419241_10.lift, law=following(-165.45008308))
+    turns_register.p_10204_7.turn.drives(dial_detents.p_6mm_ball_419241_6.lift, law=following(-185.4500831))
+    turns_register.results_dial_type_2_2.turn.drives(dial_detents.p_6mm_ball_419241_15.lift, law=following(-145.99999998))
 
     def render(self):
         self.decimal_markers.omit()
