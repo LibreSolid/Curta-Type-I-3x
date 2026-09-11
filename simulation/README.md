@@ -3,7 +3,7 @@
 The complete standard STEP assembly now builds in solid-node: 547 placed leaf
 occurrences, now organized into educational show/hide layers. The root has
 calculator controls, working input selectors, subtraction lift, keyed-shaft
-motion and prescribed sub-turn dial rotations. **Full transmission/carry
+motion, lifting/shifting carriage, clearing plate and prescribed sub-turn dial rotations. **Full transmission/carry
 engagement and demonstrations are still being
 implemented; this is not a delivered calculator simulation.** Follow the
 [implementation tasks](../openspec/changes/simulate-the-curta/tasks.md).
@@ -62,9 +62,21 @@ registers; repeated turns and decimal shifting support multiplication. “See
 inside” hides the enclosure, frame and carriage covers/supports. The assembly
 tree independently hides, shows and focuses every subtree. Session values live
 in the page and reset on reload. A partial turn can be inspected but not committed.
+The carriage-lift slider exposes the 6 mm disengagement stroke and compressing
+spring. Changing decimal position lifts, shifts and reseats the carriage; crank
+controls are disabled while lifted or between detents. Completed turns are kept
+before manual lifting. The model has eight independent drivers; the eight digit
+sliders are a convenient presentation of its single exact operand driver.
 
 The readouts calculate with the verified arithmetic convention; they do not turn
 the currently incomplete mechanical motion into a validated whole machine.
+
+Six worked examples cover addition, carry, full overflow, subtraction, decimal
+shifting and clearing. “Load and run example” replaces the current page registers;
+pause at any point to inspect the mechanism. The underlying instructions are
+`Rest`, `Set one`, `Turn crank`, `Lift carriage`, `Shift ×10`, `Seat carriage`,
+and `Clear both`. Use lift → shift → seat in that order; `Rest` resets a
+reproducible pose, not a claim that a physical crank can run backward.
 
 ## Source mapping
 
@@ -77,11 +89,19 @@ the currently incomplete mechanical motion into a validated whole machine.
 - `transmission.py`: result/turns banks with sliding inputs and keyed rotation.
 - `cycle.py`: sub-turn input, decimal complement and candidate carry timing.
 - `input_mesh.py`, `bevel.py`: exact-verified single-interface engagement benches.
-- `engagement.py`: complete printed-drum contact checks (one result test still red).
+- `bevel_bank.py`: the installed seventeen-channel interface, including all six
+  carriage detents and lifted intermediate positions; both kernels pass.
+- `demo.py`: stepped demonstrations and replay checks shared with the page examples.
+- `engagement.py`: complete printed-drum contact sweeps, passing both kernels.
+- `carry.py`, `standard/carry.py`: fifteen sliding carry levers and stationary bearings.
+- `positioning.py`: moving spring seat and port-driven carriage spring compression.
+- `bearing.py`: bevel-tip/frame bearing clearance after the axial fit.
 - `prints.py`, `standard/printed.py`: printed bodies from exact STEP ingredients.
 - `fit.py`: explicit, documented assembly and tooth-outline fit corrections.
 - `viewer/`: the educational calculator page and tested page-local accumulator.
-- `flexibles.py`: the documented five-turn, 1.1 mm wire replacement spring.
+- `flexibles.py`: the documented zero spring and source-sized carriage spring.
+- `contracts.py`: material connectivity that distinguishes enclosed voids from
+  detached positive-volume bodies; every rigid body is checked.
 - `standard/parts.py` and `standard/assembly.py`: compacted output of
   `solid import-step`, with source product names and all source placements.
 - `source.py`: creates the ignored STEP import copy with unique names for
@@ -104,6 +124,12 @@ through this preprocessing step. Changes to hierarchy require reviewing the
 generated source mapping, not just refreshing that copy.
 
 ## Current findings
+
+The lighter spring tessellation retains the same spline and wire dimensions:
+Molejo samples per spline span, so four samples per span provide 128 rings per
+coil. The previous 1,000-per-span setting created almost eight million triangles
+and stalled software-rendered browser interaction. A geometry/mesh-budget test
+now passes below 50,000 triangles; the original exact wire shape is unchanged.
 
 The invalid STEP product is the zero-positioning spring (#419219). Automatic
 repair remains invalid and splits it into two native solids. The pilot authorized

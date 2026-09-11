@@ -6,10 +6,10 @@ from simulation.arithmetic import digit, decimal_shift, modulo
 TOOTH_PITCH = 11.25
 RESULT_INPUT_END = 124.75
 TURNS_INPUT_END = 176.0
-# Initial carry timing from the source ring's radial tooth station. The
-# corresponding full-machine contact contracts remain an integration task.
-RESULT_CARRY_END = 137.0
-TURNS_CARRY_END = 189.0
+# Full-bell flank probes center the first carried shaft at crank 152°/204°.
+# Channel one is 20° after the bank datum; half a tooth passage follows center.
+RESULT_CARRY_END = 137.625
+TURNS_CARRY_END = 189.625
 
 
 def tooth_passage(angle, count, end):

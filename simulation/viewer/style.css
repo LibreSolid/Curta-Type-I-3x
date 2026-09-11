@@ -11,7 +11,7 @@ main { display: grid; grid-template-columns: minmax(0,1fr) 365px; min-height: ca
 .view-actions { position: absolute; z-index: 2; top: 15px; left: 18px; display: flex; gap: 6px; }
 .fidelity { position: absolute; bottom: 0; padding: 10px 18px; margin: 0; font-size: 11px; background: #eef1edcf; pointer-events: none; }
 aside { padding: 20px; border-left: 1px solid #ccd4cf; max-height: calc(100vh - 110px); overflow: auto; }
-.registers { padding: 15px 18px; background: #263a3c; color: #e4eeda; border-radius: 6px; }
+.registers { position: sticky; top: 0; z-index: 3; padding: 15px 18px; background: #263a3c; color: #e4eeda; border-radius: 6px; }
 .registers label { display: block; font-size: 9px; letter-spacing: .13em; margin-bottom: 10px; }
 .registers output { display: block; font: 27px/1.5 ui-monospace,monospace; letter-spacing: .10em; }
 .registers #turns { font-size: 21px; }
@@ -22,6 +22,7 @@ input, select, button { font: inherit; accent-color: #527765; }
 input[type=number], select { border: 1px solid #bdc9c0; border-radius: 4px; padding: 4px 6px; background: #f9faf6; color: inherit; min-width: 0; }
 #operand, #initial-result, #initial-turns { width: 150px; text-align: right; font-family: ui-monospace,monospace; }
 #repeat { width: 45px; }
+#example { max-width: 210px; }
 input[type=range] { width: 100%; }
 .line { display: flex; justify-content: space-between; gap: 8px; align-items: center; margin: 10px 0 4px; font-size: 12px; }
 #digits { display: grid; grid-template-columns: repeat(8,1fr); padding: 14px 0 8px; gap: 4px; }

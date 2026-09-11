@@ -44,3 +44,9 @@ class EducationalLayersTest(TestCase):
         carriage = self.node.carriage.registers
         self.assertEqual(len(carriage.result_register.children), 11)
         self.assertEqual(len(carriage.turns_register.children), 6)
+
+    def test_decimal_markers_belong_to_their_physical_layers(self):
+        self.assertEqual([node.name for node in self.node.enclosure.decimal_markers.children],
+                         [f'decimal_marker_{index}' for index in range(1, 6)])
+        self.assertEqual([node.name for node in self.node.carriage.registers.decimal_markers.children],
+                         [f'decimal_marker_{index}' for index in range(6, 11)])

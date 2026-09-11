@@ -1,0 +1,43 @@
+[
+  {
+    "title": "Addition · 123 + 456",
+    "start": {"initial_result": 123, "operand": 456},
+    "moves": [{"instruction": "Turn crank", "driver": "crank_turns", "target": 1, "duration": 6}],
+    "expected": {"result": 579, "turns": 1}
+  },
+  {
+    "title": "Carry · 9 + 1",
+    "start": {"initial_result": 9, "operand": 1},
+    "moves": [{"instruction": "Turn crank", "driver": "crank_turns", "target": 1, "duration": 6}],
+    "expected": {"result": 10, "turns": 1}
+  },
+  {
+    "title": "Overflow · all nines + 1",
+    "start": {"initial_result": 99999999999, "initial_turns": 999999, "operand": 1},
+    "moves": [{"instruction": "Turn crank", "driver": "crank_turns", "target": 1, "duration": 6}],
+    "expected": {"result": 0, "turns": 0}
+  },
+  {
+    "title": "Subtraction · 100 − 1",
+    "start": {"initial_result": 100, "initial_turns": 1, "operand": 1, "subtract": 1},
+    "moves": [{"instruction": "Turn crank", "driver": "crank_turns", "target": 1, "duration": 6}],
+    "expected": {"result": 99, "turns": 0}
+  },
+  {
+    "title": "Decimal shift · 12 × 10",
+    "start": {"operand": 12},
+    "moves": [
+      {"instruction": "Lift carriage", "driver": "carriage_lift", "target": 1, "duration": 1},
+      {"instruction": "Shift ×10", "driver": "carriage_position", "target": 1, "duration": 1},
+      {"instruction": "Seat carriage", "driver": "carriage_lift", "target": 0, "duration": 1},
+      {"instruction": "Turn crank", "driver": "crank_turns", "target": 1, "duration": 6}
+    ],
+    "expected": {"result": 120, "turns": 10}
+  },
+  {
+    "title": "Clear both registers",
+    "start": {"initial_result": 12345678901, "initial_turns": 123456},
+    "moves": [{"instruction": "Clear both", "driver": "clear", "target": 1, "duration": 3}],
+    "expected": {"result": 0, "turns": 0}
+  }
+]

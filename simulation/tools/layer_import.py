@@ -52,7 +52,8 @@ def emit():
     matching('ResultCarry', root, 'results_tens_lever_assembly_')
     matching('TurnsCarry', root, 'turns_tens_lever_assembly_')
     matching('CarryPivots', root, 'm4x16_hex_')
-    matching('DecimalMarkers', root, 'decimal_marker_')
+    take('LowerDecimalMarkers', root, [f'decimal_marker_{i}' for i in range(1, 6)])
+    take('UpperDecimalMarkers', root, [f'decimal_marker_{i}' for i in range(6, 11)])
     take('CrankAssembly', root, ['crank_handle_1', 'crank_handle_pin'])
     take('DrumAssembly', lower, ['main_axle_step_drum_1'])
     take('AntiReversal', lower, ['anti_reversal_spring', 'anti_reversal_m5_bolt_sleeve',

@@ -5,14 +5,14 @@ from solid_node.motion.joints import Revolute
 from solid_node.motion.ports import Port
 from solid_node.simulation import Driver
 from simulation.cycle import dial_positions
-from simulation.fit import CARRIAGE_CENTER, CARRIAGE_CLOCKING, INPUT_CLOCKING
+from simulation.fit import CARRIAGE_CENTER, CARRIAGE_CLOCKING, INPUT_CLOCKING, BEVEL_DIAL_CLOCKING
 from simulation.standard.assembly import *
 import simulation.standard.layers as source
 
 
 def dial_values(phases, counter=False):
     return lambda sources, targets: lambda *values: tuple(
-        phase - INPUT_CLOCKING / 2 - 36 * position for phase, position in
+        phase + BEVEL_DIAL_CLOCKING - INPUT_CLOCKING / 2 - 36 * position for phase, position in
         zip(phases, dial_positions(*values, len(phases), counter)))
 
 

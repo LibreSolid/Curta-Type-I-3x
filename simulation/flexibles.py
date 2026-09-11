@@ -2,8 +2,9 @@
 
 from math import atan2, cos, sin, tau
 
-from molejo import Circle, Shape, Spline
-from solid_node.node import MolejoNode
+from molejo import Circle, Shape, Spline, Helix, P
+from solid_node.node import MolejoNode, AssemblyNode
+from solid_node.motion.ports import Port
 
 ZERO_PIVOT = (40.5, 33.6)
 FIXED_PIN = (33.552746609, 28.154097304, -133.45)
@@ -60,4 +61,29 @@ class ZeroSpring(MolejoNode):
     def render(self):
         return Shape(profile=Circle(WIRE / 2),
                      path=zero_spring_path(),
-                     path_samples=1000, profile_samples=24)
+                     # Sampling is per spline span, not per complete spring:
+                     # 32 control points/turn × 4 samples = 128 rings/turn.
+                     path_samples=4, profile_samples=24)
+
+
+class CarriageSpring(MolejoNode):
+    """Source-sized 1.8 mm wire, four coils on a 13.2 mm centerline radius.
+
+    Constant pitch is an educational approximation to the source's flattened
+    ends. The measured seats prescribe height; this does not solve spring force
+    or wire strain. The upper wire endpoint stays fixed throughout the lift.
+    """
+    height = Port(unit='mm')
+    color = '#aeb7c2'
+
+    def render(self):
+        return Shape(profile=Circle(.9),
+                     path=[Helix(radius=13.2, turns=4, height=P.height)],
+                     path_samples=400, profile_samples=24)
+
+
+class MountedCarriageSpring(AssemblyNode):
+    """Placement belongs to the mounting assembly; shape ports describe the wire."""
+    height = Port(unit='mm')
+    wire = CarriageSpring()
+    height.drives(wire.height)

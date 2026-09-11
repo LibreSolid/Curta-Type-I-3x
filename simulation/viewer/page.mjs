@@ -1,4 +1,4 @@
-import { Calculator } from './calculator.mjs';
+import { Calculator, DRIVER_IDS } from './calculator.mjs';
 
 const $ = id => document.getElementById(id);
 const status = text => { $('status').textContent = text; };
@@ -12,6 +12,14 @@ async function main() {
     driverControls: 'none', up: [0, 0, 1], fov: 30,
   });
   const calculator = new Calculator(viewer);
+  const examplesResponse = await fetch('./examples.json');
+  if (!examplesResponse.ok) throw new Error('Could not load the worked examples.');
+  const examples = await examplesResponse.json();
+  examples.forEach((example, index) => {
+    const option = document.createElement('option');
+    option.value = index; option.textContent = example.title;
+    $('example').append(option);
+  });
   let cancelAnimation = null;
   const hidden = new Map();
   const visibility = new Map();
@@ -74,12 +82,21 @@ async function main() {
     $('initial-turns').value = state.initial_turns;
     $('subtract').checked = Boolean(state.subtract);
     $('shift').value = state.carriage_position;
-    $('shift-value').textContent = `${state.carriage_position + 1} · ×${10 ** state.carriage_position}`;
+    const seated = state.carriage_lift === 0 && Number.isInteger(state.carriage_position);
+    const crankAtRest = Number.isInteger(state.crank_turns);
+    $('shift-value').textContent = Number.isInteger(state.carriage_position) ?
+      `${state.carriage_position + 1} · ×${10 ** state.carriage_position}` : 'moving between detents';
+    $('lift').value = state.carriage_lift;
+    $('lift-value').textContent = `${(6 * state.carriage_lift).toFixed(1)} mm · ${seated ? 'seated' : 'lifted'} `;
     $('crank').value = state.crank_turns;
     $('crank-value').textContent = `${state.crank_turns.toFixed(3)} turns`;
-    $('commit').disabled = !Number.isInteger(state.crank_turns) || state.crank_turns === 0;
-    $('clear').disabled = !Number.isInteger(state.crank_turns);
-    $('turn').disabled = state.clear > 0;
+    $('commit').disabled = !crankAtRest || !seated || state.crank_turns === 0;
+    $('clear').disabled = !crankAtRest || !seated;
+    $('turn').disabled = state.clear > 0 || !seated;
+    $('crank').disabled = state.clear > 0 || !seated;
+    $('shift').disabled = !crankAtRest || state.clear > 0;
+    $('lift').disabled = !crankAtRest || state.clear > 0;
+    $('subtract').disabled = !crankAtRest || state.clear > 0;
     $('clear').textContent = state.clear > 0 && state.clear < 1 ? 'Finish clearing' : 'Clear both registers';
     for (const item of digits) {
       item.slider.value = Math.floor(state.operand / 10 ** item.place) % 10;
@@ -94,7 +111,27 @@ async function main() {
     };
   }
   $('subtract').onchange = () => set('subtract', Number($('subtract').checked));
-  $('shift').oninput = () => set('carriage_position', Number($('shift').value));
+  function keepBeforeMoving() {
+    try {
+      if (viewer.driver('crank_turns') > 0) calculator.commit();
+      return true;
+    } catch (error) {
+      status(error.message); refresh(); return false;
+    }
+  }
+  $('shift').oninput = () => {
+    const target = Number($('shift').value);
+    if (!keepBeforeMoving()) return;
+    status('Lift, shift to the selected decimal place, then reseat.');
+    animate('carriage_lift', 1, .4, () =>
+      animate('carriage_position', target, .7, () =>
+        animate('carriage_lift', 0, .4, () => status('Carriage seated. Ready for the next calculation.'))));
+  };
+  $('lift').oninput = () => {
+    const lift = Number($('lift').value);
+    if (lift > 0 && !keepBeforeMoving()) return;
+    set('carriage_lift', lift);
+  };
   $('crank').oninput = () => set('crank_turns', Number($('crank').value));
   $('repeat').onchange = () => {
     if ($('repeat').reportValidity()) $('crank').max = $('repeat').value;
@@ -107,7 +144,8 @@ async function main() {
     cancelAnimation = () => {
       stopped = true; cancelAnimation = null;
       $('controls').disabled = false; $('pause').hidden = true;
-      status(driver === 'clear' ? 'Paused. Press Finish clearing to continue.' :
+      status(driver.startsWith('carriage_') ? 'Paused while shifting. Choose a carriage detent to finish.' :
+        driver === 'clear' ? 'Paused. Press Finish clearing to continue.' :
         'Paused. Inspect the mechanism or press Turn crank to finish.');
     };
     function frame(now) {
@@ -135,6 +173,21 @@ async function main() {
     });
   };
   $('pause').onclick = () => cancelAnimation?.();
+  $('run-example').onclick = () => {
+    const example = examples[Number($('example').value)];
+    DRIVER_IDS.forEach(id => viewer.setDriver(id, example.start[id] ?? 0));
+    function next(index) {
+      if (index === example.moves.length) {
+        const answer = calculator.commit();
+        status(`${example.title}: result ${answer.result}, revolutions ${answer.turns}. Ready for your next calculation.`);
+        return;
+      }
+      const move = example.moves[index];
+      status(`${example.title} · ${move.instruction}. Pause to inspect the mechanism.`);
+      animate(move.driver, move.target, move.duration, () => next(index + 1));
+    }
+    next(0);
+  };
   $('commit').onclick = () => { calculator.commit(); status('Completed turns kept in this page.'); };
   $('clear').onclick = () => {
     status('Clearing both registers.');

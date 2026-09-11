@@ -3,9 +3,11 @@
 from pathlib import Path
 import ast
 from simulation.tools.layer_import import CLASSES, members
+from simulation.tools.transmission_import import channels
 
 
 def emit():
+    counter_groups = {item['children'][item['input']] for item in channels() if item['counter']}
     fixed = {'MainAxleStepDrumTop1', 'MainAxleStepDrumBottom1', 'TensBell1'}
     prefixes = ('Part10218_', 'Part10219_', 'Part10220_', 'Part10221_', 'Part10222_', 'Part10230_')
     lines = ['"""Printed groups from the standard STL assembly stages, using exact STEP ingredients.',
@@ -13,9 +15,9 @@ def emit():
              'explicit in fit.py; nothing is copied from the problematic grouped print STLs.',
              '"""', '', 'from solid_node.node import FusionNode',
              'from simulation.standard.parts import *',
-             'from simulation.fit import (FittedInputPinion, FittedInputSpacer, FittedOnesSpacer,',
+             'from simulation.fit import (FittedInputPinion, FittedCounterPinion, FittedInputSpacer, FittedOnesSpacer,',
              '    FittedSlidingSpacer, FittedCounterSpacer, FittedOnesSleeve,',
-             '    FittedInputSleeve, FittedCounterSleeve)', '', '']
+             '    FittedInputSleeve, FittedCounterSleeve, FittedCarryLockout, FittedCarryPinion)', '', '']
     for name in CLASSES:
         if name not in fixed and not name.startswith(prefixes):
             continue
@@ -33,6 +35,12 @@ def emit():
                        'Part4_7mmOnesSleeve': 'FittedOnesSleeve',
                        'Part2_5mmLockoutSleeve': 'FittedInputSleeve',
                        'Part5_8Sleeve': 'FittedCounterSleeve'}.get(cls, cls)
+                if cls == 'FittedInputPinion' and name in counter_groups:
+                    cls = 'FittedCounterPinion'
+            if cls == 'PentagonalLockout':
+                cls = 'FittedCarryLockout'
+            if cls == 'TransmissionGear0_6':
+                cls = 'FittedCarryPinion'
             lines.append(f'    {child} = {cls}()')
         render = next(node for node in CLASSES[name].body
                       if isinstance(node, ast.FunctionDef) and node.name == 'render')

@@ -22,11 +22,16 @@
     </section>
     <fieldset id="controls" disabled>
       <legend>Operate</legend>
+      <label class="line">Worked example <select id="example" aria-label="Worked example"></select></label>
+      <button id="run-example">Load and run example</button>
+      <p class="hint">Examples replace the current registers. Pause any example to inspect it.</p>
       <label class="line">Input number <input id="operand" type="number" min="0" max="99999999" value="0"></label>
       <div id="digits" aria-label="Eight input selectors"></div>
       <div class="line"><label><input id="subtract" type="checkbox"> Subtract (lift crank)</label>
         <label>Carriage <output id="shift-value">1 · ×1</output></label></div>
       <input id="shift" type="range" min="0" max="5" step="1" value="0" aria-label="Carriage position">
+      <label class="line">Carriage lift <output id="lift-value">0.0 mm · seated</output></label>
+      <input id="lift" type="range" min="0" max="1" step="0.01" value="0" aria-label="Carriage lift">
       <label class="line">Crank progress <output id="crank-value">0.000 turns</output></label>
       <input id="crank" type="range" min="0" max="1" step="0.001" value="0" aria-label="Crank progress">
       <div class="line"><label>Turns <input id="repeat" type="number" min="1" max="12" value="1"></label>

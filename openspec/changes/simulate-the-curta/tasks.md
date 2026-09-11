@@ -6,8 +6,8 @@
 
 ## 2. Crank and one selectable digit
 
-- [ ] 2.1 Measure the drum, selector and transmission interfaces; write travel, seating and engagement contracts red.
-- [ ] 2.2 Declare crank, drum, selector and shaft joints and drive relations; make the single-channel contracts green.
+- [x] 2.1 Measure the drum, selector and transmission interfaces; write travel, seating and engagement contracts red. Measurements and red evidence are recorded in simulation/docs/measurements.md.
+- [x] 2.2 Declare crank, drum, selector and shaft joints and drive relations; make the single-channel contracts green. The complete result/counter drum sweeps also pass faceted and exact (20 result settings/modes, both counter modes).
 - [ ] 2.3 Prove mutations of drum axis, selector travel and gear phase fail their intended contracts.
 
 ## 3. Carry and registers
@@ -18,7 +18,7 @@
 
 ## 4. Subtraction, carriage and clearing
 
-- [ ] 4.1 Write subtraction-lift, carriage alignment and clearing contracts red.
+- [x] 4.1 Write subtraction-lift, carriage alignment and clearing contracts red. World-vertex tests exposed missing 9 mm subtraction, 6 mm carriage lift, 20° shift, plate rotation and spring-seat motion.
 - [ ] 4.2 Implement the measured joints and relations, including affected flexible parts, and make the contracts green.
 - [ ] 4.3 Prove subtraction, shift and clearing mutations fail their intended contracts.
 
@@ -55,8 +55,24 @@ layer visibility/focus. The drum/tens-bell printed groups are reconciled; their
 inventory, connectivity and native validity pass exact. The 9 mm subtraction
 lift passed after its red world-vertex test. Keyed input travel and 72° shaft
 rotation passed after red; all seventeen source-specific stacks are integrated.
-The full counter-drum sweep passes faceted in both modes after the documented
-4.5 mm normal-setting correction. The full result-drum sweep remains red at
-digit 0, addition, crank 18° (0.050564486 mm³), now being located by ingredient.
-Full transmission/carry contact, whole-machine inventory, moving flexibles,
-shift/clear geometry and demonstration sweeps still keep their tasks open.
+The complete result/counter drum sweeps now pass both kernels after the documented
+input-sleeve fits and .36 mm counter-tooth relief. Sliding carry levers, rotating
+tens bell, 6 mm carriage lift, 20° shift and rotating clearing plate pass their
+motion checks. Carriage spring compression passes its faceted seat and validity
+tests and its two exact tests. Lower/upper decimal-marker ownership passes
+while all 547 source placements remain accounted for. A material-connectivity
+contract verifies the fitted print's enclosed cavities without mistaking them
+for detached material. The axial bevel fit's newly exposed frame interference
+is corrected by shortening the protruding stem, verified exact.
+The installed bevel bank now passes both kernels across all six shift positions,
+lifted intermediate positions and all seventeen ±12° flank engagement checks,
+after centering dial clocking by -3°. Six worked examples pass arithmetic and
+model replay tests; seven instruction endpoints and a routed carriage scenario
+pass. The first carry pairs pass complete bell contact sweeps and both ±12°
+locking / active-tooth engagement limits in both kernels after centered profiles
+and measured passage timing. A spring tessellation-budget
+test exposed 7,968,048 triangles; four samples per spline span preserve geometry
+while making the viewer mesh manageable. The updated browser run is pending.
+Full transmission/carry contact, whole-machine overlap inventory, remaining
+moving flexibles, clearing tooth engagement and demonstration sweeps still keep
+their tasks open. These results are checkpoints, not final delivery evidence.

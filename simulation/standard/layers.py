@@ -156,17 +156,20 @@ class CarryPivots(AssemblyNode):
         self.m4x16_hex_15.translate((-34.688145566, -32.30163054, 4.8))
 
 
-class DecimalMarkers(AssemblyNode):
-    decimal_marker_7 = DecimalMarker7()
-    decimal_marker_10 = DecimalMarker10()
-    decimal_marker_2 = DecimalMarker2()
-    decimal_marker_9 = DecimalMarker9()
-    decimal_marker_4 = DecimalMarker4()
-    decimal_marker_6 = DecimalMarker6()
-    decimal_marker_5 = DecimalMarker5()
-    decimal_marker_3 = DecimalMarker3()
+class LowerDecimalMarkers(AssemblyNode):
     decimal_marker_1 = DecimalMarker1()
+    decimal_marker_2 = DecimalMarker2()
+    decimal_marker_3 = DecimalMarker3()
+    decimal_marker_4 = DecimalMarker4()
+    decimal_marker_5 = DecimalMarker5()
+
+
+class UpperDecimalMarkers(AssemblyNode):
+    decimal_marker_6 = DecimalMarker6()
+    decimal_marker_7 = DecimalMarker7()
     decimal_marker_8 = DecimalMarker8()
+    decimal_marker_9 = DecimalMarker9()
+    decimal_marker_10 = DecimalMarker10()
 
 
 class CrankAssembly(AssemblyNode):

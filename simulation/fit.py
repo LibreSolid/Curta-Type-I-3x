@@ -2,15 +2,16 @@
 
 import cadquery as cq
 from solid_node.parameters import Length
-from simulation.standard.parts import (TransmissionGear0_5, TransmissionGearTip,
+from simulation.standard.parts import (TransmissionGear0_5, TransmissionGear0_6, TransmissionGearTip,
     Part1_8mmSpacer, Part1_5mmSpacer, Part1_6mmSpacer, Part1mmSpacer,
-    Part4_7mmOnesSleeve, Part2_5mmLockoutSleeve, Part5_8Sleeve)
+    Part4_7mmOnesSleeve, Part2_5mmLockoutSleeve, Part5_8Sleeve, PentagonalLockout)
 
 CARRIAGE_CENTER = (0.537721035, -0.038177283, 0)
 CARRIAGE_CLOCKING = 0.549916905
 PINION_SEATING_DROP = 1.2
 TENS_SHAFT_X_CORRECTION = -0.079764273
 INPUT_CLOCKING = 4
+BEVEL_DIAL_CLOCKING = -3
 
 
 class FittedBevelTip(TransmissionGearTip):
@@ -18,16 +19,26 @@ class FittedBevelTip(TransmissionGearTip):
     seating_drop = Length(PINION_SEATING_DROP, min=0)
 
     def adjust(self, shape):
-        return shape.translate((0, 0, -self.seating_drop))
+        # Lowering the head also lowers the stem into the frame. Shorten only
+        # that newly protruding end, retaining the source's bearing-plane datum
+        # and keyed bore. No frame holes or mating tooth flanks are changed.
+        box = shape.BoundingBox()
+        seated = shape.translate((0, 0, -self.seating_drop))
+        above_bearing = cq.Solid.makeBox(box.xlen + 2, box.ylen + 2, box.zlen + 2,
+                                        cq.Vector(box.xmin - 1, box.ymin - 1, box.zmin))
+        return seated.intersect(above_bearing)
 
 
-def relieve_outline(shape, amount):
+def relieve_outline(shape, amount, clocking=0):
     """Sand only the extruded outside profile; retain the keyed bore and height."""
     face = max((face for face in shape.Faces() if face.geomType() == 'PLANE'),
                key=lambda face: face.Area())
     outline, = face.outerWire().offset2D(-amount)
-    outline = outline.translate((0, 0, -face.Center().z))
-    envelope = cq.Solid.extrudeLinear(outline, [], cq.Vector(0, 0, shape.BoundingBox().zlen))
+    box = shape.BoundingBox()
+    outline = outline.translate((0, 0, box.zmin - face.Center().z))
+    if clocking:
+        outline = outline.rotate((0, 0, 0), (0, 0, 1), clocking)
+    envelope = cq.Solid.extrudeLinear(outline, [], cq.Vector(0, 0, box.zlen))
     return shape.intersect(envelope)
 
 
@@ -39,6 +50,41 @@ class FittedInputPinion(TransmissionGear0_5):
     about print strength or manufacturing tolerances. The keyed bore is intact.
     """
     flank_relief = Length(0.35, min=0)
+
+    def adjust(self, shape):
+        return relieve_outline(shape, self.flank_relief) if self.flank_relief else shape
+
+
+class FittedCounterPinion(FittedInputPinion):
+    """The eccentric upper drum needs another .01 mm at the complement row.
+
+    At 84° the exact sweep found 0.000010359 mm³ overlap missed by the
+    faceted sweep. This remains a profile fit, never a test volume epsilon.
+    """
+    flank_relief = Length(.36, min=0)
+
+
+class FittedCarryLockout(PentagonalLockout):
+    """Center the locking flats while retaining the source keyed bore.
+
+    Uniform .4 mm relief cleared the bell but left biased backlash. Clipping
+    to an outline clocked back by the input's 4° phase centers the locking
+    faces without moving or enlarging the keyway. This only removes material.
+    """
+    flank_relief = Length(.15, min=0)
+
+    def adjust(self, shape):
+        return relieve_outline(shape, self.flank_relief, clocking=-INPUT_CLOCKING)
+
+
+class FittedCarryPinion(TransmissionGear0_6):
+    """Trial outer-flank fit for the .6 carry tooth, retaining its keyway.
+
+    .42 mm scales the measured .35 mm input-tooth fit with the .6/.5 tooth
+    size. Full-bell sweeps and flank engagement, not that scaling alone,
+    decide whether this candidate fit works.
+    """
+    flank_relief = Length(.42, min=0)
 
     def adjust(self, shape):
         return relieve_outline(shape, self.flank_relief) if self.flank_relief else shape

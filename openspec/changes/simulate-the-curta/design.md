@@ -69,6 +69,15 @@ friction, spring-force prediction, or fabrication certification.
    operation, carriage shift and clearing drive the corresponding mechanism and
    register values. Starting registers make a calculation reproducible when
    scrubbing; a preset animation alone does not meet the requested interaction.
+9. **Lift before shifting.** A continuous carriage-position driver traverses six
+   discrete working detents. The page lifts 6 mm, shifts, then reseats; it refuses
+   to commit calculations while lifted or between detents. The lower spring seat
+   moves while the upper seat stays fixed. Clearing follows a lift/turn/lower
+   sequence. Lower housing markers do not move with the carriage.
+10. **Examples and operation remain separate.** Six worked examples explicitly
+    replace the page-local starting registers, then run named mechanical moves.
+    The ordinary controls retain completed calculations. Seven small instructions
+    expose rest, setting one, one crank turn, lift, shift, reseat and clearing.
 
 ## Findings
 
@@ -87,8 +96,36 @@ The digits-cover / upper-housing boolean also yields invalid geometry,
 so no certified nominal overlap inventory exists yet. The spring replacement now
 passes native validity, wire-size and exact/faceted mounting contracts. Crank,
 drum and eight selector motions are implemented with joints and relations, and
-the arithmetic unit tests pass. Whole-machine geometry and register motion remain
-open. Seven educational layers preserve every original source placement.
+the arithmetic unit tests pass. Seven educational layers preserve every original
+source placement. The complete result/counter drum passes both kernels after
+recorded outside-profile and sleeve fits. All seventeen installed bevel pairs
+now pass exact/faceted engagement checks, including sampled carriage positions.
+Their axial fit alone had biased play; an additional -3° dial clocking centers
+both flank limits without weakening the ±12° engagement contract. The new stem
+trim keeps that axial fit above the frame bearing plane.
+
+Fifteen carry sliders, the tens bell, carriage and clearing plate now move.
+The first carry channels pass full-bell sweeps and bidirectional engagement in
+both kernels after tooth-profile fitting and measured phase corrections, without
+relaxed assertions. Remaining flexible parts, cam/pawl details, clearing-tooth contact,
+complete source overlap inventory and full demonstration interference remain
+open. Checkpoints and detailed measurements are in simulation/docs/measurements.md.
+
+## Findings for the framework
+
+- Exact printed groups can contain enclosed voids represented by disconnected
+  negative-volume mesh shells. The project checks material connectivity, not
+  surface-shell count, and separately requires one valid native solid. Every
+  rigid body remains covered; no part is skipped.
+- A placement joint on a Molejo leaf is counted in its required shape-parameter
+  ports. A thin mounting assembly separates placement from wire deformation.
+- Reusing a wrapped assembly render directly in a fusion crosses the assembly's
+  simulation-phase boundary. Generated ordinary placement methods avoid that.
+- STEP products with repeated human-readable names need identity-based import
+  selection. The project uses a byte-audited ignored name-disambiguation copy.
+
+These are evidence for an upstream finding record, not framework changes or
+claims that a new API has been accepted. No framework implementation was edited.
 
 ## Risks / Trade-offs
 

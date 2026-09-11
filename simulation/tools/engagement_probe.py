@@ -19,13 +19,15 @@ def ingredients(node, ancestors=(), path=''):
     return [(path, shape)]
 
 
-def probe(digit=0, crank=18, subtract=0):
+def probe(digit=0, crank=18, subtract=0, counter=False):
     model = Engagement()
     model.set_state(digit=digit, crank_turns=crank/360, subtract=subtract)
     model.assemble()
     parts = ingredients(model)
-    drum = [(path, shape) for path, shape in parts if '.drum.main_axle_step_drum_bottom_1.' in path]
-    pinion = [(path, shape) for path, shape in parts if '.result.p_10219_410002_1.' in path]
+    drum_path = '.drum.main_axle_step_drum_top_1.' if counter else '.drum.main_axle_step_drum_bottom_1.'
+    input_path = '.counter.p_10218_1.' if counter else '.result.p_10219_410002_1.'
+    drum = [(path, shape) for path, shape in parts if drum_path in path]
+    pinion = [(path, shape) for path, shape in parts if input_path in path]
     for a, first in drum:
         for b, second in pinion:
             overlap = first.intersect(second)
@@ -43,4 +45,5 @@ if __name__ == '__main__':
     parser.add_argument('--digit', type=int, default=0)
     parser.add_argument('--crank', type=float, default=18)
     parser.add_argument('--subtract', type=int, default=0)
+    parser.add_argument('--counter', action='store_true')
     probe(**vars(parser.parse_args()))

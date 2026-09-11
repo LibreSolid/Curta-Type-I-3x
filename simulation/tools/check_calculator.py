@@ -8,6 +8,7 @@ from functools import partial
 from http.server import SimpleHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
 from threading import Thread
+import json
 from playwright.sync_api import sync_playwright
 
 
@@ -41,10 +42,42 @@ def check():
                 assert page.evaluate('curta.viewer.driver("crank_turns")') == 0
                 assert page.evaluate('curta.viewer.driver("initial_result")') == result
 
+            examples = json.loads((root / 'simulation/viewer/examples.json').read_text())
+            assert page.locator('#example option').count() == 6
+            for index, example in enumerate(examples):
+                page.locator('#example').select_option(str(index))
+                page.locator('#run-example').click()
+                page.wait_for_function('''expected => {
+                  const {viewer} = curta;
+                  return viewer.driver('initial_result') === expected.result &&
+                    viewer.driver('initial_turns') === expected.turns &&
+                    viewer.driver('crank_turns') === 0 && viewer.driver('clear') === 0 &&
+                    document.getElementById('status').textContent.includes('Ready for your next');
+                }''', arg=example['expected'], timeout=120000)
+                print(f"Example {example['title']}: passed", flush=True)
+
+            # A manual lift keeps completed turns first and locks the crank.
+            page.locator('#operand').fill('12')
+            page.locator('#operand').press('Tab')
+            page.locator('#crank').evaluate('e => {e.value=1; e.dispatchEvent(new Event("input"));}')
+            page.locator('#lift').evaluate('e => {e.value=.5; e.dispatchEvent(new Event("input"));}')
+            assert page.evaluate('curta.viewer.driver("initial_result")') == 12
+            assert page.evaluate('curta.viewer.driver("crank_turns")') == 0
+            assert page.locator('#crank').is_disabled()
+            assert page.locator('#commit').is_disabled()
+            page.locator('#lift').evaluate('e => {e.value=0; e.dispatchEvent(new Event("input"));}')
+            assert page.locator('#crank').is_enabled()
+
+            page.locator('#shift').evaluate('e => {e.value=1; e.dispatchEvent(new Event("input"));}')
+            page.wait_for_function('curta.viewer.driver("carriage_position") === 1 && curta.viewer.driver("carriage_lift") === 0',
+                                   timeout=120000)
+            assert page.evaluate('curta.viewer.driver("initial_result")') == 12
+
             page.locator('#inside').click()
             assert not page.get_by_role('checkbox', name='Show enclosure', exact=True).is_checked()
             page.get_by_role('checkbox', name='Show enclosure', exact=True).check()
             page.get_by_role('checkbox', name='Show enclosure', exact=True).uncheck()
+            page.locator('aside').evaluate('e => {e.scrollTop = 0;}')
             page.evaluate('new Promise(resolve => requestAnimationFrame(() => requestAnimationFrame(resolve)))')
             evidence = root / '_build_evidence'
             evidence.mkdir(exist_ok=True)
@@ -56,7 +89,7 @@ def check():
         server.shutdown()
         server.server_close()
         thread.join()
-    print('Calculator page: calibration sequence, retained state, eight sliders, layer visibility and capture passed.')
+    print('Calculator page: calibration, six worked examples, retained state, lift/shift guards, eight selectors, layers and capture passed.')
 
 
 if __name__ == '__main__':

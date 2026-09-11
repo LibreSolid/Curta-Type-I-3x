@@ -4,6 +4,10 @@ from solid_node.node import AssemblyNode
 import simulation.standard.layers as layers
 
 
+class Enclosure(layers.Enclosure):
+    decimal_markers = layers.LowerDecimalMarkers()
+
+
 class Frame(AssemblyNode):
     upper_frame = layers.UpperFrame()
     lower_bearing_plate = layers.LowerBearingPlate()
@@ -37,7 +41,7 @@ class RegisterCarriage(AssemblyNode):
     dial_detents = layers.RegisterDetents()
     clearing_ring = layers.ClearingAssembly()
     carrier = layers.CarriageStructure()
-    decimal_markers = layers.DecimalMarkers()
+    decimal_markers = layers.UpperDecimalMarkers()
 
 
 class Carriage(AssemblyNode):
@@ -48,7 +52,7 @@ class Carriage(AssemblyNode):
 class LayeredSource(AssemblyNode):
     """All 547 source occurrences regrouped, without correcting their geometry."""
 
-    enclosure = layers.Enclosure()
+    enclosure = Enclosure()
     frame = Frame()
     input_selectors = Inputs()
     main_drive = MainDrive()

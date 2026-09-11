@@ -25,4 +25,7 @@ class EngagementTest(TestCase):
         for subtract in (0, 1):
             for angle in range(0, 361, 3):
                 self.node.set_state(digit=0, subtract=subtract, crank_turns=angle/360)
-                self.assertNotIntersecting(drum, pinion)
+                try:
+                    self.assertNotIntersecting(drum, pinion)
+                except AssertionError as error:
+                    raise AssertionError(f'counter, subtract={subtract}, crank={angle}: {error}') from error

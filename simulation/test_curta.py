@@ -3,6 +3,7 @@
 from solid_node.test import TestCase
 
 from simulation.curta import Curta
+from simulation.contracts import assert_connected_material
 
 
 def leaves(node):
@@ -15,6 +16,58 @@ def leaves(node):
 
 class CurtaTest(TestCase):
     node = Curta
+
+    def test_carry_bell_follows_crank_but_stays_at_its_bearing_height(self):
+        import numpy as np
+        self.node.set_state(crank_turns=0, subtract=0)
+        bell = self.node.carry_mechanism.tens_bell.tens_bell_1
+        before = bell.mesh.vertices.copy()
+        self.node.set_state(crank_turns=.25, subtract=1)
+        rotation = np.array([[0, 1, 0], [-1, 0, 0], [0, 0, 1]])
+        self.assertLess(np.max(np.abs(bell.mesh.vertices - before @ rotation.T)), .00001)
+
+    def test_carriage_advances_twenty_degrees_per_decimal_position(self):
+        import numpy as np
+        from math import sin, cos, radians
+        self.node.set_state(carriage_position=0, carriage_lift=0, clear=0, crank_turns=0)
+        carrier = self.node.carriage.registers.carrier.upper_carriage_body_1.counter_body
+        before = carrier.mesh.vertices.copy()
+        self.node.set_state(carriage_position=1)
+        angle = radians(20)
+        rotation = np.array([[cos(angle), -sin(angle), 0],
+                             [sin(angle), cos(angle), 0], [0, 0, 1]])
+        self.assertLess(np.max(np.abs(carrier.mesh.vertices - before @ rotation.T)), .00001)
+
+    def test_lifting_carriage_moves_dials_six_mm_and_leaves_shafts_fixed(self):
+        import numpy as np
+        self.node.set_state(carriage_position=0, carriage_lift=0, clear=0, crank_turns=0)
+        dial = self.node.carriage.registers.result_register.p_10203_1.results_dial_type_1
+        shaft = self.node.transmission.result.ones.p_10208_1.transmission_gear_tip
+        before, fixed = dial.mesh.vertices.copy(), shaft.mesh.vertices.copy()
+        self.node.set_state(carriage_lift=1)
+        self.assertLess(np.max(np.abs(dial.mesh.vertices - before - [0, 0, 6])), .00001)
+        np.testing.assert_array_equal(shaft.mesh.vertices, fixed)
+        self.assertNotIntersecting(dial, shaft)
+
+    def test_clearing_turns_the_plate_with_carriage_lifted(self):
+        import numpy as np
+        self.node.set_state(carriage_position=0, carriage_lift=0, clear=0, crank_turns=0)
+        plate = next(part for part in leaves(self.node) if part.name == 'clearing_cover')
+        before = plate.mesh.vertices.copy()
+        self.node.set_state(clear=.5)
+        expected = before * [-1, -1, 1] + [0, 0, 6]
+        self.assertLess(np.max(np.abs(plate.mesh.vertices - expected)), .00001)
+
+    def test_lower_decimal_markers_stay_fixed_when_carriage_moves(self):
+        import numpy as np
+        self.node.set_state(carriage_position=0, carriage_lift=0, clear=0)
+        markers = [part for part in leaves(self.node)
+                   if part.name == 'position_marker' and part.mesh.centroid[2] < 0]
+        self.assertEqual(len(markers), 5)
+        before = [part.mesh.vertices.copy() for part in markers]
+        self.node.set_state(carriage_position=1, carriage_lift=1, clear=.5)
+        for marker, points in zip(markers, before):
+            np.testing.assert_array_equal(marker.mesh.vertices, points)
 
     def test_subtraction_lifts_crank_and_drum_nine_millimeters(self):
         import numpy as np
@@ -55,7 +108,18 @@ class CurtaTest(TestCase):
         self.assertEqual(len(list(leaves(self.node))), 547)
 
     def test_solid_integrity(self):
-        self.assertNoDisconnectedSolids(self.node)
+        def check(node):
+            if node.rigid:
+                try:
+                    assert_connected_material(node.mesh)
+                    if node.exact:
+                        self.assertEqual(len(node.shape().Solids()), 1)
+                except AssertionError as error:
+                    raise AssertionError(f'{node.name}: {error}') from error
+            else:
+                for child in node.children:
+                    check(child)
+        check(self.node)
 
     def test_source_shapes_valid(self):
         invalid = sorted({part.name for part in leaves(self.node)

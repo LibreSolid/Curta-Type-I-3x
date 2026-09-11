@@ -368,6 +368,158 @@ upward cam reset, and clearance so the lever does not force a shaft sideways.
 The printed 3× model's measured dimensions govern this simulation; original
 metal-machine tolerances are not silently scaled into print tolerances.
 
+## Complete drum contact and material connectivity
+
+After fitting the round input sleeves to 3.85 mm radius, all twenty result
+digit/mode combinations pass the full drum's 3° sweep on both kernels. The
+counter faceted sweep passed but exact detected 0.000010358908 mm³ at subtraction,
+crank 84°: the nine-tooth upper row against the first counter's middle pinion.
+`tools/engagement_probe.py --counter --subtract 1 --crank 84` identified the pair.
+Counter pinions alone receive .36 mm outer-profile relief instead of .35 mm.
+Both exact full-drum tests now pass (193.02 s); no contact-volume epsilon is used.
+
+The fitted result-ones input print is one valid native solid, 444.038178 mm³,
+but its tessellation has three surface components: one positive outer boundary
+and two enclosed negative-volume cavity shells, about -.60881 mm³ each. The
+framework's disconnected-solids assertion counts those surfaces as three parts.
+`contracts.assert_connected_material` instead requires every shell watertight,
+exactly one positive material boundary, all negative cavity vertices enclosed
+by that boundary, and positive total volume. Exact checks additionally require
+one native solid. Unit tests admit a hollow body and reject two separate bodies
+or an external negative shell. The root checks every rigid part uniformly and
+now passes material integrity. This does not excuse mechanical interferences.
+
+## Carriage, clearing and marker ownership
+
+The root's 20° decimal shift, 6 mm lift, clockwise tens-bell rotation and clearing
+plate rotation each failed independent vertex tests before their relations.
+They now pass. Six millimeters raises the lowest dial teeth from Z 24.45 to
+30.45 mm, above the fitted tips' Z 28.65 mm maximum. This is an explicit
+disengagement-stroke assumption; the complete shift-path contact audit remains
+open. The bell rotates with the crank but stays at its axial bearing height,
+including during the 9 mm subtraction lift.
+
+Clearing is a three-phase control: first tenth lifts, middle eight tenths turn
+the plate one revolution, final tenth lowers. The toothed clearing cover moves
+with the handle, not the stationary carriage housing. Dial-clear timing has not
+yet been contact-calibrated to this sequence. Clear lift and manual carriage
+lift share one maximum-height relation rather than adding their strokes.
+
+Manual page 46 and the source placements distinguish five lower decimal markers
+(source marker groups 1–5, marker Z -144.14024 mm) from five upper markers (6–10,
+Z 49.03898 mm). The former belong under enclosure/decimal_markers, the latter
+under the operating clearing plate. Static ownership initially failed; after
+regrouping, all three educational-layer contracts pass, including preservation
+of every source placement. No marker is dropped or duplicated.
+
+The carriage spring has 1.8 mm wire (native cap area 2.544690 mm²), centerline
+radius 13.2 mm, and approximately four turns. Its source endpoints are at
+Z 27.0225 and 51.0225 mm, clocked 35.717779468°. The lower thrust washer follows
+the carriage; the upper sleeve stays on the main shaft. A red seat test found
+1.5 mm missing movement. `positioning.py` now gives the washer and spring mount
+matching prismatic motion, and drives spring height as 24 mm minus lift.
+Two faceted tests pass at five samples across the stroke, measuring wire cap
+centers directly rather than pitch-dependent bounding boxes. This Molejo helix
+uses constant pitch instead of the source's flattened ends; fixed coil radius
+and prescribed height are a visualization approximation, not an inextensible
+wire, preload or force solution. Manual page 48's spring instructions are
+unfinished, so measured source geometry supplies these dimensions.
+
+A flexible leaf's shape-port validation also counts a site joint as a port.
+Attaching a prismatic directly to the spring therefore failed because its shape
+names only height. A thin mounting assembly carries the placement joint; its
+height port drives the wire's height. This stays entirely in the public API.
+
+## Bevel fit must also clear the frame
+
+The complete overlap inventory exposed a consequence missed by the isolated
+bevel-pair bench: lowering a tip 1.2 mm also lowers its tubular stem below the
+frame's Z 9 mm bearing surface. The source tip/frame pair has zero overlap;
+the unshortened fitted ones tip has 86.362013 mm³ exact overlap (85.507495 mm³
+faceted). `test_bearing.py` first failed for that interference. The fitted tip
+now retains the source lower-end datum while its gear head remains 1.2 mm lower:
+the newly protruding stem end alone is trimmed by 1.2 mm. This leaves 11.85 mm
+of the original 13.05 mm stem and preserves its keyed bore. Thirteen exact
+rotation samples pass against the frame. It is a documented trial assembly fit,
+not a manufacturing-strength recommendation. Full-bank integration remains to
+be checked; the original exploratory single-pair bench is not that check.
+
+## Carry-lever motion checkpoint
+
+Fifteen carry sliders now follow their corresponding shaft's carry state with
+4.2 mm travel; their guide bearings stay fixed. Result upper/lower gear datums
+are -29.4/-33.6 mm; turns are -14.7/-18.9 mm. Source counter gears and sliders
+were placed between detents and are normalized consistently. The first result
+slider's travel test failed before wiring and both travel/reset tests pass
+faceted afterward. This proves placement, not the candidate trigger/reset
+timing or spring deformation; those remain open contracts.
+
+## Installed-bank engagement and phase centering
+
+The installed-bank contract checks all seventeen tip/dial pairs rather than
+assuming the exploratory first-pair bench covers them. It initially passed
+clearance at six detents and five lifted intermediate positions, but failed
+the -12° flank perturbation. `tools/bevel_play.py` measured essentially identical
+behavior on all seventeen pairs: at -12° no contact, -18° about .342646 mm³,
+and +12° about 1.087920 mm³. This was biased clocking, not an absent gear.
+
+`tools/bevel_phase.py` tested a complete 72° tooth period while clocking the
+dials, without changing the 1.2 mm tip seating. An additional -3° dial phase
+keeps every sampled nominal position clear and gives positive contact at both
+±12° limits throughout that period (minimum .028029 mm³ faceted in the probe).
+`BEVEL_DIAL_CLOCKING` records this adjustment. Both installed-bank tests now
+pass faceted and exact (83.29 s exact): all seventeen home engagements and
+cross-pair clearance through every detent and sampled lifted travel. No bound
+was enlarged to turn the red test green.
+
+## Carry fits and current engagement boundary
+
+The inactive carry groups initially hit their locking discs: .025854/.070910
+mm³ faceted for result/counter at crank zero; exact ingredient probes measured
+.098123 mm³ in both pentagonal lockouts. Phase alone could not clear the source:
+even its best phase retained .032501 mm³. Uniform .4 mm outline relief cleared
+the full inactive sweep but left biased play at -12°. The current fit instead
+clips the source to a .15 mm inward-offset outline clocked back by the input's
+4° phase. It removes material only; the original keyway and height remain.
+Both lockout limits now pass. The source is not modified.
+
+The active ring tooth then hit the .6 carry pinion (result crank 150°:
+.020995 mm³ exact; counter crank 204°: .316473 mm³). A .42 mm outer-profile fit
+scales the .35 mm measured input-pinion fit by the .6/.5 tooth size; both full
+bell sweeps passed faceted and exact afterward. This is a trial assembly
+correction, not a manufacturing recommendation. Engagement remained a separate
+red test; mere non-interference did not settle it.
+
+The full-bell probe now compares passage width, phase and both ±12° tooth
+limits. It locates the first carried tooth's midpoint at crank 152° for results
+and 204° for turns, at which the worst blocked volumes are .042901 and .046604
+mm³ faceted. Retaining the 11.25° passage puts the bank end datums at 137.625°
+and 189.625°. All three refined full-sweep/engagement tests pass faceted and
+exact (102.78 s exact, including time waiting for the shared build lock).
+Lever trigger geometry, reset-cam contact and moving carry springs remain open.
+
+## Demonstrations and spring tessellation
+
+Seven small root instructions land exactly on their targets. A stepped test
+routes lift → shift → seat, samples the adjacent bevel interface at .2 s
+cadence, and finishes clearing; this is explicitly not yet whole-model
+interference coverage. Six JSON worked examples are shared with the calculator
+page: 123+456, 9+1, both registers overflowing, 100−1, 12×10 by carriage shift,
+and clearing. JavaScript checks their arithmetic and safe shift order; model
+tests replay each twice and verify the same answers and instruction targets.
+Both model scenario tests pass faceted. The previous current-carriage browser
+run passed the manual's 0, 1, 9, 90 sequence, retained values and layer navigation.
+
+A subsequent full-example browser run stalled after its first four examples.
+The source was project-owned tessellation, not a library change: Molejo's
+`path_samples` is per spline span, so the zero spring's 1,000 samples over
+166 spans generated 7,968,048 triangles. A new mesh-budget contract failed
+before changing it. Four samples per span produce 128 rings per coil and
+31,920 triangles, with the same exact centerline and 1.1 mm wire. Native validity,
+cap area and the mesh-volume ratio (>98% of native, consistent with the
+24-sided profile) pass on both kernels. The lighter export and complete browser regression are
+being repeated. This does not claim a measured hardware-GPU frame rate.
+
 ## Historical initial validation boundary
 
 - Initial frame-only root: faceted inventory contract failed `1 != 547`.
