@@ -34,3 +34,10 @@ carry mechanism and complete machine using named subassemblies.
 - **WHEN** the maker advances the crank from rest
 - **THEN** the moving parts follow their own physical axes and the fixed frame
   remains fixed, with material colors distinguishing the mechanism
+
+#### Scenario: Reveal an educational layer
+- **WHEN** the maker hides the enclosure or isolates an input, transmission,
+  carry, or register assembly in the navigation tree
+- **THEN** the tree groups the corresponding mechanical parts together under
+  meaningful names, and changing calculator controls moves the visible mechanism
+- **AND** purchased fasteners remain grouped with the assembly they secure

@@ -1,16 +1,17 @@
-# Curta simulation — source assembly checkpoint
+# Curta simulation — implementation in progress
 
 The complete standard STEP assembly now builds in solid-node: 547 placed leaf
-occurrences, preserving the author's geometry and hierarchy. **This is currently
-a static reference, not a functioning calculator simulation.** Motion, controls,
-arithmetic and demonstrations remain open in the
+occurrences, now organized into educational show/hide layers. The root has
+calculator controls, working input selectors and crank/drum motion. **Complete
+register motion, engagement verification and demonstrations are still being
+implemented; this is not a delivered calculator simulation.** Follow the
 [implementation tasks](../openspec/changes/simulate-the-curta/tasks.md).
 
 Work starts from the previous [assessment](assessment.md). The new
 [measurements and validation findings](docs/measurements.md) identify the invalid
 spring, distinguish the hardware products sharing names, and document why the
-rest assembly's integrity tests currently fail. No source geometry was repaired
-or silently substituted.
+rest assembly's integrity tests currently fail. The invalid spring has an
+explicitly authorized, documented replacement; upstream geometry is untouched.
 
 ## Run
 
@@ -46,7 +47,12 @@ No floor or development server is launched by these commands.
 
 ## Source mapping
 
-- `curta.py`: the manifest's root, currently the complete static source assembly.
+- `curta.py`: the manifest's root, calculator controls and register-state relation.
+- `assemblies.py`: seven educational layers, with separate result/turns registers,
+  carriage covers, input banks, drive and carry subassemblies.
+- `mechanism.py`, `drive.py`, `selectors.py`: named joints and drive relations.
+- `arithmetic.py`: reproducible arithmetic; six calibration/operation tests pass.
+- `flexibles.py`: the documented five-turn, 1.1 mm wire replacement spring.
 - `standard/parts.py` and `standard/assembly.py`: compacted output of
   `solid import-step`, with source product names and all source placements.
 - `source.py`: creates the ignored STEP import copy with unique names for
@@ -67,22 +73,29 @@ watcher sees the generated import copy; it does not watch its upstream input
 through this preprocessing step. Changes to hierarchy require reviewing the
 generated source mapping, not just refreshing that copy.
 
-## Open decisions
+## Current findings
 
 The invalid STEP product is the zero-positioning spring (#419219). Automatic
-repair remains invalid and splits it into two native solids. The proposed next
-step is an analytic spring using the manual's approximately 11.5 mm mandrel,
-1.1 mm wire and five counter-clockwise turns, with its terminals and fit measured
-against the mounting parts. The pilot's decision is pending.
+repair remains invalid and splits it into two native solids. The pilot authorized
+the documented spring. Its installed shape uses the manual's 1.1 mm wire and five
+counter-clockwise turns, with terminal placement and installed bore fitted to the
+measured mounting parts. Native validity, wire-size and both faceted/exact mounting
+contracts pass. The 11.5 mm winding mandrel is distinguished from installed bore;
+springback and force are not predicted. See the measurements for the fit decision.
 
-The digits-cover / upper-housing intersection also returns invalid geometry;
-the nominal overlap inventory is not yet established. See the measurements
-before deciding on any source correction. No motion or fabrication claim is
-supported while those interfaces remain unresolved.
+The original STEP digits-cover / upper-housing intersection returns invalid
+geometry. The operating model now uses the author's original print STLs for
+those two parts and the crank collar, whose STEP tessellations are not watertight.
+The replacement files are valid, but a positive nominal housing overlap remains;
+the complete nominal overlap inventory is not yet established. See the measurements
+for the current diagnostic evidence. Working motion and arithmetic are not a
+claim of complete physical validation or fabrication readiness.
 
 The project-owned OpenSpec change is `simulate-the-curta`. Its planning commit is
-`05165d3`; it remains active and unarchived. Implementation will use the motion
-API's named joints and relations once the source-assembly gate is resolved.
+`05165d3`; it remains active and unarchived. Current controls describe an operation
+from explicit starting registers: changing crank progress is reproducible, rather
+than accumulating hidden Python state. A calculation-facing UI is planned to
+retain completed operations while the underlying model stays scrub-friendly.
 
 ## Attribution
 

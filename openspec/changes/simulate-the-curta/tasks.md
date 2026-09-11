@@ -24,7 +24,7 @@
 
 ## 5. Complete machine and evidence
 
-- [ ] 5.1 Finish calculator controls and the small instruction set; assert exact targets and sample interference through every demonstration.
+- [ ] 5.1 Finish calculator controls, educational show/hide assembly layers and the small instruction set; assert exact targets, layer membership and sample interference through every demonstration.
 - [ ] 5.2 Run every node's faceted regression, build the root and inspect its viewer document and all referenced artifacts.
 - [ ] 5.3 Render and inspect rest, moving, isometric and alignment snapshots; record measured findings and fidelity limits.
 - [ ] 5.4 Run every node's exact regression and write the final simulation README from the verified implementation.
@@ -38,7 +38,10 @@ passes. A +1 mm main-crank placement mutation fails that check with measured
 
 Task 1.3 remains open. Root tests are honestly red: the zero-positioning spring
 is invalid, and the digits-cover/upper-housing boolean produces an invalid result.
-The pilot has been asked whether to replace the spring from the manual's winding
-dimensions and measured mounts. No replacement is assumed from elapsed time.
-No joints, arithmetic, instructions, spring substitutions or clearance changes
-have been implemented. The default model is a static source reference only.
+The pilot explicitly authorized replacing the spring from the manual's winding
+dimensions and measured mounts, and delegated routine engineering decisions.
+The documented spring's validity, wire-size and mounting tests now pass, including
+the exact mount test. Crank/drum and selector-travel contracts passed after their
+red runs. The educational layer test accounts for all 547 source occurrences and
+preserves their placements. Six arithmetic tests pass, but do not yet prove
+register geometry or drive engagement. Remaining boxes stay open for that work.

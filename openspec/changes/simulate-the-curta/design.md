@@ -8,8 +8,10 @@ is no previous executable simulation. The assessment remains historical evidence
 
 The pilot authorized implementing the simulation on 2026-09-11. This plan
 records working implementation choices under that request, not a separate claim
-that the pilot ratified every motion detail. Findings that require a changed
-mechanical design return to the pilot.
+that the pilot ratified every motion detail. On continuation the pilot explicitly
+authorized modeling the documented spring and delegated routine engineering
+decisions: make evidence-backed choices and record them without repeated approval
+requests. Manufacturing certification remains out of scope.
 
 ## Coordinates
 
@@ -56,6 +58,17 @@ friction, spring-force prediction, or fabrication certification.
    lift, carry travel, gear phase and carriage pitch from the source and manual;
    keep the probe and readings. A demonstration's timing is stated as a chosen
    manual operating speed and is not a measured speed rating.
+7. **The navigation tree teaches the mechanism.** The pilot explicitly requested
+   meaningful show/hide layers: enclosure, frame, input selectors, main drive,
+   transmission, carry mechanism, and carriage/registers. Group by mechanical
+   role, not STEP export order. Keep fasteners with their supported assembly,
+   individual digit channels reachable, and moving carriage covers within the
+   carriage's own frame. The raw source hierarchy remains a separate reference.
+8. **Calculator sliders expose causes, not arbitrary component poses.** The pilot
+   emphasized educational inputs and actual calculation. Operand, crank turns,
+   operation, carriage shift and clearing drive the corresponding mechanism and
+   register values. Starting registers make a calculation reproducible when
+   scrubbing; a preset animation alone does not meet the requested interaction.
 
 ## Findings
 
@@ -69,10 +82,13 @@ methods are removed mechanically. See `simulation/docs/measurements.md`.
 
 The invalid solid is the zero-positioning spring (#419219). Automatic repair
 remains invalid and produces two native solids. An analytic replacement based
-on manual page 14 and measured mounting points is proposed; the pilot's decision
-is pending. The digits-cover / upper-housing boolean also yields invalid geometry,
-so no certified nominal overlap inventory exists yet. Root integrity and validity
-contracts remain red. No source geometry correction or motion is implemented.
+on manual page 14 and measured mounting points was authorized by the pilot.
+The digits-cover / upper-housing boolean also yields invalid geometry,
+so no certified nominal overlap inventory exists yet. The spring replacement now
+passes native validity, wire-size and exact/faceted mounting contracts. Crank,
+drum and eight selector motions are implemented with joints and relations, and
+the arithmetic unit tests pass. Whole-machine geometry and register motion remain
+open. Seven educational layers preserve every original source placement.
 
 ## Risks / Trade-offs
 
@@ -93,8 +109,7 @@ archive only after the required evidence passes. Upstream CAD remains unchanged.
 
 ## Open Questions
 
-May the invalid zero-positioning spring be replaced by a measured analytic spring
-following the manual? What causes the invalid cover/housing intersection, and
+What causes the invalid cover/housing intersection, and
 what is the faithful representation of its finished fit? What are the measured
 engagement phases and operating clearances? Resolve these in the import and
 single-channel increments before replicating the mechanism.

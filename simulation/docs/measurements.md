@@ -77,7 +77,53 @@ The manually wound spring described on manual page 14 uses approximately
 11.5 mm mandrel diameter, 1.1 mm music wire and five counter-clockwise turns.
 The winding and its terminal legs must be fitted to the measured sleeve and
 lever mounts before an analytic replacement can be accepted. This is an explicit
-simulation-layer source correction awaiting the pilot's choice.
+simulation-layer source correction explicitly authorized by the pilot.
+
+### Documented replacement and measured mounts
+
+`flexibles.ZeroSpring` replaces that one occurrence with a Molejo swept 1.1 mm
+wire. The source CAD remains unchanged. The spring tests first failed on native
+validity and cap area: 3.463605901 mm² versus the documented 0.950331778 mm².
+The source therefore modeled approximately 2.1 mm wire, not the manual's 1.1 mm.
+
+The lever has a 13.5 mm outside collar around the 7.361 mm sleeve stem. The
+manual's 11.5 mm winding mandrel is not an installed bore specification. Use an
+installed 13.6 mm bore (0.05 mm radial seat allowance) and 7.35 mm centerline
+radius. This is a fit assumption, not a prediction of springback or preload.
+Five CCW windings descend from Z -143.5 to -149.5 mm, giving 1.2 mm pitch.
+The fixed terminal is seated in the bearing plate's 3 mm bore centered at
+(33.552746609, 28.154097304); its tip is Z -133.45 mm within the plate, whose
+faces here are Z -132.45 and -138.45 mm. The moving terminal is in the lever's
+2.7 mm bore centered at (40.5, 24.9), with tip Z -157.3 mm through the 3 mm plate.
+
+Three continuous cubic paths describe the upper terminal bend, five-turn coil,
+and lower terminal bend. The coil has 32 interpolation points per turn; the
+Molejo B-rep reports its 1e-6 mm sweep approximation. A single interpolant across
+all bends initially cut the collar (faceted 0.001964709 mm³; exact also failed).
+Explicit matching tangents at the coil boundaries resolved that geometric
+failure without altering the fit allowance or the test. Both faceted and exact
+mount contracts now pass: no overlap with lever, sleeve or bearing plate, and
+terminal cap centers match the measured mounting points within 0.001 mm.
+The lower-frame and standalone replacement snapshots were inspected; the frame
+view occludes the spring beneath the bearing plate, reinforcing the need for
+independently hideable educational layers.
+
+The spring's installed rest shape is verified. Moving-lever deformation and
+clearance remain part of the motion work; this is not spring-force validation.
+
+## Selector and first drive channel
+
+The selector shaft bottom contains ten small planar detent faces at local
+Z 19.08, 25.08, 31.08, 37.08, 43.08, 49.08, 55.08, 61.08, 67.08 and 73.08 mm.
+Their angular progression is 36 degrees per 6 mm step. Descending the knob from
+zero to nine therefore translates it 54 mm and turns the shaft/number roll
+324 degrees. The first selector axis is (58.5, 0), parallel to Z.
+
+`drive.DriveTrain` is an inspectable single-channel bench. World-vertex tests
+failed with 83.530683769 mm crank drift and 54 mm missing selector travel before
+the joints existed. Both pass after declaring the crank/drum revolute joints,
+selector prismatic joint, and drive relations. These tests prove placement and
+travel, not yet drum-to-transmission tooth engagement or complete calculation.
 
 The standalone spring snapshot was visually inspected. Native connectivity
 alone is insufficient here: the exact connectivity check sees one solid and
@@ -108,6 +154,32 @@ Their Manifold intersection at the STEP placements returns signed volume
 224.326830384 mm³, but the returned Trimesh is not watertight. That is additional
 diagnostic evidence, not a certified overlap inventory. No epsilon, automatic
 repair, alternate print geometry or clearance adjustment has been applied.
+
+### Representation decision after the complete mesh audit
+
+The audit of 130 remaining distinct rigid artifacts found exactly three
+non-watertight STEP tessellations: digits cover, upper housing and crank collar.
+The author's corresponding standard print STLs are each watertight and one body.
+The collar print is 20732.746529261 mm³, with bounds X/Y ±28.5 and Z 0–58.5 mm.
+`print_parts.py` now imports these three author-supplied print files, without any
+repair, in their original local frames. The source-reference assembly continues
+to use STEP, and the operating model records these substitutions explicitly.
+
+Direct native Manifold evaluation of the cover/housing print-file pair reports
+`NoError` for both inputs and the result, with 224.327505535 mm³ overlap when
+the document's transforms are applied in Manifold. The previous Trimesh result
+lost watertight topology when its nearly coincident result vertices were welded.
+Using the standard node mesh-placement path, the root contract now fails on an
+ordinary positive overlap of 224.327505338 mm³, not on invalid geometry. This
+resolves representation, not the source's fit. The inventory probe records which
+kernel it uses; an exact run necessarily uses facets at these three interfaces.
+
+The first whole-machine faceted scan found 660 positive overlap sums and 89
+negative contact sums from the valid kernel; many are nominal face contacts or
+constituents of printed groups. No positive value was removed by a threshold.
+The probe preserves signed nonpositive sums as diagnostics, rejects invalid
+kernel results, and is being repeated with native solids where available. The
+inventory is not yet accepted as a verified moving assembly contract.
 
 ## Validation boundary
 
