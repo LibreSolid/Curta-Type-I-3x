@@ -3,9 +3,10 @@
 from solid_node.node import AssemblyNode
 from solid_node.motion.ports import Port
 from solid_node.simulation import Driver
-from solid_node.math import abs, clamp01
-from simulation.arithmetic import digit, modulo
-from simulation.cycle import dial_positions, added_digits, carries, RESULT_CARRY_END, TURNS_CARRY_END
+from solid_node.math import abs, clamp01, floor
+from simulation.arithmetic import digit, modulo, decimal_shift
+from simulation.cycle import dial_positions, added_digits, carries
+from simulation.carry_motion import engagement
 from simulation.fit import INPUT_CLOCKING
 import simulation.standard.channels as channels
 
@@ -26,11 +27,15 @@ def shifted(values, channel, shift):
 
 def channel_values(places, counter=False):
     def factory(sources, targets):
-        def pose(value, operand, crank_turns, subtract, shift):
+        def pose(value, operand, crank_turns, subtract, shift, carriage_lift=0):
             wheels = dial_positions(value, operand, crank_turns, subtract, shift, 0, places, counter)
-            transfer = carries(value, added_digits(operand, subtract, shift, places, counter))
+            increments = added_digits(operand, subtract, shift, places, counter)
+            transfer = carries(value, increments)
+            previous_value = modulo(value - (1 - 2 * subtract) *
+                                    (1 if counter else operand) * decimal_shift(shift), 10 ** places)
+            previous_transfer = carries(previous_value, increments)
+            completed = clamp01(floor(crank_turns))
             angle = 360 * modulo(crank_turns, 1)
-            carry_end = TURNS_CARRY_END if counter else RESULT_CARRY_END
             result = []
             for channel in range(places):
                 clocking = (130 if counter else 0) - 20 * channel
@@ -38,10 +43,11 @@ def channel_values(places, counter=False):
                 # The normal counter setting is 4.5 mm above the source pose:
                 # its first channel meets one tooth; all higher channels are blank.
                 setting = -.75 if counter else digit(operand, channel) if channel < 8 else 0
-                end = carry_end + 20 * channel
                 enabled = shifted(transfer, channel, shift)
-                engaged = enabled * clamp01((angle - end + 26) / 4)
-                engaged *= 1 - clamp01((angle - end - 6) / 8)
+                previous = completed * shifted(previous_transfer, channel, shift)
+                engaged = engagement(shifted(wheels, channel - 1, shift), enabled,
+                                     previous, angle, channel, counter,
+                                     carriage_lift) if channel else 0
                 result.extend((turn, setting, engaged))
             return tuple(result)
         return pose
@@ -54,6 +60,7 @@ class RegisterDrive(AssemblyNode):
     crank_turns = Port(unit='rev')
     subtract = Port()
     carriage_position = Port()
+    carriage_lift = Port(unit='mm')
 
 
 class ResultDrive(RegisterDrive):
@@ -70,7 +77,7 @@ class ResultDrive(RegisterDrive):
     digit_11 = channels.ResultDigit11()
 
     (RegisterDrive.value & RegisterDrive.operand & RegisterDrive.crank_turns &
-     RegisterDrive.subtract & RegisterDrive.carriage_position).drives((
+     RegisterDrive.subtract & RegisterDrive.carriage_position & RegisterDrive.carriage_lift).drives((
         ones.turn, ones.setting, ones.carry,
         tens.turn, tens.setting, tens.carry,
         hundreds.turn, hundreds.setting, hundreds.carry,
@@ -94,7 +101,7 @@ class TurnsDrive(RegisterDrive):
     digit_6 = channels.TurnsDigit6()
 
     (RegisterDrive.value & RegisterDrive.operand & RegisterDrive.crank_turns &
-     RegisterDrive.subtract & RegisterDrive.carriage_position).drives((
+     RegisterDrive.subtract & RegisterDrive.carriage_position & RegisterDrive.carriage_lift).drives((
         ones.turn, ones.setting, ones.carry,
         tens.turn, tens.setting, tens.carry,
         hundreds.turn, hundreds.setting, hundreds.carry,

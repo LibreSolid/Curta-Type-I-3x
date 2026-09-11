@@ -77,6 +77,8 @@ class Curta(LayeredSource):
     turns_counter.drives(carriage.registers.turns_register.value)
     result.drives(transmission.result.value)
     turns_counter.drives(transmission.turns.value)
+    carriage.registers.lift.drives(transmission.result.carriage_lift)
+    carriage.registers.lift.drives(transmission.turns.carriage_lift)
     (operand & crank_turns & subtract & carriage_position).drives((
         transmission.result.operand, transmission.result.crank_turns,
         transmission.result.subtract, transmission.result.carriage_position,

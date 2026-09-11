@@ -3,10 +3,15 @@
 from simulation.carry_mesh import CarryMesh
 from simulation.standard.carry import ResultsLever1, TurnsLever1
 from simulation.registers import ResultRegister, TurnsRegister
+from solid_node.math import floor
 
 
 def unit_operation(source, targets):
     return lambda enabled: (1, 0, 0, 0)
+
+
+def settled_value(sources, targets):
+    return lambda enabled, turns: 9 * enabled + floor(turns)
 
 
 class CarryContactBench(CarryMesh):
@@ -17,8 +22,8 @@ class CarryContactBench(CarryMesh):
 
     CarryMesh.result.carry.drives(results_lever.engage)
     CarryMesh.counter.carry.drives(turns_lever.engage)
-    CarryMesh.enabled.drives(results_dials.value, ratio=9)
-    CarryMesh.enabled.drives(turns_dials.value, ratio=9)
+    (CarryMesh.enabled & CarryMesh.crank_turns).drives(results_dials.value, law=settled_value)
+    (CarryMesh.enabled & CarryMesh.crank_turns).drives(turns_dials.value, law=settled_value)
     CarryMesh.crank_turns.drives(results_dials.crank_turns)
     CarryMesh.crank_turns.drives(turns_dials.crank_turns)
     CarryMesh.enabled.drives((results_dials.operand, results_dials.subtract,

@@ -24,10 +24,12 @@ def probe():
         print(json.dumps({'kind': kind, 'native_mm3': overlap.Volume(),
                          'regions': [{'mm3': region.Volume(), 'center': region.Center().toTuple()}
                                      for region in overlap.Solids()]}), flush=True)
-    figure, axes = plt.subplots(1, 2, figsize=(13, 7))
+    figure, axes = plt.subplots(1, 3, figsize=(16, 7))
     # X/Z side sections across the 1.47 mm slider thickness, and Y/Z across pin.
-    sections = (cq.Plane((0, -7.15, 0), (1, 0, 0), (0, -1, 0)),
+    sections = (cq.Plane((0, -9.5, 0), (1, 0, 0), (0, -1, 0)),
+                cq.Plane((0, 0, -24.825), (1, 0, 0), (0, 0, 1)),
                 cq.Plane((57.5, 0, 0), (0, 1, 0), (1, 0, 0)))
+    colors = dict(slider='tab:blue', flange='tab:orange', bell='tab:green', pin='tab:red')
     for ax, plane in zip(axes, sections):
         for name, shape in shapes.items():
             sliced = cq.Workplane(plane).add(shape).section().val()
@@ -36,13 +38,14 @@ def probe():
                 points, _ = edge.sample(80)
                 points = [plane.toLocalCoords(point) for point in points]
                 ax.plot([p.x for p in points], [p.y for p in points],
-                        label=name if first else None)
+                        color=colors[name], label=name if first else None)
                 first = False
         ax.set_aspect('equal')
         ax.grid()
         ax.legend()
     axes[0].set(xlim=(24, 45), ylim=(-37, -15), xlabel='world X', ylabel='world Z')
-    axes[1].set(xlim=(-15, 5), ylim=(23, 44), xlabel='world Y', ylabel='world Z')
+    axes[1].set(xlim=(24, 47), ylim=(-20, 3), xlabel='world X', ylabel='world Y')
+    axes[2].set(xlim=(-15, 5), ylim=(23, 44), xlabel='world Y', ylabel='world Z')
     figure.tight_layout()
     figure.savefig('_build_evidence/carry-sections.png', dpi=160)
 

@@ -12,7 +12,7 @@
 
 ## 3. Carry and registers
 
-- [ ] 3.1 Write adjacent-digit carry and reset contracts red, including the manual's geometric checks.
+- [x] 3.1 Write adjacent-digit carry and reset contracts red, including the manual's geometric checks. Dial-pin, fork and reset-shoe contracts failed; native probes identified the contacts. Timing tests rejected an early reset, and the installed bank exposed a nine-degree half-pin mounting discrepancy plus shifted-neighbour contact.
 - [ ] 3.2 Implement the carry mechanism, expand to all digit channels and register dials, and make the contracts green.
 - [ ] 3.3 Verify the page-53 arithmetic sequence and complete overflow; prove carry and dial-phase mutations fail.
 
@@ -92,9 +92,15 @@ After the documented groove-depth and clearing-flank fits, both racks reset the
 dials sequentially. Five clearing contracts pass both runners, including every
 digit/station, eighth-tooth passages and paired free/blocked engagement checks.
 Reversing the clearing law fails three geometry contracts; it is restored.
-The new first-carry contact bench exposes dial-pin and reset-bell collisions;
-native probes confirm fixed fork/sleeve and reset-shoe contacts. Their fit and
-timing remain open, not certified by the earlier pinion/bell tests.
+The new first-carry contact bench exposed dial-pin and reset-bell collisions;
+native probes confirmed fixed fork/sleeve and reset-shoe contacts. Documented
+local fits, measured pin approach and real reset-cam timing now pass six native
+checks over two turns, including one-sided driving contacts. Carry remains
+latched across the cycle boundary where its cam requires it. The complete
+fifteen-station cascade passes both kernels after aligning the half-pin flats
+with the manual's 36 degrees and choosing the cutaway side that clears parked
+neighbouring digits. All six carriage positions are covered, as are two-turn
+cascades. The twelve carry-wire checks remain green after the slider fits.
 Full transmission/carry contact, whole-machine overlap inventory, remaining
 moving flexibles and demonstration sweeps still keep
 their tasks open. These results are checkpoints, not final delivery evidence.

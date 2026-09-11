@@ -777,6 +777,141 @@ keeps the lever up while a dial pin is already contacting it. Manual page 37's
 half-pin orientation and protrusion guidance was re-read and visually inspected.
 No carry-trigger or reset-contact proof is claimed yet.
 
+### Local carry-fork and reset-shoe fits
+
+The standard lever STLs have the same bounds as the STEP; their approximately
+.07 mm³ volume differences are consistent with tessellation, not a newer fit.
+The fork rubs the 3.97 mm sleeve in its 5.55 mm axial band. `carry_fits.py` opens
+that local clearance to radius 4.02 mm and gives its lower flange face .05 mm
+axial play. The fitted pinion reaches radius 6.164278 mm; the face fit is confined
+to radius 6.22 about that shaft and the machine's inner 45 mm region, preserving
+the free fork ends. The shaft's keyed bore and teeth remain untouched.
+
+The reset shoe's upper face originally enters the 35.4 mm locking-disc envelope
+by .9 mm. It is filed below that disc's Z -25.5 plane with .05 mm clearance.
+At the lower detent, its sole also enters the carry-ring base by .3 mm. The native
+ingredient probe names `results_counter_carry_ring`, not the support plate;
+at crank 149° the original shoe overlaps it by 2.365942 mm³. Its furthest tooth
+radius is 36.48 mm (radial vertices, not the smaller axis-aligned bounding box).
+The sole is shortened .35 mm inside that envelope plus .05 mm. Both types remain
+one body. The source guides, spring detents, pin-contact tips and upper fork faces
+are unchanged by these foot fits.
+
+Eight native fit tests pass (27.80 s), including precise permitted-removal regions
+and equality of the built shape with a fresh adjustment. The initial provisional
+25 mm³ removal budget was replaced by those stronger location-specific checks:
+the final direct adjustments remove 24.826147 / 25.192377 mm³, and mass alone
+cannot establish that the right surfaces were filed. The guide-protection test
+also caught .019176 mm³ of unnecessary filing outside radius 45; the cutting
+tool was restricted, not that protected region relaxed.
+
+A second cache discrepancy was measured: the fresh result adjustment had volume
+856.022273 mm³, but `shape()` returned 855.891594 mm³ from an earlier flange cut;
+the counter differed similarly. The flange and ring-tip radii now have explicit
+`Length` identities, alongside the fork radius and seat gap. The shape-equality
+tests pass for those identified variants. This does not establish the framework
+failure's cause. Three of four installed carry-contact checks passed before the
+last identity correction: fork clearance, .01 mm free / .20 mm blocked axial
+capture, and bell clearance through a whole cycle. Pin contact remains red;
+the identified geometry is being rechecked.
+
+### Dial-pin approach and real reset phase
+
+The independent pin probe moves the dial continuously, leaving the candidate
+crank law out of the measurement. The original half pin first meets the raised
+lever at about digit 8.5; at nine it already requires 2.028591 mm depression,
+and later needs more than the modeled 4.2 mm stroke. Full pins likewise require
+about 5.4 mm at the worst passage. Rotating a half pin can improve its own
+passage, but cannot fix the full pin, so that is not the adopted remedy.
+A diagnostic 1.25 mm tip trim reduces the full-pin maximum to about 4.15 mm.
+That still jams a dial parked at nine against the reset cam. The adopted
+`carry_heads.py` fit uses common installed tip height Z 31.15 mm: full-pin
+depression at nine is 1.11085 mm, below the cam's 1.25 mm available drop at its
+crest even with the two .05 mm contact gauges. Full-pin maximum depression is
+3.54606 mm; both pin types still push past the spring-spread crest near 2.562 mm.
+Only the contact tip changes, not the fork, guide or spring detents. Both native
+head-locality tests pass (21.08 s), proving one valid body and no added material.
+
+The reset probe also rejects the current early reset animation as a driving
+proof. With the lever independently lowered, the first result cam reaches maximum
+lift near crank 3–5°, across the cycle boundary; the first counter does so near
+53°. Later lever stations add 20° each. Maximum geometric lift is about 2.95 mm,
+enough to cross the spring detent before its remaining snap travel. A carried
+lever can therefore remain latched into the next revolution. The replacement
+motion law now includes pin approach, retained carry and this measured reset
+phase. Non-interference of the old early-reset law alone did not prove cam drive.
+
+`carry_motion.py` expresses those three phases with public motion math and the
+measured profiles in `carry_profiles.py`. Previous-cycle carry is reconstructed
+from settled registers and completed crank turns; it is not hidden mutable state.
+Three timing tests failed the early-reset law and now pass. A fourth proves that
+a parked nine preloads rather than latches the lever, and lifting the carriage
+removes that preload. The cam follows its measured rise until the spring crosses
+over centre, then the remaining .2 mm rise triggers a prescribed snap. This is
+kinematics, not a force/friction prediction. Independent operation setup and the
+calculator page's Commit action initialize a new operation; they do not preserve
+unexposed physical latch history across separate setups.
+
+The installed first-pair contact bench passes four complete-turn checks (46.54 s,
+faceted), then the same four through two turns (part of a 63.75 s run). New
+pin/cam driving checks initially used the two-sided blocking default, which
+incorrectly demands a follower be blocked away from its driving surface too.
+They now explicitly test .01 mm free in both directions, .2 mm blocked toward
+the surface and .2 mm free away from it. That correction is a test-authoring
+fix, not new geometry evidence. All six checks then pass the native runner
+(133.42 s), including the two-turn collision sweeps and both driving surfaces.
+
+The installed bank caught .012033 mm³ contact at crank 170° on a type-2 half
+pin. Normalizing all fifteen native pin mountings to one station shows matching
+axes and protrusions, but the four type-2 half-pin flats differ by nine degrees
+from the four type-1 flats. Their angles to the pin's dial-radius vector are
+27° and 36° respectively; manual page 37 calls for approximately 36°.
+`pin_mounts.py` turns the four type-2 pins nine degrees around their own axes,
+leaving the cylindrical bore seats unchanged. The native eight-pin angle check
+and complete fifteen-station, two-turn carry cascade pass (part of a 74.11 s
+faceted run). The shifted-carriage test remains red: at shift two, digit two,
+a counter half pin touches the side of the last inactive result lever by
+.174401 mm³ faceted / .183256 mm³ native. Moving that pin outward by up to
+1 mm does not remove this side contact. `tools/carry_side_clearance.py` measures
+the complete neighbouring-pin passage before a bounded local fit is chosen.
+
+That survey rules out more head filing: the neighbouring pin crosses the thin
+head's body, not just a disposable edge. A 3 mm reduction in pin exposure also
+loses intended drive, so it was rejected and pin depth is unchanged. The flat's
+36° angle leaves two possible cutaway sides. Rotating the half pins another
+180° selects the side that clears every neighbouring **integer** digit while
+still tripping its own lever. The independent continuous diagnostic does find
+contact at neighbouring positions 1.10–1.78, but those positions cannot occur
+during a legal operation: the neighbouring bank's pins here are below the
+selected decimal place and do not turn. A separate arithmetic-cycle contract
+proves that invariant in both modes at every shift; lifted carriage transit is
+also covered. This is not a claim of unrestricted clearance for arbitrary
+off-detent dial positions or shifting the carriage while seated.
+
+All four installed-bank checks now pass (233.91 s, faceted): all ten parked
+digits at all six detents, eight native 36° flat angles, a dense two-turn cascade
+at home, and cascades at the other five shifts with parked lower digits set to
+two. No additional lever material was removed. The adopted half-pin clocking is
+180° for type 1 and 189° for type 2, in each pin's own frame. Their cylindrical
+mounts and material are unchanged.
+
+The corrected half/full pin depression profiles differ by at most .004390 mm.
+The production motion now uses their common measured envelope plus the named
+.05 mm gauge, avoiding two almost identical driver expressions. The direct
+probe of the installed half pin reproduces `carry_profiles.py` byte for byte
+through its compiler. Six first-pair native contact checks pass again with this
+final profile (140.32 s), as do the three carry-pinion/bell checks (70.03 s).
+Seventeen pure timing/cycle/arithmetic checks pass. All four installed-bank
+native checks pass (454.49 s), as do all twelve carry-wire/travel/contact checks
+after these slider fits (68.12 s). The moving carry bench snapshot and native
+sections were inspected. `tools/views.py` supplies explicit driver-default poses
+for snapshots; the CLI's `--set` selects construction parameters, not drivers.
+
+The refreshed native rest inventory has 372 rigid occurrences and 291 positive
+overlaps, with no refused booleans. This is a diagnostic, not an accepted seat
+list. New strip/screw contacts and retained source joints still require review;
+whole-machine and scenario integrity are not yet certified.
+
 ## Historical initial validation boundary
 
 - Initial frame-only root: faceted inventory contract failed `1 != 547`.

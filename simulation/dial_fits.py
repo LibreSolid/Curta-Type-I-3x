@@ -3,6 +3,7 @@
 import cadquery as cq
 from simulation.standard.parts import ResultsDialType1, ResultsDialType2
 import simulation.standard.assembly as source
+from simulation.pin_mounts import HalfPin, Type2HalfPin
 
 
 class ClearingGearFit:
@@ -28,18 +29,22 @@ class FittedDialType2(ClearingGearFit, ResultsDialType2):
 
 class Part10203_1(source.Part10203_1):
     results_dial_type_1 = FittedDialType1()
+    number_roll_carry_pin_half = HalfPin()
 
 
 class Part10203_2(source.Part10203_2):
     results_dial_type_1 = FittedDialType1()
+    number_roll_carry_pin_half = HalfPin()
 
 
 class Part10203_3(source.Part10203_3):
     results_dial_type_1 = FittedDialType1()
+    number_roll_carry_pin_half = HalfPin()
 
 
 class Part10203_4(source.Part10203_4):
     results_dial_type_1 = FittedDialType1()
+    number_roll_carry_pin_half = HalfPin()
 
 
 class Part10204_1(source.Part10204_1):
@@ -72,15 +77,19 @@ class Part10204_7(source.Part10204_7):
 
 class Part10205_1(source.Part10205_1):
     results_dial_type_2 = FittedDialType2()
+    number_roll_carry_pin_half = Type2HalfPin()
 
 
 class Part10205_2(source.Part10205_2):
     results_dial_type_2 = FittedDialType2()
+    number_roll_carry_pin_half = Type2HalfPin()
 
 
 class Part10205_3(source.Part10205_3):
     results_dial_type_2 = FittedDialType2()
+    number_roll_carry_pin_half = Type2HalfPin()
 
 
 class Part10205_4(source.Part10205_4):
     results_dial_type_2 = FittedDialType2()
+    number_roll_carry_pin_half = Type2HalfPin()

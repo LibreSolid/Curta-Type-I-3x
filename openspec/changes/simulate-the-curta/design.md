@@ -131,6 +131,17 @@ leaves. The operating inventory is consequently 550, including every original
 STEP occurrence; the immutable source-placement inventory remains 547. Their
 groove fit is verified, while clearing-to-dial contact and timing remain open.
 
+### Carry contacts and timing
+
+The carry forks, reset shoes and pin-contact tips require local fitting, bounded
+by native permitted-removal contracts. The half pins also need their cutaway
+side selected deliberately: the manual's approximately 36-degree flat angle
+alone leaves two orientations. Both complete dial banks now pass native and
+faceted carry/parked-pin checks at all six carriage positions. The measured cam
+resets some levers in the next crank revolution, so carry motion retains the
+previous cycle's latch until that station's cam arrives. See the reproducible
+profiles and validation in `simulation/docs/measurements.md`.
+
 ## Findings for the framework
 
 - Exact printed groups can contain enclosed voids represented by disconnected
@@ -143,6 +154,12 @@ groove fit is verified, while clearing-to-dial contact and timing remain open.
   simulation-phase boundary. Generated ordinary placement methods avoid that.
 - STEP products with repeated human-readable names need identity-based import
   selection. The project uses a byte-audited ignored name-disambiguation copy.
+- Two imported-part adjustments returned older built geometry than a fresh
+  adjustment after changing helper constants. Explicit dimensional parameter
+  identities and built/fresh equality contracts resolve the project cases;
+  the cause is not established. Independent ignored verification artifacts use
+  `SOLID_BUILD_DIR=_build_checks` with the same workspace environment, separate
+  from the live preview's publication lock.
 
 These are evidence for an upstream finding record, not framework changes or
 claims that a new API has been accepted. No framework implementation was edited.
