@@ -1,7 +1,7 @@
 ## 1. Source assembly and frame
 
-- [ ] 1.1 Add the manifest, an initial renderable root and build exclusions; write and run source and integrity contracts red.
-- [ ] 1.2 Import the STEP hierarchy, identify the invalid solid and resolve ambiguous hardware with reproducible probes and measurements.
+- [x] 1.1 Add the manifest, an initial renderable root and build exclusions; write and run source and integrity contracts red. Frame build passed; inventory failed with 1 != 547 (faceted, 2026-09-11).
+- [x] 1.2 Import the STEP hierarchy, identify the invalid solid and resolve ambiguous hardware with reproducible probes and measurements. All 547 occurrences imported; native invalid product is zero positioning spring (#419219). Repeated names retain their distinct source entity identities; see simulation/docs/measurements.md.
 - [ ] 1.3 Verify the complete rest assembly, rigid groups and source overlap inventory; make source and frame contracts green.
 
 ## 2. Crank and one selectable digit
@@ -29,3 +29,16 @@
 - [ ] 5.3 Render and inspect rest, moving, isometric and alignment snapshots; record measured findings and fidelity limits.
 - [ ] 5.4 Run every node's exact regression and write the final simulation README from the verified implementation.
 - [ ] 5.5 Validate and sync the accepted specifications, archive the completed change and commit implementation and evidence.
+
+## Current evidence and continuation
+
+The source assembly builds and its complete 547-occurrence world placement check
+passes. A +1 mm main-crank placement mutation fails that check with measured
+1.00000000007 mm drift at occurrence 0:1:1:18:1; the mutation is reverted.
+
+Task 1.3 remains open. Root tests are honestly red: the zero-positioning spring
+is invalid, and the digits-cover/upper-housing boolean produces an invalid result.
+The pilot has been asked whether to replace the spring from the manual's winding
+dimensions and measured mounts. No replacement is assumed from elapsed time.
+No joints, arithmetic, instructions, spring substitutions or clearance changes
+have been implemented. The default model is a static source reference only.

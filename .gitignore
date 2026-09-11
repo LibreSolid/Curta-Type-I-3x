@@ -1,1 +1,8 @@
 .DS_Store
+_build*/
+simulation/_source/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+screenshot.png
+snapshot*.png

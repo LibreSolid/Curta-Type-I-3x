@@ -59,9 +59,20 @@ friction, spring-force prediction, or fabrication certification.
 
 ## Findings
 
-The assessment's invalid solid, ambiguous names and unfinished fit allowances
-remain open until the import and interface probes identify their consequences.
-Native import success is not a geometric validation result.
+The complete 547-occurrence source assembly builds and its placement contract
+passes. Duplicate product names are resolved by suffixing only those names with
+their existing STEP entity numbers in an ignored import copy; a restoration test
+proves that every other source byte is preserved. This is necessary because the
+same hardware names designate different geometry, and repeated subassembly names
+otherwise conflate their definitions in the scaffold. Generated empty render
+methods are removed mechanically. See `simulation/docs/measurements.md`.
+
+The invalid solid is the zero-positioning spring (#419219). Automatic repair
+remains invalid and produces two native solids. An analytic replacement based
+on manual page 14 and measured mounting points is proposed; the pilot's decision
+is pending. The digits-cover / upper-housing boolean also yields invalid geometry,
+so no certified nominal overlap inventory exists yet. Root integrity and validity
+contracts remain red. No source geometry correction or motion is implemented.
 
 ## Risks / Trade-offs
 
@@ -82,6 +93,8 @@ archive only after the required evidence passes. Upstream CAD remains unchanged.
 
 ## Open Questions
 
-Which product is native solid 413? Are the duplicate hardware products identical?
-What are the measured engagement phases and operating clearances? Resolve these
-in the import and single-channel increments before replicating the mechanism.
+May the invalid zero-positioning spring be replaced by a measured analytic spring
+following the manual? What causes the invalid cover/housing intersection, and
+what is the faithful representation of its finished fit? What are the measured
+engagement phases and operating clearances? Resolve these in the import and
+single-channel increments before replicating the mechanism.
