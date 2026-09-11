@@ -53,26 +53,50 @@ def bend_strip(mesh, inside, thickness, back, floor, center=0, reverse=False):
     return mesh
 
 
-class ClearingTeeth(StlNode):
+class RetainingScrewFit:
+    """A back relief for the source retaining screw; no clearing tooth is cut."""
+    retaining_bore = Length(2.15)
+
+    def adjust(self, mesh):
+        formed = self.form(mesh)
+        body = manifold.Manifold(manifold.Mesh(
+            np.asarray(formed.vertices, dtype=np.float32),
+            np.asarray(formed.faces, dtype=np.uint32)))
+        result = self.relieve(body).to_mesh()
+        return trimesh.Trimesh(vertices=result.vert_properties[:, :3],
+                               faces=result.tri_verts, process=False)
+
+    def relieve(self, body):
+        # Source screw in the cover frame: R 2.1 shank, 45° down/outward.
+        # The extra .05 mm is a radial seating allowance, not a test epsilon.
+        bore = manifold.Manifold.cylinder(8.4, self.retaining_bore, circular_segments=96)
+        bore = bore.rotate((135, 0, 0)).translate((.13205562, -45.57669045, 11.52567171))
+        fitted = body - bore
+        if fitted.status() != manifold.Error.NoError:
+            raise ValueError(f'Invalid clearing screw relief: {fitted.status()}')
+        return fitted
+
+
+class ClearingTeeth(RetainingScrewFit, StlNode):
     stl_source = str(PRINTS / '37 - Clearing Cover/clearing cap teeth x2.stl')
     color = '#cad1d8'
     groove_floor = Length(GROOVE_FLOOR)
 
-    def adjust(self, mesh):
+    def form(self, mesh):
         return bend_strip(mesh, inside=49.1, thickness=.9, back=7.2, floor=self.groove_floor)
 
 
 class OuterClearingTeeth(ClearingTeeth):
-    def adjust(self, mesh):
+    def form(self, mesh):
         return bend_strip(mesh, inside=51.55, thickness=.9, back=7.2, floor=self.groove_floor, reverse=True)
 
 
-class ClearingSpacer(StlNode):
+class ClearingSpacer(RetainingScrewFit, StlNode):
     stl_source = str(PRINTS / '37 - Clearing Cover/clearing cap tooth segment spacer.stl')
     color = '#8996a4'
     groove_floor = Length(GROOVE_FLOOR)
 
-    def adjust(self, mesh):
+    def form(self, mesh):
         return bend_strip(mesh, inside=50.025, thickness=1.5, back=6.9, floor=self.groove_floor, center=35.25)
 
 

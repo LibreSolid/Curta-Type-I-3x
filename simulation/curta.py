@@ -53,6 +53,7 @@ class Curta(LayeredSource):
     crank_turns.drives(main_drive.turn, ratio=-360)
     subtract.drives(main_drive.subtract)
     crank_turns.drives(carry_mechanism.tens_bell.turn, ratio=-360)
+    subtract.drives(carry_mechanism.tens_bell.subtract)
     carriage_position.drives(carriage.position)
     carriage_lift.drives(carriage.lift)
     clear.drives(carriage.clear)

@@ -13,7 +13,7 @@
 ## 3. Carry and registers
 
 - [x] 3.1 Write adjacent-digit carry and reset contracts red, including the manual's geometric checks. Dial-pin, fork and reset-shoe contracts failed; native probes identified the contacts. Timing tests rejected an early reset, and the installed bank exposed a nine-degree half-pin mounting discrepancy plus shifted-neighbour contact.
-- [ ] 3.2 Implement the carry mechanism, expand to all digit channels and register dials, and make the contracts green.
+- [x] 3.2 Implement the carry mechanism, expand to all digit channels and register dials, and make the contracts green. All fifteen carries pass both kernels through two revolutions and all carriage shifts; the complete bell spring's mounting and subtraction sweep now pass native as well.
 - [ ] 3.3 Verify the page-53 arithmetic sequence and complete overflow; prove carry and dial-phase mutations fail.
 
 ## 4. Subtraction, carriage and clearing
@@ -101,6 +101,13 @@ fifteen-station cascade passes both kernels after aligning the half-pin flats
 with the manual's 36 degrees and choosing the cutaway side that clears parked
 neighbouring digits. All six carriage positions are covered, as are two-turn
 cascades. The twelve carry-wire checks remain green after the slider fits.
+The bell's positioning leaf spring now preserves its native plate and tapered
+hooks while measured ribbed arms bend through the subtraction stroke. Its
+source-fidelity, one-body, mounting and full-travel contracts pass; the whole
+bell and its two spring screws share one revolute joint. The restoring screw
+also clears the three formed clearing strips after a strictly bounded back
+relief that leaves every tooth face unchanged. Register balls and spider-spring
+deflection are the next moving interface exposed by the complete inventory.
 Full transmission/carry contact, whole-machine overlap inventory, remaining
 moving flexibles and demonstration sweeps still keep
 their tasks open. These results are checkpoints, not final delivery evidence.

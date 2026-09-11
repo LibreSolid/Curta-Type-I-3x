@@ -904,13 +904,126 @@ final profile (140.32 s), as do the three carry-pinion/bell checks (70.03 s).
 Seventeen pure timing/cycle/arithmetic checks pass. All four installed-bank
 native checks pass (454.49 s), as do all twelve carry-wire/travel/contact checks
 after these slider fits (68.12 s). The moving carry bench snapshot and native
-sections were inspected. `tools/views.py` supplies explicit driver-default poses
+sections were inspected. `views.py` supplies explicit driver-default poses
 for snapshots; the CLI's `--set` selects construction parameters, not drivers.
 
 The refreshed native rest inventory has 372 rigid occurrences and 291 positive
 overlaps, with no refused booleans. This is a diagnostic, not an accepted seat
 list. New strip/screw contacts and retained source joints still require review;
 whole-machine and scenario integrity are not yet certified.
+
+## Stepped-drum positioning leaf spring: source and ownership
+
+The forked printed `TensBellSpring` is not a rigid link. The author's
+[Part IX build log](https://www.digitaltorque.com/articles/curta-9/) identifies
+it as the stepped-drum positioning spring, attached below the tens bell, and
+describes thickening its arms and adding half-cylinder ribs so the drum snaps
+between addition and subtraction. The STEP includes that ribbed revision.
+Manual page 9 attaches its plate with two M4 screws. These two screws were
+incorrectly grouped under the fixed frame; red quarter-turn vertex tests
+measured 15.581880 mm screw drift and 20.827569 mm spring-mount drift. Moving the
+complete bell assembly through one revolute joint, with its two screws owned
+by that assembly, makes both tests pass. The manual says M4×6 while the STEP
+names them M4×10; source hardware is retained pending its seating check.
+
+The source spring is valid, with volume 1582.129669 mm³. Its mounted cap is at
+Z −6.9 and its lowest hook at −61.966932 mm. Native normal sections measure
+each long arm as a 6.9×1.8 mm strip with an inward R .9 stiffening rib, inclined
+4.977196° toward the centre. `retaining_spring.py` preserves the perforated
+mounting plate and both tapered hooks as native source cuts, replacing only
+the 35.132474 mm constant-section arms with analytic sweeps. The 24-chord rib
+contour differs from its semicircle by less than .002 mm. Two native tests
+pass (37.27 s): the unloaded five-patch union is one valid solid, adds no
+material to the source, and omits only .255092 mm³ inside the two bounded rib
+regions; the union stays valid and connected through 0–6 mm radial deflection.
+The .05 mm patch joins are overlap inside one continuous printed part, not
+clearance at an assembly seat.
+
+Installed shape is still under measurement. Leaving the source spring unloaded
+intersects the drum top/bottom by 114.833142/11.728560 mm³ in addition and
+57.933724/115.065533 mm³ in subtraction (native). The independent phase sweep
+rules out rotating the drum as a remedy. Horizontal sections resolve the two
+off-centre hook pockets, which a single axial section obscures. A radial hook
+survey finds free positions without moving the mounting plate or shortening
+the source hooks. The full contact-following deflection profile and arm
+clearance are not yet certified. `tools/bell_spring.py`, `bell_spring_phase.py`
+and `bell_spring_fit.py` reproduce these measurements. Prescribed arm bending
+does not claim stress, spring force or material-length conservation.
+
+The installed seat adds a named .05 mm gap below the cap. The pocket probe
+samples the complete 9 mm subtraction stroke every .05 mm, bisects each hook's
+first free radial position, then takes their common envelope plus .05 mm.
+`bell_spring_motion.py` is a compact piecewise relation: no live booleans or
+per-frame source meshes. The hooks require approximately 6.86 mm spread at
+addition, crest near 7.27 mm during the shift, and settle at 4.16 mm for
+subtraction. Both native seating checks pass (.01 mm free, .2 mm blocked inward
+at every .25 mm of drum travel). The spring's whole-assembly quarter-turn and
+subtraction sweep pass faceted (three tests, 33.82 s).
+
+An early arm curve entered the bell lip by .547692 mm³ faceted. Delaying most
+of the bend until below the lip removes that contact, but a subsequent native
+union check caught an irregular spline/source join at 2 mm spread. One-millimetre
+source-straight cuffs at both ends make the joints regular. The final two native
+shape tests pass at 0, 2, 4, 6 and 8 mm spread (33.94 s), retaining the unloaded
+source-fidelity bound. All three installed contact tests then pass faceted
+(23.63 s) and native (859.83 s), including both hooks' seating and the complete
+37-position arm/hook/mount clearance sweep against bell and drum. The superseded
+long sweep was stopped, not counted as a pass.
+
+The root now counts the spring as one physical source occurrence represented
+by five material patches. The old literal leaf-count assertion correctly failed
+551 != 547 after subtracting the three supplemental clearing prints. Its
+replacement explicitly folds only this one proven-connected spring and still
+requires all 547 original occurrences plus those three supplements. Material
+integrity includes every patch, including the two flexible arms.
+
+The first installed-spring snapshot from a nested `simulation/tools/views.py`
+showed its plate and hooks but omitted both arms. Inspection of the generated
+SCAD found existing flexible STLs referenced from the wrong directory. Moving
+the pose classes beside the model, to `simulation/views.py`, restores the
+arms. The corrected image was inspected. This records a framework artifact-path
+finding; no framework implementation or generated source artifact was patched.
+
+## Clearing retaining-screw relief
+
+Restoring the missing strips introduced three screw contacts: inner strip
+5.745261 mm³, spacer 3.074284 mm³ and outer strip .006199 mm³. The independent
+hardware contract fails before fitting. `tools/clearing_fastener.py` measures
+the original R 2.1 screw at 45° through the cover's R 1.65 pilot bore and R 4
+counterbore; its axis is .289514 mm off the bore axis. The axial section shows
+the shank entering only the strips' backs, not their teeth. Source screw, hole,
+head seating and rivets remain unchanged; their nominal fixed fits belong to
+the source inventory.
+
+`clearing.py` now gives the three backs an R 2.15 screw relief, a named .05 mm
+radial allowance. The cutter follows the source screw's measured axis in the
+cover frame, starting at (.13205562, −45.57669045, 11.52567171), 135° about X,
+over its 8.4 mm cylindrical shank. No source STL is edited. Removed volumes are
+6.164691, 3.506547 and .020890 mm³ respectively. The original screw and both
+rivets clear all three strips (one faceted contract, 50.66 s).
+
+A copy-against-copy boolean is not a suitable fidelity test here: it reports
+5.53e−16 mm³ before mesh export and 7.64e−7 mm³ after newly cut vertices are
+quantized to float32. No volume epsilon is introduced. Instead the artifact
+contract compares every source/export triangle exactly, independent of vertex
+ordering, and bounds **every changed face** to the small backing region (the
+bore plus at most one 1 mm refined source edge). All unaffected faces, including
+all teeth, must remain bit-identical. `tools/clearing_relief.py` reproduces the
+342/226/68 changed-face counts and their bounds. Four groove/connectivity/locality
+contracts pass (24.22 s, faceted); all five clearing-motion contracts remain
+green (157.90 s, faceted).
+The exact runner also passes all four locality/groove checks (18.21 s) and
+all five clearing-motion checks (111.06 s); interfaces involving the source
+strip STLs intentionally remain faceted. The installed addition and subtraction
+leaf-spring snapshots were inspected, with the flexible arms present.
+
+The subsequent native rest inventory has 374 rigid occurrences, 288 positive
+overlaps and no refused booleans. No strip/screw or spring/drum overlap remains.
+The source's unloaded spider spring still intersects all seventeen balls by
+about 11.936925 mm³ each, and their nominal zero seats touch the dials by about
+.001647 mm³ each. These moving detents require fitted motion; they are not
+accepted into a static seat list by default. The root's current faceted run is
+12 passes and one expected source-housing inventory failure (73.79 s).
 
 ## Historical initial validation boundary
 

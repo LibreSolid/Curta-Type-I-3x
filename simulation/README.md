@@ -4,9 +4,11 @@ The complete standard STEP assembly now builds in solid-node: all 547 leaf
 occurrences, plus the manual's three clearing-strip prints omitted from the STEP,
 organized into educational show/hide layers. The root has
 calculator controls, working input selectors, subtraction lift, keyed-shaft
-motion, lifting/shifting carriage, clearing plate and prescribed sub-turn dial rotations. **Full transmission/carry
-engagement and demonstrations are still being
-implemented; this is not a delivered calculator simulation.** Follow the
+motion, lifting/shifting carriage, clearing plate and prescribed sub-turn dial
+rotations. Input, bevel, carry and clearing contact contracts now pass, as does
+the bell spring's full subtraction sweep. **Register detents, the whole-machine
+seat inventory and final demonstration verification remain open; this is not a
+delivered calculator simulation.** Follow the
 [implementation tasks](../openspec/changes/simulate-the-curta/tasks.md).
 
 Work starts from the previous [assessment](assessment.md). The new
@@ -88,7 +90,8 @@ reproducible pose, not a claim that a physical crank can run backward.
 - `arithmetic.py`: reproducible arithmetic; six calibration/operation tests pass.
 - `registers.py`: seventeen radial dial joints and measured source clocking.
 - `transmission.py`: result/turns banks with sliding inputs and keyed rotation.
-- `cycle.py`: sub-turn input, decimal complement and candidate carry timing.
+- `cycle.py`, `carry_motion.py`: sub-turn input, decimal complement, measured pin
+  approach, retained carry and reset-cam timing.
 - `input_mesh.py`, `bevel.py`: exact-verified single-interface engagement benches.
 - `bevel_bank.py`: the installed seventeen-channel interface, including all six
   carriage detents and lifted intermediate positions; both kernels pass.
@@ -98,7 +101,11 @@ reproducible pose, not a claim that a physical crank can run backward.
 - `carry_spring.py`, `detents.py`, `carry_seat.py`: spreading U-wires, measured
   detent profiles and explicit mounting-groove fits; twelve tests pass both kernels.
 - `clearing.py`: the manual's two opposed tooth strips and spacer, formed from
-  the author's flat STLs into the measured cover groove; dial contact remains open.
+  the author's flat STLs into the measured cover groove, with a local retaining-
+  screw relief. Every tooth remains unchanged; clearing contact passes both runners.
+- `retaining_spring.py`, `bell_spring_motion.py`: the bell's native mounting plate
+  and hooks, joined by measured ribbed flexible arms following the drum pockets.
+- `views.py`: explicit inspection poses for snapshots at driver defaults.
 - `positioning.py`: moving spring seat and port-driven carriage spring compression.
 - `zero.py`: retained zero cam, sliding drive pin, grouped roller/lever and moving
   spring terminal, with six passing contact/mount contracts on both kernels.
@@ -110,7 +117,8 @@ reproducible pose, not a claim that a physical crank can run backward.
 - `viewer/`: the educational calculator page and tested page-local accumulator.
 - `flexibles.py`: the documented zero spring and source-sized carriage spring.
 - `contracts.py`: material connectivity that distinguishes enclosed voids from
-  detached positive-volume bodies; every rigid body is checked.
+  detached positive-volume bodies; rigid bodies and flexible material patches
+  are checked. A reconstructed spring still counts as one physical occurrence.
 - `standard/parts.py` and `standard/assembly.py`: compacted output of
   `solid import-step`, with source product names and all source placements.
 - `source.py`: creates the ignored STEP import copy with unique names for

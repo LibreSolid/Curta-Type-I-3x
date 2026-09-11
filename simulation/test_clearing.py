@@ -25,3 +25,21 @@ class ClearingBenchTest(TestCase):
 
     def test_layers_do_not_interpenetrate(self):
         self.assertNoSolidInterference(self.node.teeth)
+
+    def test_screw_relief_changes_only_the_small_back_region(self):
+        import trimesh
+        from simulation.tools.clearing_relief import faces
+        for part in self.node.teeth.children:
+            formed = part.form(trimesh.load_mesh(part.stl_source))
+            self.assertGreater(formed.volume - part.mesh.volume, 0)
+            # Audit every changed face directly. A second boolean between
+            # coincident copies invents slivers (including after float32 STL
+            # export); no epsilon is used to hide them. Faces outside this
+            # small back region must be bit-for-bit identical to the source.
+            changed = np.array(list(faces(formed) ^ faces(part.mesh))).reshape(-1, 3)
+            self.assertGreater(len(changed), 0)
+            reach = float(part.retaining_bore) + 1  # at most one refined source edge
+            lower = (.13205562 - reach, -53.5, GROOVE_FLOOR)
+            upper = (.13205562 + reach, -48, GROOVE_FLOOR + 3.5)
+            self.assertTrue(np.all(changed >= lower))
+            self.assertTrue(np.all(changed <= upper))

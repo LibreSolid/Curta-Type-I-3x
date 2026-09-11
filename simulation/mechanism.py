@@ -17,6 +17,9 @@ from simulation.clearing import ClearingGrooveCover, ClearingTeethStack
 from simulation.standard.carry import ResultsCarry, TurnsCarry
 from simulation.positioning import CarriagePositioning
 from simulation.pawl import AntiReversal, PawlBearingPlate
+from simulation.standard.parts import M4x10_419159
+from simulation.retaining_spring import RetainingSpring, SEAT_GAP as SPRING_SEAT_GAP
+from simulation.bell_spring_motion import positioning as spring_positioning
 import simulation.standard.layers as layers
 
 
@@ -24,7 +27,15 @@ class Inputs(SourceInputs):
     selectors = Selectors()
 
 
+class UpperFrame(layers.UpperFrame):
+    def render(self):
+        super().render()
+        self.m4x10_419159_1.omit()
+        self.m4x10_419159_2.omit()
+
+
 class Frame(SourceFrame):
+    upper_frame = UpperFrame()
     lower_bearing_plate = PawlBearingPlate()
 
 
@@ -53,13 +64,23 @@ class MainDrive(SourceDrive):
 
 
 class TensBellAssembly(layers.TensBellAssembly):
-    turn = Port(unit='deg')
-    tens_bell_1 = TensBell1(turn=Revolute(axis=(0, 0, 1)))
-    turn.drives(tens_bell_1.turn)
+    subtract = Port()
+    tens_bell_1 = TensBell1()
+    tens_bell_spring = RetainingSpring()
+    m4x10_419159_1 = M4x10_419159()
+    m4x10_419159_2 = M4x10_419159()
+    subtract.drives(tens_bell_spring.spread, law=spring_positioning)
+
+    def render(self):
+        super().render()
+        self.tens_bell_spring.translate((0, 0, -SPRING_SEAT_GAP))
+        # Manual page 9: these two screws secure the spring to the bell.
+        self.m4x10_419159_1.rotate(180, (1, 0, 0)).translate((-10.5, 0, -2.7))
+        self.m4x10_419159_2.rotate(180, (1, 0, 0)).translate((10.5, 0, -2.7))
 
 
 class CarryMechanism(SourceCarry):
-    tens_bell = TensBellAssembly()
+    tens_bell = TensBellAssembly(turn=Revolute(axis=(0, 0, 1)))
     result_carries = ResultsCarry()
     turns_carries = TurnsCarry()
 

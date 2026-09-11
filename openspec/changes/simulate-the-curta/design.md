@@ -127,9 +127,12 @@ allowance without modifying the guide or slider. Twelve motion, seating and wire
 contracts pass both kernels. The missing clearing components are the manual's
 two tooth strips and spacer, supplied as flat standard STLs. They are formed
 into the measured cover groove and retained as three separately selectable
-leaves. The operating inventory is consequently 550, including every original
-STEP occurrence; the immutable source-placement inventory remains 547. Their
-groove fit is verified, while clearing-to-dial contact and timing remain open.
+leaves. The operating inventory is consequently 550 physical occurrences,
+including every original STEP occurrence; the immutable source-placement
+inventory remains 547. Reconstructing the bell spring with five proven-connected
+patches gives 554 material leaves without changing that occurrence count.
+The groove, retaining-screw relief and progressive clearing-to-dial contact
+and timing are now verified.
 
 ### Carry contacts and timing
 
@@ -160,6 +163,12 @@ profiles and validation in `simulation/docs/measurements.md`.
   the cause is not established. Independent ignored verification artifacts use
   `SOLID_BUILD_DIR=_build_checks` with the same workspace environment, separate
   from the live preview's publication lock.
+- OpenSCAD output in a nested inspection directory rebases rigid STL imports
+  but leaves flexible snapshot STL paths relative to the flexible module's
+  directory. The image silently omitted the two spring arms although their
+  meshes existed. Moving inspection classes from `simulation/tools/views.py`
+  to `simulation/views.py` restored both arms in the snapshot. This is an
+  artifact-path finding, not permission to treat an incomplete image as proof.
 
 These are evidence for an upstream finding record, not framework changes or
 claims that a new API has been accepted. No framework implementation was edited.
