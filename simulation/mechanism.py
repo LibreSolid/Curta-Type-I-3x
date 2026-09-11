@@ -8,7 +8,8 @@ from simulation.assemblies import RegisterCarriage as SourceRegisters, Carriage 
 from simulation.assemblies import CarryMechanism as SourceCarry
 from simulation.zero import ZeroPositioning
 from simulation.selectors import Selectors
-from simulation.print_parts import DigitsCover, UpperHousing, CrankCollar
+from simulation.print_parts import CrankCollar
+from simulation.cover_fits import FittedDigitsCover, FittedUpperHousing, FittedAxleCarrier
 from simulation.registers import ResultRegister, TurnsRegister
 from simulation.fit import CARRIAGE_CENTER, CARRIAGE_CLOCKING
 from simulation.prints import PrintedDrum
@@ -22,7 +23,6 @@ from simulation.retaining_spring import RetainingSpring, SEAT_GAP as SPRING_SEAT
 from simulation.bell_spring_motion import positioning as spring_positioning
 from simulation.register_detents import RegisterDetents
 from simulation.dial_detent_motion import following
-from simulation.clearing_stop_spring import ClearingPinCarrier
 from simulation.clearing_stop_motion import following as clearing_stop_following
 import simulation.standard.layers as layers
 
@@ -94,10 +94,11 @@ class CarriageCovers(layers.CarriageCovers):
 
     The covers use a different source center from the carrier. Correcting both
     that center and its .549916905-degree clocking removes window encroachment;
-    a .05 mm upper seating gap clears the remaining dial lip. Prints unchanged.
+    a .05 mm upper seating gap clears the remaining dial lip. Bounded fits in
+    cover_fits.py clear the neighbouring ring and axle ends without moving them.
     """
-    digits_cover = DigitsCover()
-    upper_housing = UpperHousing()
+    digits_cover = FittedDigitsCover()
+    upper_housing = FittedUpperHousing()
 
     def render(self):
         super().render()
@@ -122,7 +123,7 @@ class ClearingAssembly(layers.ClearingAssembly):
 
 class CarriageStructure(layers.CarriageStructure):
     crank_collar = CrankCollar()
-    upper_carriage_body_1 = ClearingPinCarrier()
+    upper_carriage_body_1 = FittedAxleCarrier()
 
     def render(self):
         super().render()

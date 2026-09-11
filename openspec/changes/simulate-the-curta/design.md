@@ -17,6 +17,9 @@ The pilot subsequently paused implementation for a framework memory fix.
 The project checkpoint and proposed framework-cycle handoff are recorded in
 `simulation/docs/pause-report-2026-09-11.md`. This change remains active;
 neither the original scope nor its delivery requirements are reduced.
+Work resumed after the pilot integrated solid-node's `expression-graphs`
+cycle (`446bc22` / `5e59147`, ADR-101). Fresh project export and browser
+verification now pass; the mechanical delivery scope remains unchanged.
 
 ## Coordinates
 
@@ -105,8 +108,9 @@ methods are removed mechanically. See `simulation/docs/measurements.md`.
 The invalid solid is the zero-positioning spring (#419219). Automatic repair
 remains invalid and produces two native solids. An analytic replacement based
 on manual page 14 and measured mounting points was authorized by the pilot.
-The digits-cover / upper-housing boolean also yields invalid geometry,
-so no certified nominal overlap inventory exists yet. The spring replacement now
+The initial digits-cover / upper-housing boolean also yielded invalid geometry.
+The fitted covers now produce a valid positive thread intersection, but no
+certified nominal overlap inventory exists yet. The spring replacement now
 passes native validity, wire-size and exact/faceted mounting contracts. Crank,
 drum and eight selector motions are implemented with joints and relations, and
 the arithmetic unit tests pass. Seven educational layers preserve every original
@@ -141,12 +145,13 @@ allowance without modifying the guide or slider. Twelve motion, seating and wire
 contracts pass both kernels. The missing clearing components are the manual's
 two tooth strips and spacer, supplied as flat standard STLs. They are formed
 into the measured cover groove and retained as three separately selectable
-leaves. The operating inventory is consequently 550 physical occurrences,
+leaves. The operating inventory is consequently 550 represented source occurrences,
 including every original STEP occurrence; the immutable source-placement
 inventory remains 547. Reconstructing the bell spring with five proven-connected
 patches gives 554 material leaves without changing that occurrence count.
 The later seventeen-finger spider reconstruction brings this to 588 material
-leaves, still representing the same 550 physical occurrences.
+leaves, still representing the same 550 source occurrences, not 550 independent
+physical pieces: some source ingredients belong to fused prints.
 The groove, retaining-screw relief and progressive clearing-to-dial contact
 and timing are now verified.
 
@@ -186,7 +191,8 @@ independently checked as captured by its own dial and spring tip.
 That complete-bank exact result used the sampled profile. The later compact
 native-circle law preserves the measured envelope and passes first-station
 native and complete-bank faceted checks; its complete-bank exact regression
-remains pending at pause.
+remained pending at pause. On resumption all four complete-bank native checks
+also pass on the compact law (457.17 s), closing that verification gap.
 
 The clearing stop is now a source pin driven vertically by the cover's measured
 cam. Its documented eight-turn .6 mm wire spring compresses between the native
@@ -196,10 +202,17 @@ full-sweep contact and spring tests pass both kernels. No pin or sleeve geometry
 is changed. The whole-machine audit still needs cover/window and frame-guide
 interfaces resolved before the source overlap inventory can be accepted.
 
-The cover-datum trial now clears the operating dials without changing the
-author's print meshes, but neighboring cover/axle contacts remain unresolved.
-It is preserved as a tested local trial, not an accepted whole-carriage fit;
-see the pause report and measurements for its positive overlap volumes.
+The cover-datum trial is retained, with three measured neighbour fits added on
+resumption: a .10 mm inner top-land facing beneath the clearing ring, seventeen
+R2.995 shallow housing pockets around the fixed axle ends, and .15 mm retaining-
+flat extensions on those axles. Neither source axle placement/length nor the
+working clearing ring's placement is changed. Seven faceted contracts now pass,
+including a bounded axial ring seat, all axle neighbours and protected source
+surfaces; removing each fit separately fails its intended physical contract.
+All seven also pass on the exact runner, with STL interfaces remaining faceted.
+The source prints themselves remain untouched. Their mutual thread overlap and
+other frame-guide findings still prevent whole-machine acceptance. Measurements
+record the rejected axle translations and the explicit mesh-fidelity limits.
 
 ## Findings for the framework
 
@@ -230,15 +243,17 @@ see the pause report and measurements for its positive overlap volumes.
   expression still expands to approximately 270 MB when fed through its hook
   profile, then repeats in six wire coordinates across ten stations. The
   reproducible `simulation/tools/expression_size.py` measures this without
-  allocating the complete expanded model. Fresh export is blocked; stale
-  manifests are rejected by browser preflight. A separate authorized framework
-  cycle is required to address construction-time sharing, not just final JSON
+  allocating the complete expanded model. At pause fresh export was blocked;
+  the stale palette was rejected by browser preflight. A separate framework
+  cycle was required to address construction-time sharing, not just final JSON
   size. See the measured resource limits and traceback evidence in the project
   measurements. Subsequent read-only framework inspection during the pilot's
   diagnosis confirmed ADR-080 and the late binding pass. No framework
-  implementation was changed. The proposed follow-up is
-  `construction-time-expression-sharing`; formal proposal and ratification
-  remain pending, as distinguished in the pause report.
+  implementation was changed by this project. The handoff's suggested
+  `construction-time-expression-sharing` became the framework-owned
+  `expression-graphs` cycle, now integrated at `5e59147` under ADR-101.
+  The fresh project export succeeds with 9969 bindings and all controls;
+  calibration, six worked examples and layer controls pass in the current page.
 
 These are evidence for an upstream finding record, not framework changes or
 claims that a new API has been accepted. No framework implementation was edited.

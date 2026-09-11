@@ -1192,7 +1192,9 @@ uncovered OpenSCAD snapshots were inspected at 1400 × 1100. The uncovered
 view hides the same enclosure, frame, covers and carrier layers as the page's
 See inside control; nothing is removed from the operating machine.
 
-The fresh interactive export is not yet validated. Two exports were killed by
+At this pre-pause checkpoint, the fresh interactive export was not yet validated.
+The later [resumption](#resumption-after-expression-graphs) supersedes that status.
+Two exports were killed by
 the OS for memory exhaustion: PIDs 2754982 and 2760833, resident anonymous
 memory approximately 10.3 and 9.4 GB respectively (kernel journal). The older
 manifest remained in place. A new browser preflight rejects that stale palette
@@ -1200,7 +1202,7 @@ explicitly; passing calculations against that old document are not current
 validation. Investigation of repeated motion-expression expansion is ongoing;
 the colors are verified in snapshots but the exported browser update is open.
 
-## Symbolic expression growth — current export blocker
+## Symbolic expression growth — pre-pause export blocker
 
 The pilot reported a separate host crash during a parallel build, then clarified
 that this VM may use 8 GB. Subsequent heavyweight jobs run sequentially with
@@ -1293,6 +1295,140 @@ cover trial also passes all three faceted contracts again, with 36.35 s process
 wall time, 18.02 s test time and 615952 KiB peak RSS. Both runs use the same
 workspace environment and the 8 GiB address-space guard. No full export, final
 all-node regression or new snapshot was attempted during this pause checkpoint.
+
+## Resumption after expression-graphs
+
+The pilot resumed work after solid-node's completed `expression-graphs` cycle
+was integrated into main: planning `446bc22`, implementation
+`5e591474b5cf54c2b41f223400d2b6ee3cbb97ae`, accepted ADR-101. The workspace
+environment imports that primary checkout; no project-side replacement of the
+framework or motion API was needed. The installed viewer reports API 7.
+
+The first fresh project export completes in 25.66 s with 613820 KiB maximum
+process RSS, under `ulimit -v 8388608`, one BLAS/OpenMP thread and `pipefail`.
+The publication is newly generated but reuses the existing CAD cache; this is
+not a cold-cache build benchmark.
+This is a process RSS measurement, not the aggregate cgroup accounting in the
+framework's own warm/cold report. The latter is linked from its archived cycle;
+do not mix the two accounting methods into a claimed speedup.
+
+That first manifest is 1669980 bytes, schema 4 with 9969 bindings, all eight
+drivers and seven instructions, seven root navigation layers, 390 rigid
+published leaves and 38 flexible leaves. Every referenced model file exists,
+and all six material-inspired colors are present. Published rigid leaves stop
+at fused prints; this count is not the 550 represented source occurrences.
+
+`python -m simulation.tools.check_calculator` passes in 101.92 s against this
+fresh export: page-53 calibration, all six examples, retained operations,
+lift/shift guards, eight input selectors, recursive layer control and capture.
+The captured page was inspected: aluminum/bronze/black contrast, exposed
+internal layers and current calculator controls are visible. The loopback
+test server and browser close when the check finishes. This removes the stale-
+export blocker, not the outstanding whole-machine interference findings.
+
+Evidence logs: `_build_evidence/resume-expression-graphs-export.log` and
+`_build_evidence/resume-calculator-browser.log`; screenshot:
+`_build_evidence/calculator-checked.png`. These generated artifacts remain ignored.
+
+## Cover neighbours — measured local fits after resumption
+
+`tools/cover_neighbors.py` reconstructs the unfitted prints and axle in the
+corrected carriage frame, independent of the fits currently installed. The
+ring contact is confined to world Z43.60–43.65, R54.9–61.5. Moving that ring
+would also disturb the already-proven clearing rack and stop cam. Instead,
+`cover_fits.py` faces .10 mm off the digit cover's inner top land through
+R61.55: its seated top becomes Z43.55, leaving the named .05 mm axial gap.
+The conical source land loses approximately 183.97 mm³; its windows do not move.
+
+The seventeen 54 mm axles have R2.945 outer bearing sections and 1.8 mm-long
+retaining flats, with their flat plane .9 mm above the axis. Their centers
+are at Z33.9 and their outer ends lie on R73.574057463. Each flat faces upward.
+Turning a pin over clears the housing but increases digit-cover overlap from
+.23155 to 14.37407 mm³. Sliding it inward 2 mm clears both covers but enters
+the carrier by 14.76577 mm³ and collar by 4.15321 mm³. Those alternatives are
+rejected; neither axle placement nor bearing length is changed.
+
+The chosen simulation-only builder fits lengthen each retaining flat by
+.15 mm and add seventeen R2.995 housing pockets over R71.65–73.65. Only the
+inner flange at local Z35.255–36 is reached, not the outer threaded wall.
+The source axle is cut only at local X≤−.9, Z1.8–1.95; its remaining 54 mm
+extent and stepped bearing surface are preserved. Housing removal is
+approximately 57.098 mm³ in total. Manual pages 40–43 provide the axle/cover
+assembly context and explicitly discuss fitting the printed threaded covers;
+these particular measured reliefs are our working assumptions, not upstream
+dimensions or manufacturing recommendations.
+
+The initial neighbour contracts fail on positive ring/cover and axle/cover
+volumes. Source-fidelity checks exposed two additional mesh issues during
+fitting, neither hidden with a collision epsilon:
+
+- Manifold flips the diagonal of one slightly nonplanar source quad even in
+  a no-cut conversion of the digit cover. Its four original vertices stay
+  fixed; interior samples differ by up to .000144 mm. The test names only
+  that small source region and bounds its surface deviation to .0002 mm;
+  all other protected samples retain the .00001 mm surface-fidelity bound.
+- Housing cutter vertices aligned with the source's radial seams left fourteen
+  zero-thickness fins after binary-STL conversion, on either float precision.
+  Clocking the 128-sided cutter by half a facet removes that coincidence.
+  The resulting exported housing is one watertight material shell, without
+  welding, deletion of bad faces, or repair. Cutter radius and axle datum stay
+  unchanged. Mesh coordinates remain double precision until STL export.
+
+The checks retain every integer dial, sampled carry/clearing passage, all
+seventeen axle-to-cover/carrier/collar interfaces, bounded source changes and
+the ring's free/blocked axial seat. The source covers' mutual thread overlap
+and the other frame/interface findings still require the whole-machine inventory.
+
+Seven cover contracts pass faceted in 49.46 s (69.69 s process wall time,
+608852 KiB peak RSS). Removing each fit in node code separately proves its
+physical consequence: absent rim facing fails three tests, absent housing
+pockets fails two (2.618168975 mm³ axle contact), and absent flat extension
+fails two (.231536892 mm³ axle contact). All mutations are restored, and all
+seven tests pass again in 46.30 s. Logs are
+`_build_evidence/resume-cover-seated-faceted.log`,
+`resume-cover-mutation-{rim,housing,axle}.log` and
+`resume-cover-restored-faceted.log` in that same evidence directory.
+
+The exact runner also passes all seven cover checks in 30.99 s (51.22 s
+process wall time, 615088 KiB peak RSS). Source-STL interfaces remain faceted;
+the native axle-to-carrier/collar checks use OCCT. The full 37-module faceted
+regression passes 142/144 tests; its two findings and native follow-up are
+recorded in `resumption-validation-2026-09-11.md` alongside this file.
+
+The old expression-size diagnostic was also made honest about the merged
+framework: it now emits the actual standalone spread expression, not a token-
+repetition estimate. The new diagnostic contract fails first, then joins 26
+existing arithmetic/cycle/cam/source checks: all 27 pass in 1.816 s. The largest
+standalone spread expression is 30163 characters (result channel 10), as emitted
+with its self-contained bindings. This is neither a complete export-size nor
+a peak-memory measurement. `resume-expression-sizes.log` and
+`resume-expression-diagnostic-{red,green}.log` retain the evidence.
+
+## Resumed full-regression checkpoint
+
+Both runners completed all 37 tested node modules: 142/144 faceted and 143/144
+native tests pass. The only native failure is the covers' 224.32750533797636 mm³
+thread intersection; both covers are source STLs, so both runners report the
+same contact. The additional faceted bearing contact is
+.0000032402102747 mm³ and passes natively, without geometry or tolerance changes.
+The complete native register-detent bank also closes the compact-circle-law
+verification gap (four tests, 457.17 s). The largest process RSS in the native
+matrix is 1275152 KiB; none of these measurements is aggregate VM memory.
+
+The post-fit root export succeeds in 41.43 s at 817216 KiB peak process RSS
+with the existing CAD cache. Both fitted covers and all seventeen fitted axles
+are present. All published model references exist; all 390 rigid occurrence
+artifacts match byte-for-byte between build and export. The new browser run
+passes calibration, all six examples, retained operations, guards, selectors,
+layers and capture in 103.06 s. The capture and five OpenSCAD inspection views
+were inspected, then a successful full-root build restored the publication.
+
+The final 27 Python unit tests, five calculator JavaScript tests and strict
+OpenSpec validation pass. The complete matrix, commands, artifact counts,
+snapshot poses and remaining mechanical work are in the
+[resumption validation report](resumption-validation-2026-09-11.md).
+The change remains active and unarchived: no source/thread contact or remaining
+frame interface is waived by these successful scoped checks.
 
 ## Historical initial validation boundary
 

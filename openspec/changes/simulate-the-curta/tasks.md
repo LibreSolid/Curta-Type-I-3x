@@ -1,9 +1,26 @@
-## Pause checkpoint — 2026-09-11
+## Current continuation — 2026-09-11
+
+The pilot resumed this change after solid-node's `expression-graphs` cycle
+merged into main at `5e59147` (planning `446bc22`, ADR-101). The complete
+post-fit export succeeds in 41.43 s at 817216 KiB peak process RSS with the
+existing CAD cache. All six
+calculator examples, page-53 calibration, retained operations, lift/shift
+guards, selector controls and layers pass against that export; its screenshot
+was inspected. The cover/ring and seventeen axle-seat interfaces now have
+seven passing contracts on both runners and three separately failing fit
+mutations, restored and green. All 37 tested node modules were rerun: 142/144
+faceted and 143/144 native checks pass. The root's thread contact remains red;
+the additional faceted bearing contact passes natively. Remaining thread/frame
+interfaces and final acceptance tasks below are still open. The schema is
+`spec-driven`, with 7/17 tasks complete. The full matrix is recorded in
+`simulation/docs/resumption-validation-2026-09-11.md`.
+
+## Historical pause checkpoint — 2026-09-11
 
 Paused by the pilot for the solid-node construction-time expression-sharing
 follow-up. See `simulation/docs/pause-report-2026-09-11.md` for the initial
 10h Astra/xhigh sprint, memory evidence, cycle handoff and ordered restart.
-No formal framework memory-fix change exists yet; this project change stays
+At that checkpoint no formal framework memory-fix change existed; this project stays
 active and unarchived. Checked tasks below record scoped incremental evidence,
 not a final full-machine regression. No outstanding task is waived by the pause.
 

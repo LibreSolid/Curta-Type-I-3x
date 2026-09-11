@@ -1,4 +1,4 @@
-# Curta simulation — paused for framework work
+# Curta simulation — implementation resumed
 
 The simulation imports the complete standard STEP assembly: all 547 leaf
 occurrences, plus the manual's three clearing-strip prints omitted from the STEP,
@@ -13,14 +13,21 @@ open; this is not a
 delivered calculator simulation.** Follow the
 [implementation tasks](../openspec/changes/simulate-the-curta/tasks.md).
 
-Current export blocker: the complete flexible mechanism exceeds an 8 GB memory
-ceiling while the framework expands nested motion expressions. Colors and
-geometry render in snapshots, but the existing browser export is older and
-must not be mistaken for the current machine. See the expression-growth
-reproduction and resource measurements before attempting another full export.
+The export memory blocker is resolved by solid-node's `expression-graphs`
+cycle, integrated at `5e59147`. The post-fit complete export takes 41.43 s
+with 817216 KiB peak process RSS under the 8 GiB address-space guard, using
+the existing CAD cache. The
+calculator page passes calibration, all six examples, retained operations,
+lift/shift guards, selector controls and layer checks against that fresh export.
 The [pause report and framework-cycle handoff](docs/pause-report-2026-09-11.md)
-record the initial 10h Astra/xhigh sprint, committed work, verification limits
-and the restart sequence. No formal memory-fix cycle has been opened yet.
+preserve the initial 10h Astra/xhigh sprint and its historical stop condition.
+Current verification and remaining physical interfaces are recorded in the
+[measurements](docs/measurements.md#resumption-after-expression-graphs) and
+[resumption validation matrix](docs/resumption-validation-2026-09-11.md).
+All 37 tested node modules have been rerun: 142/144 faceted and 143/144 native
+checks pass. Both runners retain the housing-thread overlap; the additional
+faceted bearing contact passes natively. These are recorded findings, not waived
+failures or final whole-machine acceptance.
 
 Work starts from the previous [assessment](assessment.md). The new
 [measurements and validation findings](docs/measurements.md) identify the invalid
@@ -32,10 +39,9 @@ explicitly authorized, documented replacement; upstream geometry is untouched.
 
 From this project's root, with the workspace venv active:
 
-The full-root build/export examples below are restart instructions after the
-framework memory fix, not commands to retry during this pause. Numeric unit
-tests and scoped subassembly checks remain usable; run heavyweight jobs
-sequentially under the resource bounds in the pause report.
+Run heavyweight jobs sequentially under the resource bounds in the pause
+report. The current workspace framework is required; package metadata alone
+does not distinguish its post-0.6 motion and expression-graph changes.
 
 ```sh
 solid build
@@ -62,15 +68,13 @@ solid build simulation/standard/assembly.py:Carriage1
 solid build
 ```
 
-Once the export blocker is resolved, the last command restores the complete
-model as the published viewer document; it cannot do so at this checkpoint.
+The last command restores the complete model as the published viewer document.
 No floor or development server is launched by these commands.
 
 ### Calculator page
 
 The project-owned page adds retained calculations and recursive layer controls
-over the public solid-node viewer. After a verified fresh export becomes
-possible again, export and serve the project root locally:
+over the public solid-node viewer. Export and serve the project root locally:
 
 ```sh
 solid export -o _build_export
@@ -126,13 +130,19 @@ reproducible pose, not a claim that a physical crank can run backward.
 - `views.py`: explicit inspection poses for snapshots at driver defaults.
 - `spider.py`, `register_detents.py`, `dial_detent_motion.py`: the source ring
   and tips with seventeen tapered flexible fingers, driven by the actual dial
-  joints and measured ball-rise profile. The earlier sampled law passed both
-  complete-bank kernels; the compact `dial_cam.py` law has first-station native
-  and complete-bank faceted proof, with its complete-bank exact run pending.
-- `covers.py`, `test_covers.py`, `tools/cover_fit.py`: the preserved cover-datum
-  trial. Dial clearance passes, but adjacent cover/axle interfaces remain open.
-- `tools/expression_size.py`: bounded reproduction of the symbolic export
-  blocker, without allocating the estimated expanded wire expressions.
+  joints and measured ball-rise profile. The compact `dial_cam.py` law now also
+  passes both complete-bank runners, including carry/subtraction cascades and
+  progressive clearing; its formerly pending native verification is complete.
+- `covers.py`, `cover_fits.py`, `test_covers.py`: the corrected cover datum,
+  inner ring-seat facing, shallow housing pockets and retained axle flats.
+  Seven contracts pass on both runners, and three separate fit mutations fail
+  as intended (then are restored). Source-STL interfaces remain faceted. The covers'
+  mutual thread overlap still belongs to the open whole-machine inventory.
+  `tools/cover_fit.py` and `tools/cover_neighbors.py` reconstruct the unfitted
+  source geometry independently of these adjustments.
+- `tools/expression_size.py`: actual standalone expression sizes on the shared-
+  graph framework. It no longer mistakes multiplied token counts for emitted
+  text; the old flat-expansion estimates remain historical pause evidence.
 - `clearing_stop_spring.py`, `clearing_stop_motion.py`: the source stop pin
   follows the clearing-cover cam and compresses its eight-turn spring between
   measured seats. Seven contracts pass both kernels.

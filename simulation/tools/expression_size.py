@@ -1,7 +1,9 @@
-"""Measure law expansion before building CAD or allocating the expanded wires.
+"""Measure actual shared expressions without building the calculator's CAD.
 
-A short symbolic time token stands in for each root driver. This is a lower
-bound on raw expression size, not an exported document or a motion substitute.
+A short symbolic time token stands in for each root driver. The counts describe
+standalone law emissions, not export size or peak memory. On expression-graph
+frameworks str() emits a self-contained binding closure; counting token repeats
+and multiplying text lengths no longer measures the emitted expression.
 """
 
 import json
@@ -23,15 +25,12 @@ def probe():
     result, turns = calculate(x, x, x, x, x, x, x)
     for counter, places, value in ((False, 11, result), (True, 6, turns)):
         channels = channel_values(places, counter)(None, None)(value, x, x, x, x, x)
-        template = str(spreading(counter)(None, None)(x))
-        repeats = template.count('$t')
+        spread = spreading(counter)(None, None)
         for channel in range(places):
             angle, setting, carry = channels[3*channel:3*channel+3]
-            length = len(str(carry))
             print(json.dumps(dict(bank='turns' if counter else 'result', channel=channel,
-                                  turn_chars=len(str(angle)), carry_chars=length,
-                                  spread_input_repeats=repeats,
-                                  spread_chars_estimate=len(template)+repeats*(length-2))), flush=True)
+                                  turn_chars=len(str(angle)), carry_chars=len(str(carry)),
+                                  spread_chars=len(str(spread(carry))))), flush=True)
 
 
 if __name__ == '__main__':

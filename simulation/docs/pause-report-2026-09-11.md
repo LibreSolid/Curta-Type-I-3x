@@ -1,5 +1,11 @@
 # Curta initial sprint — checkpoint and framework handoff
 
+Historical checkpoint at `d80e7bf`. Work resumed after the pilot integrated
+solid-node's `expression-graphs` cycle (`446bc22` planning, `5e59147`
+implementation; ADR-101). The fresh project export and browser checks pass;
+see [resumption evidence](measurements.md#resumption-after-expression-graphs).
+The report below preserves what was known when work stopped.
+
 ## Disposition
 
 The initial simulation implementation is **paused, not delivered**. The pilot

@@ -8,6 +8,23 @@ from simulation.carry_motion import engagement
 
 
 class ExpressionSizeTest(TestCase):
+    def test_diagnostic_reports_actual_shared_expressions(self):
+        from contextlib import redirect_stdout
+        from io import StringIO
+        import json
+        from simulation.tools.expression_size import probe
+        captured = StringIO()
+        with redirect_stdout(captured):
+            probe()
+        rows = [json.loads(line) for line in captured.getvalue().splitlines()]
+        self.assertEqual(len(rows), 17)
+        self.assertEqual({row['bank'] for row in rows}, {'result', 'turns'})
+        for row in rows:
+            self.assertIn('spread_chars', row)
+            self.assertNotIn('spread_chars_estimate', row)
+            self.assertGreater(row['spread_chars'], 0)
+            self.assertLess(row['spread_chars'], 100000)
+
     def test_decimal_shift_preserves_the_lifted_interpolation(self):
         for step in range(501):
             shift = step/100
